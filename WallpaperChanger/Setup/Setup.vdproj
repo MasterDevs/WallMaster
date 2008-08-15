@@ -15,18 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_059DFB65DA743E57E05E446E6BF1BC32"
-        "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_08A2A72DFC668DF626B8B8D93CE7EA06"
-        "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_321AC8A65A094658838D7ACDFF5C8A75"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -41,18 +29,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_08A2A72DFC668DF626B8B8D93CE7EA06"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_059DFB65DA743E57E05E446E6BF1BC32"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -160,68 +136,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_059DFB65DA743E57E05E446E6BF1BC32"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ScreenMonitor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_059DFB65DA743E57E05E446E6BF1BC32"
-                    {
-                    "Name" = "8:ScreenMonitor.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ScreenMonitor.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_08A2A72DFC668DF626B8B8D93CE7EA06"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_08A2A72DFC668DF626B8B8D93CE7EA06"
-                    {
-                    "Name" = "8:WallpaperUtils.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:WallpaperUtils.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_321AC8A65A094658838D7ACDFF5C8A75"
             {
             "SourcePath" = "8:Spectrum.ico"
@@ -320,14 +234,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Wallmaster"
-        "ProductCode" = "8:{F7E15FE0-E349-4BE8-9854-1123D8712D7E}"
-        "PackageCode" = "8:{2EE73CE4-FD44-4D2B-B4AD-3C0856528DCD}"
+        "ProductCode" = "8:{B292B568-3115-418C-A2EF-53B434ED919F}"
+        "PackageCode" = "8:{D6ED9134-0253-40FB-A96F-685DB1E50068}"
         "UpgradeCode" = "8:{A6D1EF1B-15D9-42F2-BF1C-C050214C44E2}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1.1"
+        "ProductVersion" = "8:0.1.2"
         "Manufacturer" = "8:Wallmaster"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -875,34 +789,6 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{3CD05B18-F1FA-4516-8516-71D2333B8801}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B209C6B22D664DEFB0614C0324ABBFBF"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:ContentFiles"
             "OutputProjectGuid" = "8:{3CD05B18-F1FA-4516-8516-71D2333B8801}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

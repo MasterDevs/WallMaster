@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace WallpaperUtils {
 	public class PaneledImageBuilder {
+
 		#region Fields
 		private Size[] _sizes;
 		private Image[] _images;
@@ -44,7 +45,6 @@ namespace WallpaperUtils {
 
 		#endregion
 
-
 		#region Public Builder Methods
 
 		public Image BuildImage() {
@@ -55,7 +55,6 @@ namespace WallpaperUtils {
 
 			return _aImage;
 		}
-
 
 		public void SetSizes(Size[] sizes) {
 			_sizes = sizes;
@@ -99,10 +98,10 @@ namespace WallpaperUtils {
 				case WallpaperStretchStyle.Stretch:
 					setStretchImage(i, ref s, ref offset);
 					break;
-				case WallpaperStretchStyle.StretchRatio:
+				case WallpaperStretchStyle.Fit:
 					setStretchPreserveRatioImage(i, ref s, ref offset);
 					break;
-				case WallpaperStretchStyle.Magic:
+				case WallpaperStretchStyle.Fill:
 					setMagicImage(i, ref s, ref offset);
 					break;
 				case WallpaperStretchStyle.Center:
@@ -160,7 +159,6 @@ namespace WallpaperUtils {
 			setCenteredImage(bi, ref s, ref offset);
 			
 		}
-
 
 		/// <summary>
 		/// Draws the image (stretched, not maintaing aspect ratio) on the local graphic object
@@ -240,9 +238,7 @@ namespace WallpaperUtils {
 
 			_g.FillRectangle(b, r);
 		}
-
-
-
+		
 		#region Helpers
 
 		private void computeActualSize() {

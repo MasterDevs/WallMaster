@@ -8,7 +8,7 @@ namespace WallpaperUtils {
 
 		#region Constants and Defaults
 		private readonly Color DEFAULT_COLOR = Color.Black;
-		private const string FILE_SEARCH_PATTERN_STRING = @"All Images|*.bmp; *.jpg;*.jpeg; *.gif; *.png |Bitmap (*.bmp)|*.bmp |JPEG (*.jpg)|*.jpg;*.jpeg |GIF (*.gif)|*.gif |PNG (*.png)|*.png";
+		private const string FILE_SEARCH_PATTERN_STRING = @"All Images|*.bmp;*.jpg;*.jpeg;*.gif;*.png|Bitmap (*.bmp)|*.bmp |JPEG (*.jpg)|*.jpg;*.jpeg |GIF (*.gif)|*.gif |PNG (*.png)|*.png";
 
 		#endregion
 		
@@ -20,7 +20,7 @@ namespace WallpaperUtils {
 			get { return _cfg; }
 			set {
 				_cfg = value;
-				setFields();
+				SetFields();
 			}
 		}
 
@@ -78,17 +78,21 @@ namespace WallpaperUtils {
 
 		private void _noImageRB_CheckedChanged(object sender, EventArgs e) {
 			setImageSelectionMethod(WallpaperSelectionStyle.None);
+			Config.ImagePath = string.Empty;
 			raiseConfigChanged();
 		}
 
 
 		private void _imageRB_CheckedChanged(object sender, EventArgs e) {
 			setImageSelectionMethod(WallpaperSelectionStyle.File);
+			Config.ImagePath = _imagePathTB.Text;
 			raiseConfigChanged();
 		}
 
 		private void _randomImageRB_CheckedChanged(object sender, EventArgs e) {
 			setImageSelectionMethod(WallpaperSelectionStyle.Random);
+			Config.DirectoryPath = _randomDirTB.Text;
+			Config.ChangeRandomImage();
 			raiseConfigChanged();
 		}
 
@@ -162,11 +166,14 @@ namespace WallpaperUtils {
 			MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-		
-		private void setFields() {
-			setRadioButtons(_cfg.SelectionStyle);
+		/// <summary>
+		/// Initializes the child controls values to reflect
+		/// the current state of the configuration
+		/// </summary>
+		public void SetFields() {
 			_imagePathTB.Text = _cfg.ImagePath;
 			_randomDirTB.Text = _cfg.DirectoryPath;
+			setRadioButtons(_cfg.SelectionStyle);
 			_colorButton.BackColor = _cfg.BackgroundColor;
 			_includeSubdirsCB.Checked = _cfg.IncludeSubDirs;
 
@@ -237,7 +244,6 @@ namespace WallpaperUtils {
 		}
 
 
-
 		/// <summary>
 		/// Changes the random image on the form
 		/// </summary>
@@ -260,23 +266,17 @@ namespace WallpaperUtils {
 
 		public void ChangeRandom() {
 			if (_cfg.IsRandom) {
-				changeRandomImage(false);
+				changeRandomImage(true);
 			}
 		}
 
 		internal void ResetFields() {
-			setFields();
+			SetFields();
 		}
 
 		private void _includeSubdirsCB_CheckedChanged(object sender, EventArgs e) {
 			_cfg.IncludeSubDirs = _includeSubdirsCB.Checked;
 			raiseConfigChanged();
-		}
-
-		private void _stretchStyleCB_KeyPress(object sender, KeyPressEventArgs e) {
-			// Set e.Handled to true so the user cannot type anything in here
-			// Only way I know of to make sure the user can't just type anything they want here
-			e.Handled = true;
 		}
 
 		private void _stretchStyleCB_SelectedIndexChanged(object sender, EventArgs e) {

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMonitor", "ScreenMoni
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolution", "Resolution\Resolution.csproj", "{02D91A05-FFBA-466F-A0C6-D32F51406EE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{4E8988BC-555A-4987-98CA-E3E6C88F2BAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}.Debug|Any CPU.ActiveCfg = Debug
 		{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}.Release|Any CPU.ActiveCfg = Release
+		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

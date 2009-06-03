@@ -3,14 +3,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using WallpaperUtils;
+using Microsoft.Win32;
 
 namespace WallpaperChanger {
 	public partial class WallmasterUI : Form {
 
 		private WallpaperConfigManager _wcm;
 		private WallpaperChangerConfig _cfg;
-		private ScreenMonitor.ScreenMonitor _sm;
-
+		private WallpaperCreator _creator = new WallpaperCreator();
 
 		#region CTOR
 		public WallmasterUI() {
@@ -20,22 +20,14 @@ namespace WallpaperChanger {
 			LoadConfig();
 
 			setImageBox();
-			
-			_sm = new ScreenMonitor.ScreenMonitor(_cfg.RefreshRateMilliseconds);
-			_sm.ScreenChanged += new EventHandler(_sm_ScreenChanged);
-			_sm.Start();
-
-
+			SystemEvents.DisplaySettingsChanged += new EventHandler(_sm_ScreenChanged);
 			setTimer();
 		}
-
 		#endregion
-
-
 
 		#region Menus
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
-			exit();
+			Exit();
 		}
 
 		private void changeWallpaperToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -48,7 +40,7 @@ namespace WallpaperChanger {
 		}
 
 		private void exitToolStripMenuItem1_Click(object sender, EventArgs e) {
-			exit();
+			Exit();
 		}
 
 		#endregion
@@ -176,6 +168,7 @@ namespace WallpaperChanger {
 
 		void _sm_ScreenChanged(object sender, EventArgs e) {
 			setWallpaper();
+			setImageBox();
 		}
 
 
@@ -206,7 +199,7 @@ namespace WallpaperChanger {
 			
 		}
 
-		private void exit() {
+		private void Exit() {
 			_notifyIcon.Visible = false;
 			Application.Exit();
 		}
@@ -218,7 +211,6 @@ namespace WallpaperChanger {
 
 		private void changeAll() {
 			multiWpPicker.ChangeRandomImage();
-
 		}
 
 

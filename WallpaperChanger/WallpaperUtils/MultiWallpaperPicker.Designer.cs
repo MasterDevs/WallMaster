@@ -44,6 +44,7 @@
 			// 
 			// _screenComboBox
 			// 
+			this._screenComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._screenComboBox.FormattingEnabled = true;
 			this._screenComboBox.Items.AddRange(new object[] {
             "Screen 1",
@@ -59,19 +60,18 @@
 			this.wpPicker.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 									| System.Windows.Forms.AnchorStyles.Left)
 									| System.Windows.Forms.AnchorStyles.Right)));
-			wallpaperConfig1.Argb = -16777216;
 			wallpaperConfig1.BackgroundColor = System.Drawing.Color.Black;
 			wallpaperConfig1.DirectoryPath = null;
 			wallpaperConfig1.ImagePath = null;
 			wallpaperConfig1.IncludeSubDirs = false;
 			wallpaperConfig1.Name = null;
-			wallpaperConfig1.SelectedImagePath = null;
 			wallpaperConfig1.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
 			wallpaperConfig1.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
 			this.wpPicker.Config = wallpaperConfig1;
 			this.wpPicker.Location = new System.Drawing.Point(6, 46);
+			this.wpPicker.MinimumSize = new System.Drawing.Size(431, 188);
 			this.wpPicker.Name = "wpPicker";
-			this.wpPicker.Size = new System.Drawing.Size(422, 188);
+			this.wpPicker.Size = new System.Drawing.Size(431, 188);
 			this.wpPicker.TabIndex = 1;
 			this.wpPicker.ConfigChanged += new System.EventHandler<WallpaperUtils.ConfigChangedEventArgs>(this.wpPicker_ConfigChanged);
 			// 

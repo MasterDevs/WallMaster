@@ -73,7 +73,6 @@ namespace WallpaperUtils {
 		#region Public Methods
 
 		// IEnumerator<string> Members
-
 		public string Current {
 			get { return _current; }
 		}
@@ -82,7 +81,6 @@ namespace WallpaperUtils {
 		public void Dispose() { }
 
 		// IEnumerator Members
-
 		object System.Collections.IEnumerator.Current {
 			get { return Current; }
 		}

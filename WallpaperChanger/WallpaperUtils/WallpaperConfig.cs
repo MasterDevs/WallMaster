@@ -31,15 +31,17 @@ namespace WallpaperUtils {
 	/// the image.
 	/// </summary>
 	public enum WallpaperStretchStyle {
+		
 		/// <summary>
-		/// Center image, if it is larger than the size of the screen 
+		/// Center image, if it is larger than the destination screen 
 		/// then crop the image at the bounds of the screen
 		/// </summary>
 		Center = 0,
 
 		/// <summary>
-		/// If the image is larger than the size of the screen
-		/// then resize it to fit; aspect ratio is NOT maintaned
+		/// Stretch the image to fit the destination screen.
+		/// <para>If the image is larger or smaller then the destination, it will 
+		/// be resized so the entire image appears on the destination screen</para>
 		/// </summary>
 		Stretch = 1,
 
@@ -47,14 +49,13 @@ namespace WallpaperUtils {
 		/// If the image is larger than the size of the screen
 		/// then resize it to fit; aspect ratio is maintaned, 
 		/// </summary>
-		StretchRatio = 2, 
+		Fit = 2,
 
 		/// <summary>
-		/// The best of both worlds.
 		/// If an image is smaller than the screen, then center it, 
 		/// otherwise, StretchRatio it.
 		/// </summary>
-		Magic = 3,
+		Fill = 3,
 	}
 
 	/// <summary>
@@ -64,93 +65,57 @@ namespace WallpaperUtils {
 
 		private readonly string[] FILE_FILTERS = { ".bmp", ".jpg", "jpeg", ".gif", ".png" };
 
-		#region Private Fields
-		private WallpaperSelectionStyle _wpSelectionStyle;
-		private WallpaperStretchStyle _wpStretchStyle;
-
-		private string _selectedImagePath;
-		private string _imagePath;
-		private string _directoryPath;
-		private string _name;
-		private bool _includeSubDirs;
-
-		private Color _backgroundColor;
-
-		#endregion
-
 
 		#region Public Properties
 
-		public string Name {
-			get { return _name; }
-			set { _name = value; }
-		}
+		public string Name { get; set; }
+
+		public string DeviceName { get; set; }
 
 		[XmlIgnore]
-		public Color BackgroundColor {
-			get { return _backgroundColor; }
-			set { _backgroundColor = value; }
-		}
+		public Color BackgroundColor { get; set; }
 
+		/// <summary>
+		/// This property is necessary for background color serialization process
+		/// </summary>
 		public int Argb {
-			get { return _backgroundColor.ToArgb(); }
-			set { _backgroundColor = Color.FromArgb(value); }
+			get { return BackgroundColor.ToArgb(); }
+			set { BackgroundColor = Color.FromArgb(value); }
 		}
 
 		/// <summary>
 		/// The path to the directory selected when using random image selection
 		/// </summary>
-		public string DirectoryPath {
-			get { return _directoryPath; }
-			set { _directoryPath = value; }
-		}
+		public string DirectoryPath { get; set; }
 
 		/// <summary>
 		/// The path to the selected image file
 		/// </summary>
-		public string ImagePath {
-			get { return _imagePath; }
-			set { _imagePath = value; }
-		}
-
-
-		public string SelectedImagePath {
-			get { return _selectedImagePath; }
-			set { _selectedImagePath = value; }
-		}
+		public string ImagePath { get; set; }
 
 		/// <summary>
 		/// Determines how the application chooses a wallpaper
 		/// </summary>
-		public WallpaperSelectionStyle SelectionStyle {
-			get { return _wpSelectionStyle; }
-			set { _wpSelectionStyle = value; }
-		}
+		public WallpaperSelectionStyle SelectionStyle { get; set; }
 
 		/// <summary>
 		/// Determines whether or not an image is stretched/rotated/centered
 		/// </summary>
-		public WallpaperStretchStyle StretchStyle {
-			get { return _wpStretchStyle; }
-			set { _wpStretchStyle = value; }
-		}
+		public WallpaperStretchStyle StretchStyle { get; set; }
 
 		public bool IsRandom {
-			get { return _wpSelectionStyle == WallpaperSelectionStyle.Random; }
+			get { return SelectionStyle == WallpaperSelectionStyle.Random; }
 		}
 
 		public bool IsFile {
-			get { return _wpSelectionStyle == WallpaperSelectionStyle.File; }
+			get { return SelectionStyle == WallpaperSelectionStyle.File; }
 		}
 
 		public bool IsNone {
-			get { return _wpSelectionStyle == WallpaperSelectionStyle.None; }
+			get { return SelectionStyle == WallpaperSelectionStyle.None; }
 		}
 
-		public bool IncludeSubDirs {
-			get { return _includeSubDirs; }
-			set { _includeSubDirs = value; }
-		}
+		public bool IncludeSubDirs { get; set; }
 
 		#endregion
 
@@ -161,26 +126,14 @@ namespace WallpaperUtils {
 			return Name;
 		}
 
-
-
-
-
 		/// <summary>
 		/// Attempts to load the current image from file
 		/// </summary>
-		/// <remarks>
-		/// If the current style is set to 
-		///		Random:  loads from the _selectedImagePath
-		///		File:  Loads from _imagePath
-		///		None:  Returns null
-		/// </remarks>
-		/// <returns></returns>
 		internal Image GetImage() {
-			switch (_wpSelectionStyle) {
+			switch (SelectionStyle) {
 				case WallpaperSelectionStyle.File:
-					return getImage(_imagePath);
 				case WallpaperSelectionStyle.Random:
-					return getImage(_selectedImagePath);
+					return getImage(ImagePath);
 				case WallpaperSelectionStyle.None:
 				default:
 					return null;
@@ -199,10 +152,10 @@ namespace WallpaperUtils {
 		public void ChangeRandomImage() {
 			if (IsRandom) {
 				try {
-					RandomFileFinder _randFile = new RandomFileFinder(DirectoryPath, FILE_FILTERS, _includeSubDirs);
-					SelectedImagePath = _randFile.Current;
+					RandomFileFinder _randFile = new RandomFileFinder(DirectoryPath, FILE_FILTERS, IncludeSubDirs);
+					ImagePath = _randFile.Current;
 				} catch {
-					SelectedImagePath = null;
+					ImagePath = null;
 					throw;
 				}
 			}
@@ -212,8 +165,8 @@ namespace WallpaperUtils {
 			WallpaperConfig config = new WallpaperConfig();
 			config.BackgroundColor = Color.Black;
 			config.SelectionStyle = WallpaperSelectionStyle.None;
-			config.StretchStyle = WallpaperStretchStyle.Magic;
-			config.Name = string.Format("Screen {0}", + screenNumber + 1);
+			config.StretchStyle = WallpaperStretchStyle.Fill;
+			config.Name = string.Format("Screen {0}", +screenNumber + 1);
 
 			return config;
 		}

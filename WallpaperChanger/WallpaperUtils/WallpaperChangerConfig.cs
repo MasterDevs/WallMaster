@@ -7,6 +7,11 @@ namespace WallpaperUtils {
 	/// </summary>
 	public class WallpaperChangerConfig {
 
+		public WallpaperChangerConfig() { }
+		public WallpaperChangerConfig(WallpaperConfigCollection screens) {
+			_screens = screens;
+		}
+
 		#region Private Fields
 
 		private WallpaperConfigCollection _screens;

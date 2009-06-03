@@ -66,7 +66,6 @@ namespace WallpaperUtils {
 
 			WallpaperConfig c2 = new WallpaperConfig();
 			c2.SelectionStyle = WallpaperSelectionStyle.Random;
-			c2.SelectedImagePath = @"c:\img2.jpg";
 			c2.DirectoryPath = @"c:\";
 			c2.BackgroundColor = Color.RoyalBlue;
 

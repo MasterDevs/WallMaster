@@ -49,6 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterSplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DesktopPreview.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PictureBoxExtended.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SimpleTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleTestForm.Designer.cs">
+      <DependentUpon>SimpleTestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TimeSpanPicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -69,6 +84,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="SimpleTestForm.resx">
+      <DependentUpon>SimpleTestForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TimeSpanPicker.resx">
       <DependentUpon>TimeSpanPicker.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -102,6 +121,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Resolution\Resolution.csproj">
+      <Project>{02D91A05-FFBA-466F-A0C6-D32F51406EE3}</Project>
+      <Name>Resolution</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScreenMonitor\ScreenMonitor.csproj">
       <Project>{4E8988BC-555A-4987-98CA-E3E6C88F2BAB}</Project>
       <Name>ScreenMonitor</Name>

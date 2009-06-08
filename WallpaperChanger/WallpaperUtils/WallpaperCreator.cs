@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 
 namespace WallpaperUtils {
-	public class WallpaperCreator {
+	public class WallpaperCreator : IDisposable {
 
 		private Bitmap previewBitmap = null, desktopBitmap = null;
 		public Rectangle overallBounds;
@@ -49,8 +49,8 @@ namespace WallpaperUtils {
 
 		public Screen SelectedScreen {
 			get {
-				if (SelectedIndex != -1 && SelectedIndex < Screen.AllScreens.Length)
-					return Screen.AllScreens[SelectedIndex];
+				if (SelectedIndex != -1 && SelectedIndex < Screens.Length)
+					return Screens[SelectedIndex];
 				else
 					return null;
 			}
@@ -462,5 +462,23 @@ namespace WallpaperUtils {
 
 		#endregion
 
+
+		#region IDisposable Members
+
+		public void Dispose() {
+			foreach (WeakReference wr in wallpaperBitmapCache.Values) {
+				if (wr.Target != null) {
+					Bitmap bm = (Bitmap)wr.Target;
+					bm.Dispose();
+				}
+			}
+
+			foreach (Bitmap bm in wallpaperBitmaps) {
+				if (bm != null)
+					bm.Dispose();
+			}
+		}
+
+		#endregion
 	}
 }

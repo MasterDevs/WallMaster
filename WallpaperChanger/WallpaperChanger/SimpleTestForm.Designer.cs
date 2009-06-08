@@ -23,6 +23,7 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this._OKButton = new System.Windows.Forms.Button();
@@ -30,10 +31,19 @@
 			this._StretchWallpaperAllScreensCB = new System.Windows.Forms.CheckBox();
 			this._CancelButton = new System.Windows.Forms.Button();
 			this._ApplyButton = new System.Windows.Forms.Button();
+			this._NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+			this._NI_ContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this._CMI_ShowWallMaster = new System.Windows.Forms.ToolStripMenuItem();
+			this._CMI_OpenDisplaySettings = new System.Windows.Forms.ToolStripMenuItem();
+			this._CMI_ChangeWallpaper = new System.Windows.Forms.ToolStripMenuItem();
+			this._CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this._CMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
 			this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
 			this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
 			this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
 			this._WallpaperPicker = new WallpaperUtils.WallpaperPicker();
+			this._NI_ContextMenu.SuspendLayout();
 			this._MainSplitContainer.Panel1.SuspendLayout();
 			this._MainSplitContainer.Panel2.SuspendLayout();
 			this._MainSplitContainer.SuspendLayout();
@@ -55,6 +65,7 @@
 			this._OKButton.TabIndex = 3;
 			this._OKButton.Text = "&OK";
 			this._OKButton.UseVisualStyleBackColor = true;
+			this._OKButton.Click += new System.EventHandler(this.OKButton_Click);
 			// 
 			// _OpenDisplaySettingsButton
 			// 
@@ -88,6 +99,7 @@
 			this._CancelButton.TabIndex = 4;
 			this._CancelButton.Text = "&Cancel";
 			this._CancelButton.UseVisualStyleBackColor = true;
+			this._CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// _ApplyButton
 			// 
@@ -99,6 +111,67 @@
 			this._ApplyButton.Text = "&Apply";
 			this._ApplyButton.UseVisualStyleBackColor = true;
 			this._ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
+			// 
+			// _NotifyIcon
+			// 
+			this._NotifyIcon.ContextMenuStrip = this._NI_ContextMenu;
+			this._NotifyIcon.Text = "WallMaster";
+			this._NotifyIcon.Visible = true;
+			this._NotifyIcon.DoubleClick += new System.EventHandler(this.ShowWallMaster);
+			// 
+			// _NI_ContextMenu
+			// 
+			this._NI_ContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._CMI_ShowWallMaster,
+            this._CMI_OpenDisplaySettings,
+            this._CMI_ChangeWallpaper,
+            this.toolStripSeparator1,
+            this._CMI_Exit});
+			this._NI_ContextMenu.Name = "contextMenuStrip1";
+			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 120);
+			this._NI_ContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opened);
+			// 
+			// _CMI_ShowWallMaster
+			// 
+			this._CMI_ShowWallMaster.Name = "_CMI_ShowWallMaster";
+			this._CMI_ShowWallMaster.Size = new System.Drawing.Size(190, 22);
+			this._CMI_ShowWallMaster.Text = "Show WallMaster";
+			this._CMI_ShowWallMaster.Click += new System.EventHandler(this.ShowWallMaster);
+			// 
+			// _CMI_OpenDisplaySettings
+			// 
+			this._CMI_OpenDisplaySettings.Name = "_CMI_OpenDisplaySettings";
+			this._CMI_OpenDisplaySettings.Size = new System.Drawing.Size(190, 22);
+			this._CMI_OpenDisplaySettings.Text = "Open Display Settings";
+			this._CMI_OpenDisplaySettings.Click += new System.EventHandler(this.OpenDisplayPropertiesButton_Click);
+			// 
+			// _CMI_ChangeWallpaper
+			// 
+			this._CMI_ChangeWallpaper.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._CW_ChangeAllWallpapers});
+			this._CMI_ChangeWallpaper.Name = "_CMI_ChangeWallpaper";
+			this._CMI_ChangeWallpaper.Size = new System.Drawing.Size(190, 22);
+			this._CMI_ChangeWallpaper.Text = "Change Wallpaper";
+			// 
+			// _CW_ChangeAllWallpapers
+			// 
+			this._CW_ChangeAllWallpapers.Name = "_CW_ChangeAllWallpapers";
+			this._CW_ChangeAllWallpapers.Size = new System.Drawing.Size(192, 22);
+			this._CW_ChangeAllWallpapers.Tag = "";
+			this._CW_ChangeAllWallpapers.Text = "Change All Wallpapers";
+			this._CW_ChangeAllWallpapers.Click += new System.EventHandler(this.ChangeWallpaper);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
+			// 
+			// _CMI_Exit
+			// 
+			this._CMI_Exit.Name = "_CMI_Exit";
+			this._CMI_Exit.Size = new System.Drawing.Size(190, 22);
+			this._CMI_Exit.Text = "Exit";
+			this._CMI_Exit.Click += new System.EventHandler(this.Exit_Click);
 			// 
 			// _MainSplitContainer
 			// 
@@ -178,11 +251,14 @@
 			this.Controls.Add(this._OKButton);
 			this.Controls.Add(this._MainSplitContainer);
 			this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(815, 483);
 			this.Name = "SimpleTestForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "SimpleTestForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimpleTestForm_FormClosing);
 			this.Resize += new System.EventHandler(this.SimpleTestForm_Resize);
+			this._NI_ContextMenu.ResumeLayout(false);
 			this._MainSplitContainer.Panel1.ResumeLayout(false);
 			this._MainSplitContainer.Panel2.ResumeLayout(false);
 			this._MainSplitContainer.ResumeLayout(false);
@@ -205,5 +281,13 @@
 		private System.Windows.Forms.CheckBox _StretchWallpaperAllScreensCB;
 		private System.Windows.Forms.Button _CancelButton;
 		private System.Windows.Forms.Button _ApplyButton;
+		private System.Windows.Forms.NotifyIcon _NotifyIcon;
+		private System.Windows.Forms.ContextMenuStrip _NI_ContextMenu;
+		private System.Windows.Forms.ToolStripMenuItem _CMI_OpenDisplaySettings;
+		private System.Windows.Forms.ToolStripMenuItem _CMI_ShowWallMaster;
+		private System.Windows.Forms.ToolStripMenuItem _CMI_ChangeWallpaper;
+		private System.Windows.Forms.ToolStripMenuItem _CW_ChangeAllWallpapers;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem _CMI_Exit;
 	}
 }

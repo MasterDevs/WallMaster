@@ -92,7 +92,8 @@ namespace WallpaperUtils {
 		private void _randomImageRB_CheckedChanged(object sender, EventArgs e) {
 			setImageSelectionMethod(WallpaperSelectionStyle.Random);
 			Config.DirectoryPath = _randomDirTB.Text;
-			Config.ChangeRandomImage();
+			Config.ImagePath = _imagePathTB.Text;
+			//Config.ChangeRandomImage();
 			raiseConfigChanged();
 		}
 
@@ -255,6 +256,7 @@ namespace WallpaperUtils {
 		private void changeRandomImage(bool shouldRaiseChangeEvent) {
 			try {
 				_cfg.ChangeRandomImage();
+				_imagePathTB.Text = _cfg.ImagePath;
 			} catch (Exception e){
 				displayError(e);
 			}

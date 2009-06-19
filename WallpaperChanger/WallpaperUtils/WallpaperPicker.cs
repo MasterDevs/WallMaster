@@ -13,7 +13,9 @@ namespace WallpaperUtils {
 		#endregion
 
 
-		#region Helper Struct
+		#region Helper Structs
+
+		#region TimeSpanWrapper
 		public struct TimeSpanWrapper {
 			public TimeSpan Value;
 			public string Name;
@@ -40,7 +42,30 @@ namespace WallpaperUtils {
 			new TimeSpanWrapper("6 hours", new TimeSpan(6, 0, 0)),
 			new TimeSpanWrapper("12 hours", new TimeSpan(12, 0, 0)),
 			new TimeSpanWrapper("1 day", new TimeSpan(1, 0, 0, 0)),
-			new TimeSpanWrapper("1 week", new TimeSpan(7, 0, 0, 0)) };
+			new TimeSpanWrapper("1 week", new TimeSpan(7, 0, 0, 0)) }; 
+		#endregion
+
+		#region WallpaperStretchStyleWrapper
+		public struct WallpaperStretchStyleWrapper {
+			public WallpaperStretchStyle Style;
+			public string Name;
+			public WallpaperStretchStyleWrapper(string name, WallpaperStretchStyle style) {
+				Name = name;
+				Style = style;
+			}
+			public override string ToString() {
+				return Name;
+			}
+		}
+		private WallpaperStretchStyleWrapper[] WallpaperStretchStyles =
+			new WallpaperStretchStyleWrapper[] {
+				new WallpaperStretchStyleWrapper("Center", WallpaperStretchStyle.Center),
+				new WallpaperStretchStyleWrapper("Center Fit", WallpaperStretchStyle.CenterFit),
+				new WallpaperStretchStyleWrapper("Fit", WallpaperStretchStyle.Fit),
+				new WallpaperStretchStyleWrapper("Fill", WallpaperStretchStyle.Fill),
+				new WallpaperStretchStyleWrapper("Stretch", WallpaperStretchStyle.Stretch) };
+		#endregion
+
 		#endregion
 
 		private WallpaperConfig _cfg;
@@ -84,10 +109,8 @@ namespace WallpaperUtils {
 		private void InitStretchStyle() {
 			_stretchStyleCB.Items.Clear();
 
-			Array styles = Enum.GetValues(typeof(WallpaperStretchStyle));
-
-			foreach (WallpaperStretchStyle s in styles) {
-				_stretchStyleCB.Items.Add(s);
+			foreach (WallpaperStretchStyleWrapper wr in WallpaperStretchStyles) {
+				_stretchStyleCB.Items.Add(wr);
 			}
 
 			_stretchStyleCB.SelectedIndex = 0;
@@ -210,7 +233,14 @@ namespace WallpaperUtils {
 			_colorButton.BackColor = _cfg.BackgroundColor;
 			_includeSubdirsCB.Checked = _cfg.IncludeSubDirs;
 			_intervalComboBox.SelectedItem = GetPossibleTimeSpan(_cfg.ChangeWallpaperInterval);
-			_stretchStyleCB.SelectedItem = _cfg.StretchStyle;
+			setStretchStyle();
+		}
+
+		private void setStretchStyle() {
+			foreach (WallpaperStretchStyleWrapper wr in WallpaperStretchStyles) {
+				if (wr.Style == _cfg.StretchStyle)
+					_stretchStyleCB.SelectedItem = wr;
+			}
 		}
 
 		private object GetPossibleTimeSpan(TimeSpan timeSpan) {
@@ -325,7 +355,7 @@ namespace WallpaperUtils {
 		}
 
 		private void _stretchStyleCB_SelectedIndexChanged(object sender, EventArgs e) {
-			_cfg.StretchStyle = (WallpaperStretchStyle)_stretchStyleCB.SelectedItem;
+			_cfg.StretchStyle = ((WallpaperStretchStyleWrapper)_stretchStyleCB.SelectedItem).Style;
 			raiseConfigChanged();
 		}
 

@@ -40,23 +40,30 @@ namespace WallpaperUtils {
 		Center = 0,
 
 		/// <summary>
+		/// Image is centered unless it is larger then the desktop.
+		/// If it's larger then the desktop, it will be fit,
+		/// perserving it's aspect ratio.
+		/// </summary>
+		CenterFit = 1,
+
+		/// <summary>
 		/// Stretch the image to fit the destination screen.
 		/// <para>If the image is larger or smaller then the destination, it will 
 		/// be resized so the entire image appears on the destination screen</para>
 		/// </summary>
-		Stretch = 1,
+		Stretch = 2,
 
 		/// <summary>
 		/// If the image is larger than the size of the screen
 		/// then resize it to fit; aspect ratio is maintaned, 
 		/// </summary>
-		Fit = 2,
+		Fit = 3,
 
 		/// <summary>
 		/// If an image is smaller than the screen, then center it, 
 		/// otherwise, StretchRatio it.
 		/// </summary>
-		Fill = 3,
+		Fill = 4,
 	}
 
 	/// <summary>

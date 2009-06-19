@@ -8,6 +8,8 @@ namespace WallpaperUtils {
 			switch (style) {
 				case WallpaperStretchStyle.Center:
 					return Center(image, bounds);
+				case WallpaperStretchStyle.CenterFit:
+					return CenterFit(image, bounds);
 				case WallpaperStretchStyle.Stretch:
 					return Stretch(image, bounds);
 				case WallpaperStretchStyle.Fit:
@@ -18,7 +20,19 @@ namespace WallpaperUtils {
 			}
 		}
 
-
+		/// <summary>
+		/// Image is centered unless it is larger then the desktop.
+		/// If it's larger then the desktop, it will be fit,
+		/// perserving it's aspect ratio.
+		/// </summary>
+		/// <param name="image">Size of the image</param>
+		/// <param name="bounds">Destination Location and Size</param>
+		private static Rectangle CenterFit(Size image, Rectangle bounds) {
+			if (image.Height <= bounds.Height && image.Width <= bounds.Width)
+				return Center(image, bounds);
+			else
+				return Fit(image, bounds);
+		}
 
 		/// <summary>
 		/// If the image is smaller than the bounds, it will be stretched

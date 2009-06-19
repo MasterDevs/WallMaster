@@ -51,8 +51,6 @@ namespace WallpaperUtils {
 		private static WallpaperChangerConfig Configuration;
 		#endregion
 
-		#region Public Methods
-
 		#region Private Properties
 		private static bool CouldNotLoadConfiguration {
 			get {
@@ -64,6 +62,8 @@ namespace WallpaperUtils {
 		}
 
 		#endregion
+
+		#region Public Methods
 
 		/// <summary>
 		/// Changes the background image for a particular screen.
@@ -132,6 +132,8 @@ namespace WallpaperUtils {
 			}
 
 			InitScreens(0, Screen.AllScreens.Length, false);
+
+			SetWallpaperAndSave();
 		}
 
 		#endregion

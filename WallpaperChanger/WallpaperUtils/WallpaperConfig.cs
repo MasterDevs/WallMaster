@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Xml.Serialization;
+using System;
 
 
 namespace WallpaperUtils {
@@ -64,13 +65,24 @@ namespace WallpaperUtils {
 	public class WallpaperConfig {
 
 		private readonly string[] FILE_FILTERS = { ".bmp", ".jpg", "jpeg", ".gif", ".png" };
-
+		private TimeSpan _ChangeWallpaperInterval;
 
 		#region Public Properties
 
 		public string Name { get; set; }
 
 		public string DeviceName { get; set; }
+
+		[XmlIgnore]
+		public TimeSpan ChangeWallpaperInterval {
+			get { return _ChangeWallpaperInterval; }
+			set { _ChangeWallpaperInterval = value; }
+		}
+
+		public long ChangeWallpaperIntervalTicks {
+			get { return _ChangeWallpaperInterval.Ticks; }
+			set { _ChangeWallpaperInterval = new TimeSpan(value); }
+		}
 
 		[XmlIgnore]
 		public Color BackgroundColor { get; set; }

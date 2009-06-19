@@ -38,13 +38,22 @@ namespace WallpaperChanger {
 
 		private void LoadConfiguration() {
 			WallpaperChangerConfig config = Loader_Saver.Load();
+			if (config == null) {
+				config = WallpaperChangerConfig.GetDefault(Screen.AllScreens.Length);
+			}
 			Configurations = config.Screens;
+			InitScreens();
+			//-- Load Configuration for the Primary Monitor
+			_WallpaperPicker.Config = Configurations[0];
+		}
+
+		private void InitScreens() {
+			Creator.Dispose();
+			Creator = new WallpaperCreator();
 			for (int i = 1; i < Configurations.Count; i++) {
 				if (Screen.AllScreens.Length > i)
 					Creator.InitScreen(i, Configurations[i]);
 			}
-			//-- Load Configuration for the Primary Monitor
-			_WallpaperPicker.Config = Configurations[0];
 		}
 
 		private void IntializeEventHandlers() {
@@ -56,6 +65,10 @@ namespace WallpaperChanger {
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 		}
 
+		/// <summary>
+		/// Changes one or all wallpapers, depending on
+		/// the tag of the ToolStripMenu item sender
+		/// </summary>
 		void ChangeWallpaper(object sender, EventArgs e) {
 			ToolStripMenuItem tsmi = (ToolStripMenuItem)sender;
 			int index = (int)tsmi.Tag;
@@ -75,6 +88,7 @@ namespace WallpaperChanger {
 		}
 
 		void DisplaySettingsChanged(object sender, EventArgs e) {
+			InitScreens();
 			_PreviewImageBox.Image = Creator.PreviewBitmap;
 			SaveAndSetWallpaper();
 		}
@@ -91,9 +105,14 @@ namespace WallpaperChanger {
 		private void PreviewBox_MouseClick(object sender, MouseEventArgs e) {
 			int index = Creator.GetIndexFromPointOnPreviewImage(_PreviewImageBox.MousePositionOnImage);
 			if (index != -1) {
+				//-- Save Current config to Configurations
 				Configurations[Creator.SelectedIndex] = _WallpaperPicker.Config;
+				//-- Set New Selected Index for Creator
 				Creator.SelectedIndex = index;
+				//-- Initialize WallpaperConfig to be the new configuration
 				_WallpaperPicker.Config = Configurations[index];
+				//-- Get the preview image to display the border around the newly selected image
+				_PreviewImageBox.Image = Creator.PreviewBitmap;
 			}
 		}
 
@@ -161,6 +180,12 @@ namespace WallpaperChanger {
 			Application.Exit();
 		}
 
+		/// <summary>
+		/// This method is necessary to dynamically populate
+		/// the change screen menu items. It'll allow the use to change
+		/// 1 or all of the screens if their are multiple screens, or just
+		/// one screen if there is just one.
+		/// </summary>
 		private void contextMenuStrip1_Opened(object sender, CancelEventArgs e) {
 			_CMI_ChangeWallpaper.DropDownItems.Clear();
 

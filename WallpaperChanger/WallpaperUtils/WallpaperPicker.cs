@@ -11,7 +11,37 @@ namespace WallpaperUtils {
 		private const string FILE_SEARCH_PATTERN_STRING = @"All Images|*.bmp;*.jpg;*.jpeg;*.gif;*.png|Bitmap (*.bmp)|*.bmp |JPEG (*.jpg)|*.jpg;*.jpeg |GIF (*.gif)|*.gif |PNG (*.png)|*.png";
 
 		#endregion
-		
+
+
+		#region Helper Struct
+		public struct TimeSpanWrapper {
+			public TimeSpan Value;
+			public string Name;
+			public TimeSpanWrapper(string name, TimeSpan ts) {
+				Value = ts;
+				Name = name;
+			}
+			public override string ToString() {
+				return Name;
+			}
+		}
+		private TimeSpanWrapper[] TimeSpans = new TimeSpanWrapper[] {
+			new TimeSpanWrapper("10 seconds", new TimeSpan(0, 0, 10)),
+			new TimeSpanWrapper("30 seconds", new TimeSpan(0, 0, 30)),
+			new TimeSpanWrapper("1 minute", new TimeSpan(0, 1, 0)),
+			new TimeSpanWrapper("5 minutes", new TimeSpan(0, 5, 0)),
+			new TimeSpanWrapper("10 minutes", new TimeSpan(0, 10, 0)),
+			new TimeSpanWrapper("20 minutes", new TimeSpan(0, 20, 0)),
+			new TimeSpanWrapper("30 minutes", new TimeSpan(0, 30, 0)),
+			new TimeSpanWrapper("1 hour", new TimeSpan(1, 0, 0)),
+			new TimeSpanWrapper("2 hours", new TimeSpan(2, 0, 0)),
+			new TimeSpanWrapper("3 hours", new TimeSpan(3, 0, 0)),
+			new TimeSpanWrapper("4 hours", new TimeSpan(4, 0, 0)),
+			new TimeSpanWrapper("6 hours", new TimeSpan(6, 0, 0)),
+			new TimeSpanWrapper("12 hours", new TimeSpan(12, 0, 0)),
+			new TimeSpanWrapper("1 day", new TimeSpan(1, 0, 0, 0)),
+			new TimeSpanWrapper("1 week", new TimeSpan(7, 0, 0, 0)) };
+		#endregion
 
 		private WallpaperConfig _cfg;
 		private bool _raiseEvents;
@@ -37,6 +67,16 @@ namespace WallpaperUtils {
 			openFileDialog1.Filter = FILE_SEARCH_PATTERN_STRING;
 			InitStretchStyle();
 			_raiseEvents = true;
+
+			InitComboBox();
+		}
+
+		private void InitComboBox() {
+			_intervalComboBox.Items.Clear();
+			foreach (TimeSpanWrapper pts in TimeSpans) {
+				_intervalComboBox.Items.Add(pts);
+			}
+			_intervalComboBox.SelectedIndex = 0;
 		}
 
 		#endregion
@@ -93,7 +133,6 @@ namespace WallpaperUtils {
 			setImageSelectionMethod(WallpaperSelectionStyle.Random);
 			Config.DirectoryPath = _randomDirTB.Text;
 			Config.ImagePath = _imagePathTB.Text;
-			//Config.ChangeRandomImage();
 			raiseConfigChanged();
 		}
 
@@ -108,14 +147,6 @@ namespace WallpaperUtils {
 
 		private void _randomDirTB_TextChanged(object sender, EventArgs e) {
 			_cfg.DirectoryPath = _randomDirTB.Text;
-
-			// We only need tot ge a random file if we are set to random and the directory exists
-			// The user could just be typing in a directory
-			if (_cfg.IsRandom && Directory.Exists(_cfg.DirectoryPath)) {
-				changeRandomImage(false);
-				raiseConfigChanged();
-			}
-
 		}
 
 	
@@ -155,6 +186,7 @@ namespace WallpaperUtils {
 			DialogResult dr = folderBrowserDialog1.ShowDialog();
 			if (dr == DialogResult.OK) {
 				_randomDirTB.Text = folderBrowserDialog1.SelectedPath;
+				changeRandomImage(false);
 				raiseConfigChanged();
 			}
 		}
@@ -177,8 +209,18 @@ namespace WallpaperUtils {
 			setRadioButtons(_cfg.SelectionStyle);
 			_colorButton.BackColor = _cfg.BackgroundColor;
 			_includeSubdirsCB.Checked = _cfg.IncludeSubDirs;
-
+			_intervalComboBox.SelectedItem = GetPossibleTimeSpan(_cfg.ChangeWallpaperInterval);
 			_stretchStyleCB.SelectedItem = _cfg.StretchStyle;
+		}
+
+		private object GetPossibleTimeSpan(TimeSpan timeSpan) {
+			foreach (TimeSpanWrapper pts in TimeSpans) {
+				if (pts.Value.Ticks == timeSpan.Ticks)
+					return pts;
+			}
+
+			//-- Default 
+			return TimeSpans[0];
 		}
 
 		private void setRadioButtons(WallpaperSelectionStyle style) {
@@ -226,6 +268,7 @@ namespace WallpaperUtils {
 			_randomDirTB.Enabled = enabled;
 			_browseDirButton.Enabled = enabled;
 			_changeImageButton.Enabled = enabled;
+			_intervalComboBox.Enabled = enabled;
 			_includeSubdirsCB.Enabled = enabled;
 		}
 
@@ -285,6 +328,11 @@ namespace WallpaperUtils {
 			_cfg.StretchStyle = (WallpaperStretchStyle)_stretchStyleCB.SelectedItem;
 			raiseConfigChanged();
 		}
+
+		private void _intervalComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+			_cfg.ChangeWallpaperInterval = ((TimeSpanWrapper)_intervalComboBox.SelectedItem).Value;
+		}
+
 	}
 
 	public class ConfigChangedEventArgs : EventArgs {

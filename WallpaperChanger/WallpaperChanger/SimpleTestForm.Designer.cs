@@ -24,7 +24,8 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleTestForm));
+			WallpaperUtils.WallpaperConfig wallpaperConfig2 = new WallpaperUtils.WallpaperConfig();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this._OKButton = new System.Windows.Forms.Button();
 			this._OpenDisplaySettingsButton = new System.Windows.Forms.Button();
@@ -115,6 +116,7 @@
 			// _NotifyIcon
 			// 
 			this._NotifyIcon.ContextMenuStrip = this._NI_ContextMenu;
+			this._NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("_NotifyIcon.Icon")));
 			this._NotifyIcon.Text = "WallMaster";
 			this._NotifyIcon.Visible = true;
 			this._NotifyIcon.DoubleClick += new System.EventHandler(this.ShowWallMaster);
@@ -128,7 +130,7 @@
             this.toolStripSeparator1,
             this._CMI_Exit});
 			this._NI_ContextMenu.Name = "contextMenuStrip1";
-			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 120);
+			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 98);
 			this._NI_ContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opened);
 			// 
 			// _CMI_ShowWallMaster
@@ -222,16 +224,16 @@
 			// 
 			// _WallpaperPicker
 			// 
-			wallpaperConfig1.Argb = -16777216;
-			wallpaperConfig1.BackgroundColor = System.Drawing.Color.Black;
-			wallpaperConfig1.DeviceName = null;
-			wallpaperConfig1.DirectoryPath = null;
-			wallpaperConfig1.ImagePath = null;
-			wallpaperConfig1.IncludeSubDirs = false;
-			wallpaperConfig1.Name = null;
-			wallpaperConfig1.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
-			wallpaperConfig1.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
-			this._WallpaperPicker.Config = wallpaperConfig1;
+			wallpaperConfig2.Argb = -16777216;
+			wallpaperConfig2.BackgroundColor = System.Drawing.Color.Black;
+			wallpaperConfig2.DeviceName = null;
+			wallpaperConfig2.DirectoryPath = null;
+			wallpaperConfig2.ImagePath = null;
+			wallpaperConfig2.IncludeSubDirs = false;
+			wallpaperConfig2.Name = null;
+			wallpaperConfig2.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
+			wallpaperConfig2.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
+			this._WallpaperPicker.Config = wallpaperConfig2;
 			this._WallpaperPicker.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._WallpaperPicker.Location = new System.Drawing.Point(3, 19);
 			this._WallpaperPicker.Name = "_WallpaperPicker";
@@ -251,6 +253,7 @@
 			this.Controls.Add(this._OKButton);
 			this.Controls.Add(this._MainSplitContainer);
 			this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(815, 483);
 			this.Name = "SimpleTestForm";

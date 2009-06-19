@@ -39,6 +39,8 @@
 			this._includeSubdirsCB = new System.Windows.Forms.CheckBox();
 			this._stretchStyleCB = new System.Windows.Forms.ComboBox();
 			this._styleLabel = new System.Windows.Forms.Label();
+			this._intervalComboBox = new System.Windows.Forms.ComboBox();
+			this._ChangePictureEveryLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// _randomDirTB
@@ -50,7 +52,7 @@
 			this._randomDirTB.Enabled = false;
 			this._randomDirTB.Location = new System.Drawing.Point(13, 108);
 			this._randomDirTB.Name = "_randomDirTB";
-			this._randomDirTB.Size = new System.Drawing.Size(368, 20);
+			this._randomDirTB.Size = new System.Drawing.Size(368, 23);
 			this._randomDirTB.TabIndex = 5;
 			this._randomDirTB.TextChanged += new System.EventHandler(this._randomDirTB_TextChanged);
 			// 
@@ -87,7 +89,7 @@
 			this._imagePathTB.Enabled = false;
 			this._imagePathTB.Location = new System.Drawing.Point(13, 59);
 			this._imagePathTB.Name = "_imagePathTB";
-			this._imagePathTB.Size = new System.Drawing.Size(368, 20);
+			this._imagePathTB.Size = new System.Drawing.Size(368, 23);
 			this._imagePathTB.TabIndex = 2;
 			this._imagePathTB.TextChanged += new System.EventHandler(this._imagePathTB_TextChanged);
 			// 
@@ -120,9 +122,9 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(10, 168);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(92, 13);
+			this.label1.Size = new System.Drawing.Size(108, 15);
 			this.label1.TabIndex = 8;
-			this.label1.Text = "Background Color";
+			this.label1.Text = "Background Color:";
 			// 
 			// openFileDialog1
 			// 
@@ -134,7 +136,7 @@
 			this._noImageRB.Checked = true;
 			this._noImageRB.Location = new System.Drawing.Point(13, 13);
 			this._noImageRB.Name = "_noImageRB";
-			this._noImageRB.Size = new System.Drawing.Size(71, 17);
+			this._noImageRB.Size = new System.Drawing.Size(76, 19);
 			this._noImageRB.TabIndex = 0;
 			this._noImageRB.TabStop = true;
 			this._noImageRB.Text = "No Image";
@@ -146,7 +148,7 @@
 			this._imageRB.AutoSize = true;
 			this._imageRB.Location = new System.Drawing.Point(13, 36);
 			this._imageRB.Name = "_imageRB";
-			this._imageRB.Size = new System.Drawing.Size(54, 17);
+			this._imageRB.Size = new System.Drawing.Size(58, 19);
 			this._imageRB.TabIndex = 1;
 			this._imageRB.Text = "Image";
 			this._imageRB.UseVisualStyleBackColor = true;
@@ -157,7 +159,7 @@
 			this._randomImageRB.AutoSize = true;
 			this._randomImageRB.Location = new System.Drawing.Point(13, 85);
 			this._randomImageRB.Name = "_randomImageRB";
-			this._randomImageRB.Size = new System.Drawing.Size(97, 17);
+			this._randomImageRB.Size = new System.Drawing.Size(106, 19);
 			this._randomImageRB.TabIndex = 4;
 			this._randomImageRB.Text = "Random Image";
 			this._randomImageRB.UseVisualStyleBackColor = true;
@@ -168,7 +170,7 @@
 			this._includeSubdirsCB.AutoSize = true;
 			this._includeSubdirsCB.Location = new System.Drawing.Point(13, 138);
 			this._includeSubdirsCB.Name = "_includeSubdirsCB";
-			this._includeSubdirsCB.Size = new System.Drawing.Size(131, 17);
+			this._includeSubdirsCB.Size = new System.Drawing.Size(150, 19);
 			this._includeSubdirsCB.TabIndex = 10;
 			this._includeSubdirsCB.Text = "Include Subdirectories";
 			this._includeSubdirsCB.UseVisualStyleBackColor = true;
@@ -186,7 +188,7 @@
             "This shouldn\'t be here"});
 			this._stretchStyleCB.Location = new System.Drawing.Point(341, 165);
 			this._stretchStyleCB.Name = "_stretchStyleCB";
-			this._stretchStyleCB.Size = new System.Drawing.Size(121, 21);
+			this._stretchStyleCB.Size = new System.Drawing.Size(121, 23);
 			this._stretchStyleCB.TabIndex = 11;
 			this._stretchStyleCB.SelectedIndexChanged += new System.EventHandler(this._stretchStyleCB_SelectedIndexChanged);
 			// 
@@ -196,13 +198,38 @@
 			this._styleLabel.AutoSize = true;
 			this._styleLabel.Location = new System.Drawing.Point(305, 168);
 			this._styleLabel.Name = "_styleLabel";
-			this._styleLabel.Size = new System.Drawing.Size(30, 13);
+			this._styleLabel.Size = new System.Drawing.Size(36, 15);
 			this._styleLabel.TabIndex = 12;
-			this._styleLabel.Text = "Style";
+			this._styleLabel.Text = "Style:";
+			// 
+			// _intervalComboBox
+			// 
+			this._intervalComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._intervalComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+			this._intervalComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._intervalComboBox.Enabled = false;
+			this._intervalComboBox.FormattingEnabled = true;
+			this._intervalComboBox.Location = new System.Drawing.Point(269, 136);
+			this._intervalComboBox.Name = "_intervalComboBox";
+			this._intervalComboBox.Size = new System.Drawing.Size(112, 23);
+			this._intervalComboBox.TabIndex = 13;
+			this._intervalComboBox.SelectedIndexChanged += new System.EventHandler(this._intervalComboBox_SelectedIndexChanged);
+			// 
+			// _ChangePictureEveryLabel
+			// 
+			this._ChangePictureEveryLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this._ChangePictureEveryLabel.AutoSize = true;
+			this._ChangePictureEveryLabel.Location = new System.Drawing.Point(140, 139);
+			this._ChangePictureEveryLabel.Name = "_ChangePictureEveryLabel";
+			this._ChangePictureEveryLabel.Size = new System.Drawing.Size(124, 15);
+			this._ChangePictureEveryLabel.TabIndex = 14;
+			this._ChangePictureEveryLabel.Text = "Change Picture Every:";
 			// 
 			// WallpaperPicker
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+			this.Controls.Add(this._ChangePictureEveryLabel);
+			this.Controls.Add(this._intervalComboBox);
 			this.Controls.Add(this._styleLabel);
 			this.Controls.Add(this._stretchStyleCB);
 			this.Controls.Add(this._includeSubdirsCB);
@@ -216,6 +243,7 @@
 			this.Controls.Add(this._changeImageButton);
 			this.Controls.Add(this._imagePathTB);
 			this.Controls.Add(this._randomDirTB);
+			this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "WallpaperPicker";
 			this.Padding = new System.Windows.Forms.Padding(10);
 			this.Size = new System.Drawing.Size(475, 202);
@@ -242,5 +270,7 @@
 		private System.Windows.Forms.CheckBox _includeSubdirsCB;
 		private System.Windows.Forms.ComboBox _stretchStyleCB;
 		private System.Windows.Forms.Label _styleLabel;
+		private System.Windows.Forms.ComboBox _intervalComboBox;
+		private System.Windows.Forms.Label _ChangePictureEveryLabel;
 	}
 }

@@ -69,7 +69,7 @@ namespace WallpaperUtils {
 		#endregion
 
 		private WallpaperConfig _cfg;
-		private bool _raiseEvents;
+		public bool RaiseEvents { get; set; }
 
 		public WallpaperConfig Config {
 			get { return _cfg; }
@@ -85,13 +85,13 @@ namespace WallpaperUtils {
 		#region CTOR
 
 		public WallpaperPicker() {
-			_raiseEvents = false;
+			RaiseEvents = false;
 			InitializeComponent();
 			_cfg = new WallpaperConfig();
 			_cfg.BackgroundColor = DEFAULT_COLOR;
 			openFileDialog1.Filter = FILE_SEARCH_PATTERN_STRING;
 			InitStretchStyle();
-			_raiseEvents = true;
+			RaiseEvents = true;
 
 			InitComboBox();
 		}
@@ -118,7 +118,7 @@ namespace WallpaperUtils {
 
 
 		private void raiseConfigChanged() {
-			if (ConfigChanged != null && _raiseEvents) {
+			if (ConfigChanged != null && RaiseEvents) {
 				ConfigChangedEventArgs cce = new ConfigChangedEventArgs(_cfg);
 				ConfigChanged(this, cce);
 			}

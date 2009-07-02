@@ -14,14 +14,18 @@ namespace WallpaperUtils {
 	public class WallpaperCreator : IDisposable {
 
 		private Bitmap previewBitmap = null, desktopBitmap = null;
-		public Rectangle overallBounds;
 		private Color DefaultBackgroundColor = Color.Black;
 		private WallpaperStretchStyle DefaultStyle = WallpaperStretchStyle.Fill;
 		private Pen CaptionOutline = new Pen(Color.Black, 3f);
 		private Brush CaptionFill =  new SolidBrush(Color.White);
+		private Color BorderColorStandard = Color.White;
+		private Color BorderColorSelected = Color.Red;
 		private float BorderSize = 8;
 
-		// Where is 0,0 in the composite Desktop image?
+		/// <summary>
+		/// This is the 0,0 location on the composite desktop image.
+		/// It's used to tra
+		/// </summary>
 		private Point refPoint;
 
 		/// <summary>
@@ -62,7 +66,7 @@ namespace WallpaperUtils {
 		/// </summary>
 		public Bitmap PreviewBitmap {
 			get {
-				Update(false);
+				Update(false); //-- No need to update desktop image
 				return previewBitmap;
 			}
 		}
@@ -203,7 +207,7 @@ namespace WallpaperUtils {
 				if (SelectedIndex != -1) {
 					//-- Adjust Clip to entire image so the border can be highlighted
 					g.Clip = new Region(previewBounds[SelectedIndex]);
-					HighlightPreviewImage(g, SelectedIndex, Brushes.Red, BorderSize);
+					HighlightPreviewImage(g, SelectedIndex, BorderColorSelected, BorderSize);
 				}
 			}
 		}
@@ -254,7 +258,7 @@ namespace WallpaperUtils {
 
 			RenderCaption(g, bounds, idx);
 
-			HighlightPreviewImage(g, idx, Brushes.White, BorderSize);
+			HighlightPreviewImage(g, idx, BorderColorStandard, BorderSize);
 		}
 
 		/// <summary>
@@ -263,8 +267,8 @@ namespace WallpaperUtils {
 		/// <param name="index">Index to PreviewBounds</param>
 		/// <param name="brush">Brush color to be used</param>
 		/// <param name="size">Size of the pen that will be used to draw the border</param>
-		private void HighlightPreviewImage(Graphics g, int index, Brush brush, float size) {
-				g.DrawRectangle(new Pen(brush, size), previewBounds[index]);
+		private void HighlightPreviewImage(Graphics g, int index, Color color, float size) {
+				g.DrawRectangle(new Pen(color, size), previewBounds[index]);
 		}
 		
 		/// <summary>
@@ -355,7 +359,7 @@ namespace WallpaperUtils {
 		/// Determine the overall bounds for all monitors together and create a single Bitmap
 		/// </summary>
 		private void UpdateMonitorBounds() {
-			overallBounds = new Rectangle();
+			Rectangle overallBounds = new Rectangle();
 			refPoint = new Point();
 			previewBounds = new Rectangle[Screens.Length];
 			

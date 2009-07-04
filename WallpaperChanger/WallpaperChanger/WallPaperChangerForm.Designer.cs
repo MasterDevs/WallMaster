@@ -1,5 +1,5 @@
 ﻿namespace WallpaperChanger {
-	partial class SimpleTestForm {
+	partial class WallpaperChangerForm {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -24,7 +24,7 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleTestForm));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WallpaperChangerForm));
 			WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this._OKButton = new System.Windows.Forms.Button();
@@ -41,10 +41,11 @@
 			this._MainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this._MMS_File = new System.Windows.Forms.ToolStripMenuItem();
 			this._FMI_ChangeWallpaper = new System.Windows.Forms.ToolStripMenuItem();
+			this._FMI_CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
 			this._FMI_OpenDisplayProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this._FMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
-			this._FMI_CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
+			this._FMI_ChangePaperWhileDialogOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
 			this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
 			this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
@@ -172,6 +173,7 @@
 			// _MMS_File
 			// 
 			this._MMS_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._FMI_ChangePaperWhileDialogOpen,
             this._FMI_ChangeWallpaper,
             this._FMI_OpenDisplayProperties,
             this.toolStripSeparator2,
@@ -186,27 +188,8 @@
 			this._FMI_ChangeWallpaper.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._FMI_CW_ChangeAllWallpapers});
 			this._FMI_ChangeWallpaper.Name = "_FMI_ChangeWallpaper";
-			this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(173, 22);
+			this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(268, 22);
 			this._FMI_ChangeWallpaper.Text = "Change Wallpaper";
-			// 
-			// _FMI_OpenDisplayProperties
-			// 
-			this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
-			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(173, 22);
-			this._FMI_OpenDisplayProperties.Text = "&Display Properties";
-			this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(170, 6);
-			// 
-			// _FMI_Exit
-			// 
-			this._FMI_Exit.Name = "_FMI_Exit";
-			this._FMI_Exit.Size = new System.Drawing.Size(173, 22);
-			this._FMI_Exit.Text = "E&xit";
-			this._FMI_Exit.Click += new System.EventHandler(this.Exit_Click);
 			// 
 			// _FMI_CW_ChangeAllWallpapers
 			// 
@@ -214,6 +197,35 @@
 			this._FMI_CW_ChangeAllWallpapers.Size = new System.Drawing.Size(192, 22);
 			this._FMI_CW_ChangeAllWallpapers.Text = "Change &All Wallpapers";
 			this._FMI_CW_ChangeAllWallpapers.Click += new System.EventHandler(this.ChangeWallpaper);
+			// 
+			// _FMI_OpenDisplayProperties
+			// 
+			this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
+			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(268, 22);
+			this._FMI_OpenDisplayProperties.Text = "&Display Properties";
+			this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(265, 6);
+			// 
+			// _FMI_Exit
+			// 
+			this._FMI_Exit.Name = "_FMI_Exit";
+			this._FMI_Exit.Size = new System.Drawing.Size(268, 22);
+			this._FMI_Exit.Text = "E&xit";
+			this._FMI_Exit.Click += new System.EventHandler(this.Exit_Click);
+			// 
+			// _FMI_ChangePaperWhileDialogOpen
+			// 
+			this._FMI_ChangePaperWhileDialogOpen.Checked = true;
+			this._FMI_ChangePaperWhileDialogOpen.CheckOnClick = true;
+			this._FMI_ChangePaperWhileDialogOpen.CheckState = System.Windows.Forms.CheckState.Checked;
+			this._FMI_ChangePaperWhileDialogOpen.Name = "_FMI_ChangePaperWhileDialogOpen";
+			this._FMI_ChangePaperWhileDialogOpen.Size = new System.Drawing.Size(268, 22);
+			this._FMI_ChangePaperWhileDialogOpen.Text = "Change Wallpaper while dialog is open";
+			this._FMI_ChangePaperWhileDialogOpen.CheckStateChanged += new System.EventHandler(this._FMI_ChangePaperWhileDialogOpen_CheckStateChanged);
 			// 
 			// _MainSplitContainer
 			// 
@@ -273,6 +285,7 @@
 			wallpaperConfig1.ImagePath = null;
 			wallpaperConfig1.IncludeSubDirs = false;
 			wallpaperConfig1.Name = null;
+			wallpaperConfig1.ScreenIndex = 0;
 			wallpaperConfig1.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
 			wallpaperConfig1.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
 			this._WallpaperPicker.Config = wallpaperConfig1;
@@ -285,7 +298,7 @@
 			this._WallpaperPicker.Size = new System.Drawing.Size(797, 203);
 			this._WallpaperPicker.TabIndex = 0;
 			// 
-			// SimpleTestForm
+			// WallpaperChangerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -300,7 +313,7 @@
 			this.MainMenuStrip = this._MainMenuStrip;
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(815, 483);
-			this.Name = "SimpleTestForm";
+			this.Name = "WallpaperChangerForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "SimpleTestForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimpleTestForm_FormClosing);
@@ -343,5 +356,6 @@
 		private System.Windows.Forms.ToolStripMenuItem _FMI_OpenDisplayProperties;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangeWallpaper;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
+		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangePaperWhileDialogOpen;
 	}
 }

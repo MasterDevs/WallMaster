@@ -7,64 +7,59 @@ namespace WallpaperUtils {
 	/// <summary>
 	/// Class responsible for reading/writing configuration
 	/// </summary>
-	public class WallpaperConfigManager : ConfigManager<WallpaperChangerConfig> {
+	public class WallpaperConfigManager {
+
 		private const string APP_FOLDER = @"Wallmaster";
-		private const string APP_CONFIG = @"WallmasterConfig.xml";
+		private const string CONFIG_FILE = @"WallmasterConfig.xml";
 		private const string WP_FILE = @"wallpaper.bmp";
 		private const string PATH_FRMT = @"{0}\{1}";
 
-		protected override string GetConfigPath() {
-			return getFilePath(APP_CONFIG);
+		private static string GetConfigPath() {
+			return GetFilePath(CONFIG_FILE);
 		}
 
-		private string getFilePath(string fileName) {
-			string dir = GetAppDir();
-			string path = string.Format(PATH_FRMT, dir, fileName);
-
-			return path;
+		private static string GetFilePath(string fileName) {
+			return string.Format(PATH_FRMT, AppDir, fileName);
 		}
 
-		private string GetAppDir() {
-			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		private static string AppDir {
+			get {
+				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-			string path = string.Format(PATH_FRMT, appData, APP_FOLDER);
-			if (!Directory.Exists(path)) {
-				Directory.CreateDirectory(path);
+				string path = string.Format(PATH_FRMT, appData, APP_FOLDER);
+				if (!Directory.Exists(path)) {
+					Directory.CreateDirectory(path);
+				}
+				return path;
 			}
-			return path;
 		}
 
-		public string GetWallpaperPath() {
-			return getFilePath(WP_FILE);
-		}
+		/// <summary>
+		/// Gets the path where the wallpaper should be saved.
+		/// </summary>
+		public static string WallpaperPath { get { return GetFilePath(WP_FILE); } }
 
+		public static string ConfigPath { get { return GetFilePath(CONFIG_FILE); } }
 
-
-		public WallpaperChangerConfig CreateEmptyConfig(int screenCount) {
-			WallpaperChangerConfig cfg = WallpaperChangerConfig.GetDefault(screenCount);
+		public static WallpaperConfigCollection CreateEmptyConfig(int screenCount) {
+			WallpaperConfigCollection cfg = WallpaperConfigCollection.GetDefault(screenCount);
 			return cfg;
 		}
-	}
-
-
-	public abstract class ConfigManager<T> {
-
-		protected abstract string GetConfigPath();
 
 		#region Load
-		public T Load() {
+		public static WallpaperConfigCollection Load() {
 			string p = GetConfigPath();
 			return Load(p);
 		}
 
-		protected T Load(string path) {
-			T cfg = default(T);
+		public static WallpaperConfigCollection Load(string path) {
+			WallpaperConfigCollection cfg = default(WallpaperConfigCollection);
 
 			// DOn't try to open a non-existent file.  Just return null.
 			if (File.Exists(path)) {
-				XmlSerializer xs = new XmlSerializer(typeof(T));
+				XmlSerializer xs = new XmlSerializer(typeof(WallpaperConfigCollection));
 				using (StreamReader sr = new StreamReader(path)) {
-					cfg = (T)xs.Deserialize(sr);
+					cfg = (WallpaperConfigCollection)xs.Deserialize(sr);
 				}
 			}
 			return cfg;
@@ -74,15 +69,15 @@ namespace WallpaperUtils {
 
 		#region Save
 
-		public void Save(T cfg) {
+		public static void Save(WallpaperConfigCollection config) {
 			string p = GetConfigPath();
-			SerializeAndSave(cfg, p);
+			SerializeAndSave(config, p);
 		}
 
-		protected void SerializeAndSave(T cfg, string path) {
-			XmlSerializer xs = new XmlSerializer(typeof(T));
+		protected static void SerializeAndSave(WallpaperConfigCollection config, string path) {
+			XmlSerializer xs = new XmlSerializer(typeof(WallpaperConfigCollection));
 			using (StreamWriter sw = new StreamWriter(path)) {
-				xs.Serialize(sw, cfg);
+				xs.Serialize(sw, config);
 			}
 		}
 

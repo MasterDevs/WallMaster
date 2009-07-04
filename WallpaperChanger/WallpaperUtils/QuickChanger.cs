@@ -47,8 +47,7 @@ namespace WallpaperUtils {
 
 		#region Private Fields
 		private static WallpaperCreator Creator;
-		private static WallpaperConfigManager Loader_Saver = new WallpaperConfigManager();
-		private static WallpaperChangerConfig Configuration;
+		private static WallpaperConfigCollection Configuration;
 		#endregion
 
 		#region Private Properties
@@ -71,15 +70,44 @@ namespace WallpaperUtils {
 		/// <param name="screenIndex">Screen Index that you would like to change</param>
 		/// <returns>True if the image was changed, false otherwise</returns>
 		public static bool ChangeWallpaper(int screenIndex) {
-			Configuration = Loader_Saver.Load();
-			if (CouldNotLoadConfiguration || NotARandomConfig(screenIndex) || InValidScreenIndex(screenIndex) ) {
-				return false; 
+			return ChangeWallpaper(new int[1] { screenIndex });
+			//Configuration = WallpaperConfigManager.Load();
+			//if (CouldNotLoadConfiguration || NotARandomConfig(screenIndex) || InValidScreenIndex(screenIndex) ) {
+			//  return false; 
+			//}
+
+			////-- If we've made it this far, we're ok to change the wallpaper
+			//Configuration[screenIndex].ChangeRandomImage();
+			//InitScreens(false);
+			
+			////-- Set the wallpaper
+			//SetWallpaperAndSave();
+
+			////-- Success
+			//_result = QuickChangeResult.Success;
+			//return true;
+		}
+
+		public static bool ChangeWallpaper(int[] screenIndexes) {
+			Configuration = WallpaperConfigManager.Load();
+
+			if (CouldNotLoadConfiguration)
+				return false;
+
+			foreach (int index in screenIndexes) {
+				if (NotARandomConfig(index) || InValidScreenIndex(index))
+					return false;
 			}
 
-			//-- If we've made it this far, we're ok to change the wallpaper
-			Configuration.Screens[screenIndex].ChangeRandomImage();
+			//-- If we've made it this far, we're ok to change the wallpaper(s)
+			foreach (int index in screenIndexes) {
+				Configuration[index].ChangeRandomImage();
+			}
+
+			//-- Intialize the screens
 			InitScreens(false);
 			
+
 			//-- Set the wallpaper
 			SetWallpaperAndSave();
 
@@ -93,7 +121,7 @@ namespace WallpaperUtils {
 		/// random. 
 		/// </summary>
 		public static void ChangeAllWallpapers() {
-			Configuration = Loader_Saver.Load();
+			Configuration = WallpaperConfigManager.Load();
 			if (CouldNotLoadConfiguration) {
 				return;
 			}
@@ -121,12 +149,12 @@ namespace WallpaperUtils {
 		/// the screen. Please use ChangeWallpaper or ChangeAllWallpapers for that</para>
 		/// </summary>
 		public static void Update() {
-			Configuration = Loader_Saver.Load();
+			Configuration = WallpaperConfigManager.Load();
 			if (CouldNotLoadConfiguration) {
 				return;
 			}
 
-			if (Screen.AllScreens.Length > Configuration.Screens.Count) {
+			if (Screen.AllScreens.Length > Configuration.Count) {
 				_result = QuickChangeResult.ScreenCountConfigurationCountMisMatch;
 				return;
 			}
@@ -164,11 +192,11 @@ namespace WallpaperUtils {
 			bool has_A_Random_Screen = false;
 			//-- Change all of the wallpapers that are set as random images
 			for (int i = startIndex; i < endIndex; i++) {
-				if (Configuration.Screens[i].IsRandom && change) {
-					Configuration.Screens[i].ChangeRandomImage();
+				if (Configuration[i].IsRandom && change) {
+					Configuration[i].ChangeRandomImage();
 					has_A_Random_Screen = true;
 				}
-				Creator.InitScreen(i, Configuration.Screens[i]);
+				Creator.InitScreen(Configuration[i]);
 			}
 			return has_A_Random_Screen;
 		}
@@ -185,7 +213,7 @@ namespace WallpaperUtils {
 		/// </summary>
 		/// <returns>True if screenIndex is valid, false otherwise</returns>
 		private static bool InValidScreenIndex(int screenIndex) {
-			if (screenIndex < 0 || screenIndex > (Configuration.Screens.Count - 1) || screenIndex > (Screen.AllScreens.Length - 1)) {
+			if (screenIndex < 0 || screenIndex > (Configuration.Count - 1) || screenIndex > (Screen.AllScreens.Length - 1)) {
 				_result = QuickChangeResult.InvalidScreenIndex;
 				return true; //-- Invalid Screen Index
 			}
@@ -196,7 +224,7 @@ namespace WallpaperUtils {
 		/// Returns true if screen index is valid and refers to a random configuration
 		/// </summary>
 		private static bool NotARandomConfig(int screenIndex) {
-			if (!Configuration.Screens[screenIndex].IsRandom) {
+			if (!Configuration[screenIndex].IsRandom) {
 				_result = QuickChangeResult.NoRandomPathAssociatedWithScreenIndex;
 				return true; //-- Selected screen doesn't have a random path associated with it.
 			}
@@ -207,12 +235,12 @@ namespace WallpaperUtils {
 		/// Sets the wallpaper and saves the current configuration
 		/// </summary>
 		private static void SetWallpaperAndSave() {
-			string path = Loader_Saver.GetWallpaperPath();
+			string path = WallpaperConfigManager.WallpaperPath;
 			Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
 			WallpaperManager.SetWallpaper(path);
 
 			//-- Save the configuration so we know what the current images are
-			Loader_Saver.Save(Configuration);
+			WallpaperConfigManager.Save(Configuration);
 		}
 		
 		#endregion

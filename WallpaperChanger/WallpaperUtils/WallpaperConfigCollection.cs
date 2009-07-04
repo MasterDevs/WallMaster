@@ -62,6 +62,17 @@ namespace WallpaperUtils {
 
 		}
 
+		/// <summary>
+		/// Returns an array of all screen indexes contained in this collection
+		/// </summary>
+		public int[] GetScreenIndexes() {
+			int[] indexes = new int[this.Count];
+			for (int i = 0; i < this.Count; i++) {
+				indexes[i] = this[i].ScreenIndex;
+			}
+			return indexes;
+		}
+
 		public void ChangeRandomImage() {
 			foreach(WallpaperConfig wc in this){
 				wc.ChangeRandomImage();
@@ -85,13 +96,6 @@ namespace WallpaperUtils {
 				ss[x++] = wc.StretchStyle;
 			}
 			return ss;
-		}
-
-		public void AddScreen(int offset, int count) {
-
-			for (int i = 0; i < count; i++) {
-				this.Add(WallpaperConfig.GetDefault(i + offset));
-			}
 		}
 	}
 }

@@ -58,22 +58,5 @@ namespace WallpaperUtils {
 					break;
 			}
 		}
-
-
-		public static Image CreateWP(Image[] images) {
-			return null;
-		}
-
-		public static Image creatWP(Image image, int x, int y, Color c) {
-			Bitmap bm = new Bitmap(x, y);
-			Graphics g = Graphics.FromImage(bm);
-
-			Brush br = new SolidBrush(c);
-
-			g.FillRectangle(br, 0, 0, x, y);
-
-			g.DrawImage(image, 20, 20);
-			return bm;
-		}
 	}
 }

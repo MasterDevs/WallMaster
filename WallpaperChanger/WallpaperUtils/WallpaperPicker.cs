@@ -156,7 +156,7 @@ namespace WallpaperUtils {
 			setImageSelectionMethod(WallpaperSelectionStyle.Random);
 			Config.DirectoryPath = _randomDirTB.Text;
 			Config.ImagePath = _imagePathTB.Text;
-			raiseConfigChanged();
+			_intervalComboBox_SelectedIndexChanged(sender, e);
 		}
 
 
@@ -227,6 +227,15 @@ namespace WallpaperUtils {
 		/// the current state of the configuration
 		/// </summary>
 		public void SetFields() {
+			//-- To ensure it's thread safe as this may be called from
+			// a timer event on the Changer class.
+			if (this.InvokeRequired)
+				this.Invoke(new MethodInvoker(SetFieldsSafe));
+			else
+				SetFieldsSafe();
+		}
+
+		private void SetFieldsSafe() {
 			_imagePathTB.Text = _cfg.ImagePath;
 			_randomDirTB.Text = _cfg.DirectoryPath;
 			setRadioButtons(_cfg.SelectionStyle);
@@ -361,6 +370,7 @@ namespace WallpaperUtils {
 
 		private void _intervalComboBox_SelectedIndexChanged(object sender, EventArgs e) {
 			_cfg.ChangeWallpaperInterval = ((TimeSpanWrapper)_intervalComboBox.SelectedItem).Value;
+			raiseConfigChanged();
 		}
 
 	}

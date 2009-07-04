@@ -48,18 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageResizer.cs" />
-    <Compile Include="MultiWallpaperPicker.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MultiWallpaperPicker.Designer.cs">
-      <DependentUpon>MultiWallpaperPicker.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PaneledImageBuilder.cs" />
     <Compile Include="QuickChanger.cs" />
     <Compile Include="RandomFileFinder.cs" />
-    <Compile Include="WallpaperChangerConfig.cs" />
+    <Compile Include="Changer.cs" />
     <Compile Include="WallpaperConfig.cs" />
     <Compile Include="WallpaperConfigManager.cs" />
     <Compile Include="WallpaperCreator.cs">
@@ -74,10 +68,6 @@
     <Compile Include="WallpaperConfigCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MultiWallpaperPicker.resx">
-      <DependentUpon>MultiWallpaperPicker.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="WallpaperPicker.resx">
       <DependentUpon>WallpaperPicker.cs</DependentUpon>
       <SubType>Designer</SubType>

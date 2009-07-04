@@ -19,7 +19,7 @@ namespace WallpaperChanger {
 
 			//-- Just run application if there are no arguments
 			if(args.Length == 0)
-				Application.Run(new SimpleTestForm());
+				Application.Run(new WallpaperChangerForm());
 
 			//-- Simple Arguments
 			if (args.Length == 1) {

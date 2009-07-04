@@ -52,58 +52,18 @@
     <Compile Include="BetterSplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DesktopPreview.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PictureBoxExtended.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SimpleTestForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SimpleTestForm.Designer.cs">
-      <DependentUpon>SimpleTestForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSpanPicker.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeSpanPicker.Designer.cs">
-      <DependentUpon>TimeSpanPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WallmasterUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WallmasterUI.Designer.cs">
-      <DependentUpon>WallmasterUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestForm.Designer.cs">
-      <DependentUpon>TestForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="SimpleTestForm.resx">
-      <DependentUpon>SimpleTestForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeSpanPicker.resx">
-      <DependentUpon>TimeSpanPicker.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WallmasterUI.resx">
-      <DependentUpon>WallmasterUI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestForm.resx">
-      <DependentUpon>TestForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WallPaperChangerForm.resx">
+      <DependentUpon>WallPaperChangerForm.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -119,15 +79,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="WallPaperChangerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WallPaperChangerForm.Designer.cs">
+      <DependentUpon>WallPaperChangerForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Resolution\Resolution.csproj">
       <Project>{02D91A05-FFBA-466F-A0C6-D32F51406EE3}</Project>
       <Name>Resolution</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScreenMonitor\ScreenMonitor.csproj">
-      <Project>{4E8988BC-555A-4987-98CA-E3E6C88F2BAB}</Project>
-      <Name>ScreenMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\WallpaperUtils\WallpaperUtils.csproj">
       <Project>{840211A3-9EF9-43FA-A174-B78DE8DC9A19}</Project>

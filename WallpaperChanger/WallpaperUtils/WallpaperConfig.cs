@@ -80,6 +80,8 @@ namespace WallpaperUtils {
 
 		public string DeviceName { get; set; }
 
+		public int ScreenIndex { get; set; }
+
 		[XmlIgnore]
 		public TimeSpan ChangeWallpaperInterval {
 			get { return _ChangeWallpaperInterval; }
@@ -185,8 +187,8 @@ namespace WallpaperUtils {
 			config.BackgroundColor = Color.Black;
 			config.SelectionStyle = WallpaperSelectionStyle.None;
 			config.StretchStyle = WallpaperStretchStyle.Fill;
-			config.Name = string.Format("Screen {0}", +screenNumber + 1);
-
+			config.Name = string.Format("Screen {0}", screenNumber);
+			config.ScreenIndex = screenNumber;
 			return config;
 		}
 	}

@@ -10,7 +10,7 @@ using System.Diagnostics;
 using Microsoft.Win32;
 
 namespace WallpaperChanger {
-	public partial class SimpleTestForm : Form {
+	public partial class WallpaperChangerForm : Form {
 
 		protected ProcessStartInfo DisplayProperties {
 			get { 
@@ -23,12 +23,11 @@ namespace WallpaperChanger {
 			}
 		}
 		private WallpaperCreator Creator = new WallpaperCreator();
-		private WallpaperConfigManager Loader_Saver = new WallpaperConfigManager();
 		private WallpaperConfigCollection Configurations = new WallpaperConfigCollection();
 		private EventHandler DisplaySettingsChangedEventHandler;
 		private EventHandler ChangeWallpaperEventHandler;
 
-		public SimpleTestForm() {
+		public WallpaperChangerForm() {
 			InitializeComponent();
 			LoadConfiguration();
 			IntializeEventHandlers();
@@ -37,17 +36,19 @@ namespace WallpaperChanger {
 			//-- Load Primary Monitor
 			WallpaperPicker_ConfigChanged(null, new ConfigChangedEventArgs(Configurations[CurrentIndex]));
 			UserHasMadeAChange = false;
+			if(_FMI_ChangePaperWhileDialogOpen.Checked)
+				Changer.Start();
 		}
 
 		#region Initialization
 
 		private void LoadConfiguration() {
 			_WallpaperPicker.RaiseEvents = false;
-			WallpaperChangerConfig config = Loader_Saver.Load();
-			if (config == null) {
-				config = WallpaperChangerConfig.GetDefault(Screen.AllScreens.Length);
+			Configurations = WallpaperConfigManager.Load();
+			if (Configurations == null) {
+				Configurations = WallpaperConfigCollection.GetDefault(Screen.AllScreens.Length);
 			}
-			Configurations = config.Screens;
+
 			InitScreens();
 			_WallpaperPicker.Config = Configurations[CurrentIndex];
 			_WallpaperPicker.RaiseEvents = true;
@@ -57,8 +58,7 @@ namespace WallpaperChanger {
 			Creator.Dispose();
 			Creator = new WallpaperCreator();
 			for (int i = 0; i < Configurations.Count; i++) {
-				if (Screen.AllScreens.Length > i)
-					Creator.InitScreen(i, Configurations[i]);
+				Creator.InitScreen(Configurations[i]);
 			}
 		}
 
@@ -69,6 +69,11 @@ namespace WallpaperChanger {
 			ChangeWallpaperEventHandler = new EventHandler(ChangeWallpaper);
 			SystemEvents.DisplaySettingsChanged += DisplaySettingsChangedEventHandler;
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+			Changer.WallpaperChanged += new Changer.WallpaperChangerChanged(WallpaperChanger_WallpaperChanged);
+		}
+
+		void WallpaperChanger_WallpaperChanged(Changer.WallpaperChangeEventArgs args) {
+			RefreshConfiguration();
 		}
 
 		#endregion
@@ -93,13 +98,17 @@ namespace WallpaperChanger {
 		private void WallpaperPicker_ConfigChanged(object sender, ConfigChangedEventArgs e) {
 			int idx = Creator.SelectedIndex;
 			if (idx != -1) {
-				Creator.InitScreen(idx, e.Config);
+				//-- Set screen index
+				e.Config.ScreenIndex = idx;
+				//-- Intialize this screen
+				Creator.InitScreen(e.Config);
 				//-- Reset Preview Image
 				_PreviewImageBox.Image = Creator.PreviewBitmap;
 			}
+			
 			//-- If we are changing configurations because we are selecting a different
 			// wallpaper, then the user has not made a change.
-			if(CurrentIndex == idx)
+			if (idx == CurrentIndex)
 				UserHasMadeAChange = true;
 
 			CurrentIndex = idx;
@@ -115,6 +124,8 @@ namespace WallpaperChanger {
 				//-- Pause Raising Config Changed Event
 				_WallpaperPicker.RaiseEvents = false;
 				//-- Initialize WallpaperConfig to be the new configuration
+				if (Configurations.Count - 1 < index) //-- If we don't have a config large enough, add them
+					AddIndexes(index);
 				_WallpaperPicker.Config = Configurations[index];
 				//-- Get the preview image to display the border around the newly selected image
 				_PreviewImageBox.Image = Creator.PreviewBitmap;
@@ -122,6 +133,12 @@ namespace WallpaperChanger {
 				_WallpaperPicker.RaiseEvents = true;
 				//-- Change Current Index
 				CurrentIndex = index;
+			}
+		}
+
+		private void AddIndexes(int index) {
+			for (int i = Configurations.Count; i <= index; i++) {
+				Configurations.Add(WallpaperConfig.GetDefault(i));
 			}
 		}
 
@@ -223,7 +240,11 @@ namespace WallpaperChanger {
 			else
 				QuickChanger.ChangeWallpaper(index);
 
-			//-- Pause raising all events so we don't have to load the picture box multiple times
+			RefreshConfiguration();
+		}
+
+		private void RefreshConfiguration() {
+			//-- Load the new configuration
 			LoadConfiguration();
 
 			//-- Make sure we highlight the same box
@@ -239,10 +260,16 @@ namespace WallpaperChanger {
 
 		#region Helper Methods
 		private void SaveAndSetWallpaper() {
-			Loader_Saver.Save(new WallpaperChangerConfig(Configurations));
-			string path = Loader_Saver.GetWallpaperPath();
+			//-- Stop Changing the wallpaper
+			Changer.Stop();
+
+			WallpaperConfigManager.Save(Configurations);
+			string path = WallpaperConfigManager.WallpaperPath;
 			Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
 			WallpaperManager.SetWallpaper(path);
+
+			//-- Start Changing the wallpaper again
+			Changer.Start();
 		}
 		
 		/// <summary>
@@ -255,5 +282,11 @@ namespace WallpaperChanger {
 
 		private int CurrentIndex { get; set; }
 		#endregion
+
+		private void _FMI_ChangePaperWhileDialogOpen_CheckStateChanged(object sender, EventArgs e) {
+			Changer.Stop();
+			if (_FMI_ChangePaperWhileDialogOpen.Checked)
+				Changer.Start();
+		}
 	}
 }

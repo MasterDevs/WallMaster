@@ -120,7 +120,7 @@ namespace WallpaperChanger {
 
 		private void ResetPreviewImage() {
 			_PreviewImageBox.Image = Creator.PreviewBitmap;
-			//GC.Collect(); //-- No need to have images in memory if they're not being used
+			GC.Collect(); //-- No need to have images in memory if they're not being used
 		}
 
 		private void PreviewBox_MouseClick(object sender, MouseEventArgs e) {
@@ -284,7 +284,7 @@ namespace WallpaperChanger {
 			string path = WallpaperConfigManager.WallpaperPath;
 			Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
 			WallpaperManager.SetWallpaper(path);
-			//GC.Collect(); //-- Force another collection
+			GC.Collect(); //-- Force another collection
 		}
 		
 		/// <summary>

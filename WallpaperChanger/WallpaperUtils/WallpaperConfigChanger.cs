@@ -54,7 +54,7 @@ namespace WallpaperUtils {
 			//-- Manually Force Garbage Collection to keep things tidy
 			// This is especially usefull when the image change interval is
 			// 10 seconds. 
-			//GC.Collect();
+			GC.Collect();
 		}
 
 		#region Public Methods

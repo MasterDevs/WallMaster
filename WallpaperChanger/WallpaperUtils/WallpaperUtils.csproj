@@ -53,8 +53,8 @@
     <Compile Include="PaneledImageBuilder.cs" />
     <Compile Include="QuickChanger.cs" />
     <Compile Include="RandomFileFinder.cs" />
-    <Compile Include="Changer.cs" />
     <Compile Include="WallpaperConfig.cs" />
+    <Compile Include="WallpaperConfigChanger.cs" />
     <Compile Include="WallpaperConfigManager.cs" />
     <Compile Include="WallpaperCreator.cs">
     </Compile>

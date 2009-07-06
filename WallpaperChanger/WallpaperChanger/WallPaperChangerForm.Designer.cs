@@ -45,7 +45,6 @@
 			this._FMI_OpenDisplayProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this._FMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
-			this._FMI_ChangePaperWhileDialogOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
 			this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
 			this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
@@ -173,7 +172,6 @@
 			// _MMS_File
 			// 
 			this._MMS_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._FMI_ChangePaperWhileDialogOpen,
             this._FMI_ChangeWallpaper,
             this._FMI_OpenDisplayProperties,
             this.toolStripSeparator2,
@@ -188,7 +186,7 @@
 			this._FMI_ChangeWallpaper.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._FMI_CW_ChangeAllWallpapers});
 			this._FMI_ChangeWallpaper.Name = "_FMI_ChangeWallpaper";
-			this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(268, 22);
+			this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(173, 22);
 			this._FMI_ChangeWallpaper.Text = "Change Wallpaper";
 			// 
 			// _FMI_CW_ChangeAllWallpapers
@@ -201,31 +199,21 @@
 			// _FMI_OpenDisplayProperties
 			// 
 			this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
-			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(268, 22);
+			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(173, 22);
 			this._FMI_OpenDisplayProperties.Text = "&Display Properties";
 			this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(265, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(170, 6);
 			// 
 			// _FMI_Exit
 			// 
 			this._FMI_Exit.Name = "_FMI_Exit";
-			this._FMI_Exit.Size = new System.Drawing.Size(268, 22);
+			this._FMI_Exit.Size = new System.Drawing.Size(173, 22);
 			this._FMI_Exit.Text = "E&xit";
 			this._FMI_Exit.Click += new System.EventHandler(this.Exit_Click);
-			// 
-			// _FMI_ChangePaperWhileDialogOpen
-			// 
-			this._FMI_ChangePaperWhileDialogOpen.Checked = true;
-			this._FMI_ChangePaperWhileDialogOpen.CheckOnClick = true;
-			this._FMI_ChangePaperWhileDialogOpen.CheckState = System.Windows.Forms.CheckState.Checked;
-			this._FMI_ChangePaperWhileDialogOpen.Name = "_FMI_ChangePaperWhileDialogOpen";
-			this._FMI_ChangePaperWhileDialogOpen.Size = new System.Drawing.Size(268, 22);
-			this._FMI_ChangePaperWhileDialogOpen.Text = "Change Wallpaper while dialog is open";
-			this._FMI_ChangePaperWhileDialogOpen.CheckStateChanged += new System.EventHandler(this._FMI_ChangePaperWhileDialogOpen_CheckStateChanged);
 			// 
 			// _MainSplitContainer
 			// 
@@ -315,9 +303,10 @@
 			this.MinimumSize = new System.Drawing.Size(815, 483);
 			this.Name = "WallpaperChangerForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "SimpleTestForm";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimpleTestForm_FormClosing);
-			this.Resize += new System.EventHandler(this.SimpleTestForm_Resize);
+			this.Text = "WallMaster";
+			this.VisibleChanged += new System.EventHandler(this.WallpaperChangerForm_VisibleChanged);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WallpaperChangerForm_FormClosing);
+			this.Resize += new System.EventHandler(this.WallpaperChangerForm_Resize);
 			this._NI_ContextMenu.ResumeLayout(false);
 			this._MainMenuStrip.ResumeLayout(false);
 			this._MainMenuStrip.PerformLayout();
@@ -356,6 +345,5 @@
 		private System.Windows.Forms.ToolStripMenuItem _FMI_OpenDisplayProperties;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangeWallpaper;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangePaperWhileDialogOpen;
 	}
 }

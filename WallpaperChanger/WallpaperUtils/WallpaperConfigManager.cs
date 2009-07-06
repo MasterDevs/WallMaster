@@ -55,16 +55,15 @@ namespace WallpaperUtils {
 		public static WallpaperConfigCollection Load(string path) {
 			WallpaperConfigCollection cfg = default(WallpaperConfigCollection);
 
-			// DOn't try to open a non-existent file.  Just return null.
+			// Don't try to open a non-existent file.  Just return null.
 			if (File.Exists(path)) {
 				XmlSerializer xs = new XmlSerializer(typeof(WallpaperConfigCollection));
 				using (StreamReader sr = new StreamReader(path)) {
-					cfg = (WallpaperConfigCollection)xs.Deserialize(sr);
+						cfg = (WallpaperConfigCollection)xs.Deserialize(sr);
 				}
 			}
 			return cfg;
 		}
-
 		#endregion
 
 		#region Save

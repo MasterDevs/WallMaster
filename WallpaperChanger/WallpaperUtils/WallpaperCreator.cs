@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 
 namespace WallpaperUtils {
-	public class WallpaperCreator : IDisposable {
+	public class WallpaperCreator{
 
 		private Bitmap previewBitmap = null, desktopBitmap = null;
 		private Color DefaultBackgroundColor = Color.Black;
@@ -21,6 +21,7 @@ namespace WallpaperUtils {
 		private Color BorderColorStandard = Color.White;
 		private Color BorderColorSelected = Color.Red;
 		private float BorderSize = 8;
+		private int PreviewBoundsDivider = 4;
 
 		/// <summary>
 		/// This is the 0,0 location on the composite desktop image.
@@ -38,23 +39,15 @@ namespace WallpaperUtils {
 		private Screen[] Screens { get { return Screen.AllScreens; } }
 		private string[] wallpaperFilenames;
 		private WallpaperStretchStyle[] Styles;
-		private Dictionary<int, WeakReference> wallpaperBitmapCache;
 		private int _selectedIndex = -1;
 		private string PreviewBitmapChecksum;
 		private string DesktopBitmapChecksum;
 
-		// This collection isn't actually used to retrieve the Bitmap, but
-		// prevents the WeakReference from disappearing while the Bitmap is in use
-		Bitmap[] wallpaperBitmaps;
-
 		public WallpaperCreator() {
 			UpdateMonitorBounds();
 
-			wallpaperBitmapCache = new Dictionary<int, WeakReference>();
-
 			// Initialize collections (should really be re-init'd when screens change...)
 			wallpaperFilenames = new string[Screens.Length];
-			wallpaperBitmaps = new Bitmap[Screens.Length];
 			previewBounds = new Rectangle[Screens.Length];
 			BackgroundColors = new Brush[Screens.Length];
 			Styles = new WallpaperStretchStyle[Screens.Length];
@@ -124,21 +117,23 @@ namespace WallpaperUtils {
 		}
 
 		private Bitmap GetResizedBitmap(int idx) {
-			Bitmap image = GetBitmap(idx);
-			Rectangle bounds = new Rectangle(0, 0, Screens[idx].Bounds.Width, Screens[idx].Bounds.Height);
-			Bitmap bm = new Bitmap(bounds.Width, bounds.Height);
-			using (Graphics g = Graphics.FromImage(bm)) {
-				//-- Fill BackgroundColor
-				g.FillRectangle(BackgroundColors[idx], bounds);
-
-				if (image != null) {
-
+			using (Bitmap image = GetBitmap(idx)) {
+				Rectangle bounds = new Rectangle(0, 0, Screens[idx].Bounds.Width, Screens[idx].Bounds.Height);
+				Bitmap bm = new Bitmap(bounds.Width, bounds.Height);
+				using (Graphics g = Graphics.FromImage(bm)) {
+					//-- Set the Interpolation Mode to HQB to get a nice, smooth image
 					g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-					g.DrawImage(image, ImageResizer.ResizeImage(image.Size, bounds, Styles[idx]));
+					//-- Fill BackgroundColor
+					g.FillRectangle(BackgroundColors[idx], bounds);
+
+					if (image != null) {
+						g.DrawImage(image, ImageResizer.ResizeImage(image.Size, bounds, Styles[idx]));
+					}
 				}
+
+				return bm;
 			}
-			return bm;
 		}
 
 		/// <summary>
@@ -200,11 +195,13 @@ namespace WallpaperUtils {
 		/// Modify the preview bitmap
 		/// </summary>
 		private void UpdatePreviewImage() {
-			using (Graphics g = Graphics.FromImage(previewBitmap)) {
+			using (Graphics g = Graphics.FromImage(previewBitmap)){
 				//-- Set the Interpolation Mode to HQB to get a nice, smooth image
 				g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 				for (int idx = 0; idx < Screens.Length; idx++) {
-					AddImageToPreview(g, GetBitmap(idx), Screens[idx].Bounds, idx);
+					using (Bitmap bm = GetBitmap(idx)) {
+						AddImageToPreview(g, bm, Screens[idx].Bounds, idx);
+					}
 				}
 				//-- Place a red border over the selected image
 				if (SelectedIndex != -1) {
@@ -215,21 +212,8 @@ namespace WallpaperUtils {
 			}
 		}
 
-		private Rectangle GetPreviewBounds(Rectangle screenBounds) {
-			// Translate negative screens (to the left/above primary monitor)
-			// into viewable preview area
-			screenBounds.X += refPoint.X;
-			screenBounds.Y += refPoint.Y;
-
-			// Everything is quarter-sized for preview mode
-			screenBounds.X /= 4;
-			screenBounds.Y /= 4;
-
-			return new Rectangle(screenBounds.Location, GetPreviewSize(screenBounds.Size));
-		}
-
 		private Size GetPreviewSize(Size bounds) {
-			return new Size(bounds.Width / 4, bounds.Height / 4);
+			return new Size(bounds.Width / PreviewBoundsDivider, bounds.Height / PreviewBoundsDivider);
 		}
 
 		/// <summary>
@@ -255,8 +239,10 @@ namespace WallpaperUtils {
 				g.DrawImage(image, ImageResizer.ResizeImage(GetPreviewSize(image.Size), bounds, Styles[idx]));
 			}
 
+			//-- Render the caption
 			RenderCaption(g, bounds, idx);
 
+			//-- Place border around image
 			HighlightPreviewImage(g, idx, BorderColorStandard, BorderSize);
 		}
 
@@ -324,33 +310,16 @@ namespace WallpaperUtils {
 			string filename = wallpaperFilenames[idx];
 			Bitmap currentImage = null;
 
-			// Check cache first (is it there *and* alive?)
-			if (wallpaperBitmapCache.ContainsKey(idx)) {
-				// If it's alive, use it.  Otherwise remove it.
-				if (wallpaperBitmapCache[idx].IsAlive)
-					currentImage = (Bitmap)wallpaperBitmapCache[idx].Target;
-				else
-					wallpaperBitmapCache.Remove(idx);
+			if (File.Exists(filename)) {
+				using (Stream sr = File.OpenRead(filename)) {
+					// Use FromStream, not FromFile to avoid an unnecessary lock
+					currentImage = (Bitmap)Bitmap.FromStream(sr);
+					sr.Close();
+				}
+			} else {
+				//-- Throw File Not FOund exception??
 			}
 
-			// If it's not in cache but it's on disk...
-			if (currentImage == null) {
-				if (File.Exists(filename)) {
-					using (Stream sr = File.OpenRead(filename)) {
-						// Use FromStream, not FromFile to avoid an unnecessary lock
-						currentImage = (Bitmap)Bitmap.FromStream(sr);
-						sr.Close();
-
-						// Save to cache as WeakReference to reduce memory footprint
-						WeakReference imgRef = new WeakReference(currentImage);
-						wallpaperBitmapCache.Add(idx, imgRef);
-					}
-				} else
-					currentImage = null;
-			}
-
-			// Update the bitmap for this screen and return it
-			wallpaperBitmaps[idx] = currentImage;
 			return currentImage;
 		}
 
@@ -375,13 +344,26 @@ namespace WallpaperUtils {
 			Rectangle correctedBounds = ZeroRectangle(overallBounds, refPoint);
 
 			//-- Initialize Preview & Desktop Bitmaps
-			previewBitmap = new Bitmap(correctedBounds.Width / 4, correctedBounds.Height / 4);
+			previewBitmap = new Bitmap(correctedBounds.Width / PreviewBoundsDivider, correctedBounds.Height / PreviewBoundsDivider);
 			desktopBitmap = new Bitmap(correctedBounds.Width, correctedBounds.Height);
 
 			//-- Set PreviewBounds so we can correctly map a point on the image to a particular screen index
 			for (int i = 0; i < Screen.AllScreens.Length; i++) {
 				previewBounds[i] = GetPreviewBounds(Screen.AllScreens[i].Bounds);
 			}
+		}
+
+		private Rectangle GetPreviewBounds(Rectangle screenBounds) {
+			// Translate negative screens (to the left/above primary monitor)
+			// into viewable preview area
+			screenBounds.X += refPoint.X;
+			screenBounds.Y += refPoint.Y;
+
+			// Everything is quarter-sized for preview mode
+			screenBounds.X /= PreviewBoundsDivider;
+			screenBounds.Y /= PreviewBoundsDivider;
+
+			return new Rectangle(screenBounds.Location, GetPreviewSize(screenBounds.Size));
 		}
 
 		private static Rectangle AddBounds(Rectangle sourceBounds, Rectangle newBounds) {
@@ -402,7 +384,6 @@ namespace WallpaperUtils {
 			return sourceBounds;
 		}
 
-
 		public void Update(bool updateDesktopImage, bool updatePreviewImage) {
 			UpdateMonitorBounds();
 			if (updatePreviewImage)
@@ -410,7 +391,6 @@ namespace WallpaperUtils {
 			if (updateDesktopImage)
 				UpdateDesktopImage();
 		}
-
 
 		#region Public Methods
 		/// <summary>
@@ -443,15 +423,6 @@ namespace WallpaperUtils {
 			if (index > -1 && index < previewBounds.Length) {
 				// Update the corresponding wallpaper filename
 				wallpaperFilenames[index] = filename;
-				// Destroy the weak reference if it exists
-				if (wallpaperBitmapCache.ContainsKey(index)) {
-					Bitmap bm = (Bitmap)wallpaperBitmapCache[index].Target;
-					if (bm != null) {
-						bm.Dispose();
-						bm = null;
-					}
-					wallpaperBitmapCache.Remove(index);
-				}
 			}
 		}
 
@@ -468,25 +439,6 @@ namespace WallpaperUtils {
 		}
 
 		#endregion
-
-		#endregion
-
-
-		#region IDisposable Members
-
-		public void Dispose() {
-			foreach (WeakReference wr in wallpaperBitmapCache.Values) {
-				if (wr.Target != null) {
-					Bitmap bm = (Bitmap)wr.Target;
-					bm.Dispose();
-				}
-			}
-
-			foreach (Bitmap bm in wallpaperBitmaps) {
-				if (bm != null)
-					bm.Dispose();
-			}
-		}
 
 		#endregion
 	}

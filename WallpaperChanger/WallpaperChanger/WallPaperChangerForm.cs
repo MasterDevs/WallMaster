@@ -22,8 +22,8 @@ namespace WallpaperChanger {
 				};
 			}
 		}
-		private WallpaperCreator Creator = new WallpaperCreator();
-		private WallpaperConfigCollection Configurations = new WallpaperConfigCollection();
+		private WallpaperCreator Creator;
+		private WallpaperConfigCollection Configurations;
 		private EventHandler DisplaySettingsChangedEventHandler;
 		private EventHandler ChangeWallpaperEventHandler;
 
@@ -36,8 +36,6 @@ namespace WallpaperChanger {
 			//-- Load Primary Monitor
 			WallpaperPicker_ConfigChanged(null, new ConfigChangedEventArgs(Configurations[CurrentIndex]));
 			UserHasMadeAChange = false;
-			if(_FMI_ChangePaperWhileDialogOpen.Checked)
-				Changer.Start();
 		}
 
 		#region Initialization
@@ -55,7 +53,6 @@ namespace WallpaperChanger {
 		}
 
 		private void InitScreens() {
-			Creator.Dispose();
 			Creator = new WallpaperCreator();
 			for (int i = 0; i < Configurations.Count; i++) {
 				Creator.InitScreen(Configurations[i]);
@@ -69,11 +66,17 @@ namespace WallpaperChanger {
 			ChangeWallpaperEventHandler = new EventHandler(ChangeWallpaper);
 			SystemEvents.DisplaySettingsChanged += DisplaySettingsChangedEventHandler;
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-			Changer.WallpaperChanged += new Changer.WallpaperChangerChanged(WallpaperChanger_WallpaperChanged);
 		}
 
-		void WallpaperChanger_WallpaperChanged(Changer.WallpaperChangeEventArgs args) {
-			RefreshConfiguration();
+		private void RefreshConfiguration() {
+			//-- Load the new configuration
+			LoadConfiguration();
+
+			//-- Make sure we highlight the same box
+			Creator.SelectedIndex = CurrentIndex;
+
+			//-- Manually refresh the picture box
+			ResetPreviewImage();
 		}
 
 		#endregion
@@ -91,7 +94,7 @@ namespace WallpaperChanger {
 
 		private void DisplaySettingsChanged(object sender, EventArgs e) {
 			InitScreens();
-			_PreviewImageBox.Image = Creator.PreviewBitmap;
+			ResetPreviewImage();
 			SaveAndSetWallpaper();
 		}
 
@@ -103,7 +106,7 @@ namespace WallpaperChanger {
 				//-- Intialize this screen
 				Creator.InitScreen(e.Config);
 				//-- Reset Preview Image
-				_PreviewImageBox.Image = Creator.PreviewBitmap;
+				ResetPreviewImage();
 			}
 			
 			//-- If we are changing configurations because we are selecting a different
@@ -111,7 +114,13 @@ namespace WallpaperChanger {
 			if (idx == CurrentIndex)
 				UserHasMadeAChange = true;
 
+			//-- Reset current index
 			CurrentIndex = idx;
+		}
+
+		private void ResetPreviewImage() {
+			_PreviewImageBox.Image = Creator.PreviewBitmap;
+			//GC.Collect(); //-- No need to have images in memory if they're not being used
 		}
 
 		private void PreviewBox_MouseClick(object sender, MouseEventArgs e) {
@@ -128,7 +137,7 @@ namespace WallpaperChanger {
 					AddIndexes(index);
 				_WallpaperPicker.Config = Configurations[index];
 				//-- Get the preview image to display the border around the newly selected image
-				_PreviewImageBox.Image = Creator.PreviewBitmap;
+				ResetPreviewImage();
 				//-- Resume Raising Config Changed Event
 				_WallpaperPicker.RaiseEvents = true;
 				//-- Change Current Index
@@ -143,17 +152,39 @@ namespace WallpaperChanger {
 		}
 
 		#region Form Events
-		private void SimpleTestForm_Resize(object sender, EventArgs e) {
-			_MainSplitContainer.SplitterDistance = _MainSplitContainer.Height - _MainSplitContainer.Panel2MinSize;
+		
+		/// <summary>
+		/// This method will resize the splitter so that the picture
+		/// takes up as much room as possible.
+		/// </summary>
+		private void WallpaperChangerForm_Resize(object sender, EventArgs e) {
+			_MainSplitContainer.SplitterDistance = 
+				_MainSplitContainer.Height - _MainSplitContainer.Panel2MinSize;
 		}
 
-		private void SimpleTestForm_FormClosing(object sender, FormClosingEventArgs e) {
+		/// <summary>
+		/// When the form is closed, we only want to hide it, unless it was closed
+		/// because of an application exit call or a windows shutdown
+		/// </summary>
+		private void WallpaperChangerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			if (e.CloseReason != CloseReason.ApplicationExitCall &&
 				e.CloseReason != CloseReason.WindowsShutDown) {
 				Hide();
 				e.Cancel = true;
 			}
-		} 
+		}
+
+		/// <summary>
+		/// This method will Start / Stop the Changer whether the form
+		/// is not visible / visible respectively.
+		/// </summary>
+		private void WallpaperChangerForm_VisibleChanged(object sender, EventArgs e) {
+			if (Visible) {
+				WallpaperConfigChanger.Stop();
+				RefreshConfiguration();
+			} else
+				WallpaperConfigChanger.Start();
+		}
 		#endregion
 
 		#region Button Events
@@ -243,33 +274,17 @@ namespace WallpaperChanger {
 			RefreshConfiguration();
 		}
 
-		private void RefreshConfiguration() {
-			//-- Load the new configuration
-			LoadConfiguration();
-
-			//-- Make sure we highlight the same box
-			Creator.SelectedIndex = CurrentIndex;
-
-			//-- Manually refresh the picture box
-			_PreviewImageBox.Image = Creator.PreviewBitmap;
-		}
-
 		#endregion
 		
 		#endregion
 
 		#region Helper Methods
 		private void SaveAndSetWallpaper() {
-			//-- Stop Changing the wallpaper
-			Changer.Stop();
-
 			WallpaperConfigManager.Save(Configurations);
 			string path = WallpaperConfigManager.WallpaperPath;
 			Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
 			WallpaperManager.SetWallpaper(path);
-
-			//-- Start Changing the wallpaper again
-			Changer.Start();
+			//GC.Collect(); //-- Force another collection
 		}
 		
 		/// <summary>
@@ -282,11 +297,5 @@ namespace WallpaperChanger {
 
 		private int CurrentIndex { get; set; }
 		#endregion
-
-		private void _FMI_ChangePaperWhileDialogOpen_CheckStateChanged(object sender, EventArgs e) {
-			Changer.Stop();
-			if (_FMI_ChangePaperWhileDialogOpen.Checked)
-				Changer.Start();
-		}
 	}
 }

@@ -94,14 +94,10 @@ namespace WallpaperUtils {
 			if (CouldNotLoadConfiguration)
 				return false;
 
-			foreach (int index in screenIndexes) {
-				if (NotARandomConfig(index) || InValidScreenIndex(index))
-					return false;
-			}
-
 			//-- If we've made it this far, we're ok to change the wallpaper(s)
 			foreach (int index in screenIndexes) {
-				Configuration[index].ChangeRandomImage();
+				if(Configuration[index].IsRandom && !InValidScreenIndex(index))
+					Configuration[index].ChangeRandomImage();
 			}
 
 			//-- Intialize the screens
@@ -173,8 +169,6 @@ namespace WallpaperUtils {
 		/// before we instantiate a new one.
 		/// </summary>
 		private static void InitCreator() {
-			if (Creator != null)
-				Creator.Dispose();
 			Creator = new WallpaperCreator();
 		}
 

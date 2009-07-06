@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Xml.Serialization;
 using System;
+using System.Windows.Forms;
 
 
 namespace WallpaperUtils {
@@ -182,14 +183,27 @@ namespace WallpaperUtils {
 			}
 		}
 
-		public static WallpaperConfig GetDefault(int screenNumber) {
-			WallpaperConfig config = new WallpaperConfig();
-			config.BackgroundColor = Color.Black;
-			config.SelectionStyle = WallpaperSelectionStyle.None;
-			config.StretchStyle = WallpaperStretchStyle.Fill;
-			config.Name = string.Format("Screen {0}", screenNumber);
-			config.ScreenIndex = screenNumber;
-			return config;
+		/// <summary>
+		/// Gets a defult configuration.
+		/// </summary>
+		/// <param name="screenIndex">Index of the screen that the config will be created for</param>
+		/// <exception cref="ArgumentException">ArgumentException will be fired if an invalid
+		/// screen index is entered</exception>
+		/// <returns></returns>
+		public static WallpaperConfig GetDefault(int screenIndex) {
+			if (screenIndex > -1 && screenIndex < Screen.AllScreens.Length) {
+				WallpaperConfig config = new WallpaperConfig();
+				config.BackgroundColor = Color.Black;
+				config.SelectionStyle = WallpaperSelectionStyle.None;
+				config.StretchStyle = WallpaperStretchStyle.Fill;
+				config.Name = string.Format("Screen {0}", screenIndex);
+				//config.Name = Screen.AllScreens[screenIndex].DeviceName;
+				config.ScreenIndex = screenIndex;
+				return config;
+			} else {
+				throw new ArgumentException(
+					string.Format("Screen index of {0} is invalid in current display setup", screenIndex));
+			}
 		}
 	}
 }

@@ -9,10 +9,10 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WallpaperChanger</RootNamespace>
-    <AssemblyName>WallpaperChanger</AssemblyName>
+    <AssemblyName>WallMaster</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Resources\Spectrum.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon_256.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +64,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WallPaperChangerForm.resx">
       <DependentUpon>WallPaperChangerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -97,10 +98,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Spectrum.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Monitor_256.ico" />
+    <Content Include="Resources\Icon_256.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

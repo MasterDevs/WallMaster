@@ -274,6 +274,10 @@ namespace WallpaperChanger {
 			RefreshConfiguration();
 		}
 
+		private void UpdateWallpaper_Click(object sender, EventArgs e) {
+			QuickChanger.Update();
+		}
+		
 		#endregion
 		
 		#endregion

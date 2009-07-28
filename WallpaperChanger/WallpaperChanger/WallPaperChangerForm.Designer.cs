@@ -36,13 +36,15 @@
 			this._CMI_OpenDisplaySettings = new System.Windows.Forms.ToolStripMenuItem();
 			this._CMI_ChangeWallpaper = new System.Windows.Forms.ToolStripMenuItem();
 			this._CMI_CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
+			this._CMI_UpdateWallpaper = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this._CMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
 			this._MainMenuStrip = new System.Windows.Forms.MenuStrip();
 			this._MMS_File = new System.Windows.Forms.ToolStripMenuItem();
+			this._FMI_OpenDisplayProperties = new System.Windows.Forms.ToolStripMenuItem();
 			this._FMI_ChangeWallpaper = new System.Windows.Forms.ToolStripMenuItem();
 			this._FMI_CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
-			this._FMI_OpenDisplayProperties = new System.Windows.Forms.ToolStripMenuItem();
+			this._FMI_UpdateWallpaper = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this._FMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
 			this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
@@ -110,10 +112,11 @@
             this._CMI_ShowWallMaster,
             this._CMI_OpenDisplaySettings,
             this._CMI_ChangeWallpaper,
+            this._CMI_UpdateWallpaper,
             this.toolStripSeparator1,
             this._CMI_Exit});
 			this._NI_ContextMenu.Name = "contextMenuStrip1";
-			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 98);
+			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 142);
 			this._NI_ContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ChangeWallpaperMenuStrip_Opened);
 			// 
 			// _CMI_ShowWallMaster
@@ -146,6 +149,16 @@
 			this._CMI_CW_ChangeAllWallpapers.Text = "Change All Wallpapers";
 			this._CMI_CW_ChangeAllWallpapers.Click += new System.EventHandler(this.ChangeWallpaper);
 			// 
+			// _CMI_UpdateWallpaper
+			// 
+			this._CMI_UpdateWallpaper.AutoToolTip = true;
+			this._CMI_UpdateWallpaper.Name = "_CMI_UpdateWallpaper";
+			this._CMI_UpdateWallpaper.Size = new System.Drawing.Size(190, 22);
+			this._CMI_UpdateWallpaper.Text = "Update Wallpaper";
+			this._CMI_UpdateWallpaper.ToolTipText = "Refreshes wallpaper. Helpful if starting up after the display settings have chang" +
+					"ed.";
+			this._CMI_UpdateWallpaper.Click += new System.EventHandler(this.UpdateWallpaper_Click);
+			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -172,14 +185,22 @@
 			// _MMS_File
 			// 
 			this._MMS_File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._FMI_ChangeWallpaper,
             this._FMI_OpenDisplayProperties,
+            this._FMI_ChangeWallpaper,
+            this._FMI_UpdateWallpaper,
             this.toolStripSeparator2,
             this._FMI_Exit});
 			this._MMS_File.Name = "_MMS_File";
 			this._MMS_File.Size = new System.Drawing.Size(35, 20);
 			this._MMS_File.Text = "&File";
 			this._MMS_File.DropDownOpening += new System.EventHandler(this._MMS_File_DropDownOpening);
+			// 
+			// _FMI_OpenDisplayProperties
+			// 
+			this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
+			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(173, 22);
+			this._FMI_OpenDisplayProperties.Text = "&Display Properties";
+			this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
 			// 
 			// _FMI_ChangeWallpaper
 			// 
@@ -196,12 +217,15 @@
 			this._FMI_CW_ChangeAllWallpapers.Text = "Change &All Wallpapers";
 			this._FMI_CW_ChangeAllWallpapers.Click += new System.EventHandler(this.ChangeWallpaper);
 			// 
-			// _FMI_OpenDisplayProperties
+			// _FMI_UpdateWallpaper
 			// 
-			this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
-			this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(173, 22);
-			this._FMI_OpenDisplayProperties.Text = "&Display Properties";
-			this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
+			this._FMI_UpdateWallpaper.AutoToolTip = true;
+			this._FMI_UpdateWallpaper.Name = "_FMI_UpdateWallpaper";
+			this._FMI_UpdateWallpaper.Size = new System.Drawing.Size(173, 22);
+			this._FMI_UpdateWallpaper.Text = "Update Wallpaper";
+			this._FMI_UpdateWallpaper.ToolTipText = "Refreshes monitor. Helpful if starting up after the display settings have changed" +
+					".";
+			this._FMI_UpdateWallpaper.Click += new System.EventHandler(this.UpdateWallpaper_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -345,5 +369,7 @@
 		private System.Windows.Forms.ToolStripMenuItem _FMI_OpenDisplayProperties;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangeWallpaper;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
+		private System.Windows.Forms.ToolStripMenuItem _CMI_UpdateWallpaper;
+		private System.Windows.Forms.ToolStripMenuItem _FMI_UpdateWallpaper;
 	}
 }

@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperChanger", "Wallpap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperUtils", "WallpaperUtils\WallpaperUtils.csproj", "{840211A3-9EF9-43FA-A174-B78DE8DC9A19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperUils.Tests", "WallpaperUils.Tests\WallpaperUils.Tests.csproj", "{D7990A33-CBFA-4B31-9B96-22C774179CFA}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolution", "Resolution\Resolution.csproj", "{02D91A05-FFBA-466F-A0C6-D32F51406EE3}"
@@ -25,10 +23,6 @@ Global
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7990A33-CBFA-4B31-9B96-22C774179CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7990A33-CBFA-4B31-9B96-22C774179CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7990A33-CBFA-4B31-9B96-22C774179CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7990A33-CBFA-4B31-9B96-22C774179CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}.Debug|Any CPU.ActiveCfg = Debug
 		{57AFAB2D-F8A0-4B7B-A7F4-E662CBD9AF06}.Release|Any CPU.ActiveCfg = Release
 		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

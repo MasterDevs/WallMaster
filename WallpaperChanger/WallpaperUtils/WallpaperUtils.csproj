@@ -49,8 +49,6 @@
   <ItemGroup>
     <Compile Include="ImageResizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="PaneledImageBuilder.cs" />
     <Compile Include="QuickChanger.cs" />
     <Compile Include="RandomFileFinder.cs" />
     <Compile Include="WallpaperConfig.cs" />

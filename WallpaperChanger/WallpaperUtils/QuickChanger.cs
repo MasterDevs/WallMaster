@@ -59,7 +59,6 @@ namespace WallpaperUtils {
 				} else return false;
 			}
 		}
-
 		#endregion
 
 		#region Public Methods
@@ -71,39 +70,32 @@ namespace WallpaperUtils {
 		/// <returns>True if the image was changed, false otherwise</returns>
 		public static bool ChangeWallpaper(int screenIndex) {
 			return ChangeWallpaper(new int[1] { screenIndex });
-			//Configuration = WallpaperConfigManager.Load();
-			//if (CouldNotLoadConfiguration || NotARandomConfig(screenIndex) || InValidScreenIndex(screenIndex) ) {
-			//  return false; 
-			//}
-
-			////-- If we've made it this far, we're ok to change the wallpaper
-			//Configuration[screenIndex].ChangeRandomImage();
-			//InitScreens(false);
-			
-			////-- Set the wallpaper
-			//SetWallpaperAndSave();
-
-			////-- Success
-			//_result = QuickChangeResult.Success;
-			//return true;
 		}
 
+		/// <summary>
+		/// Changes the wallpaper for an array of screen indexes.
+		/// <para>Note: If there is any config that is not random, the wallpaper will not be changed.</para>
+		/// </summary>
 		public static bool ChangeWallpaper(int[] screenIndexes) {
 			Configuration = WallpaperConfigManager.Load();
 
 			if (CouldNotLoadConfiguration)
 				return false;
 
+			//-- Ensure all indexes are valid and have random configurations
+			foreach (int index in screenIndexes) {
+				if (InValidScreenIndex(index) || NotARandomConfig(index))
+					return false;
+			}
+
 			//-- If we've made it this far, we're ok to change the wallpaper(s)
 			foreach (int index in screenIndexes) {
-				if(Configuration[index].IsRandom && !InValidScreenIndex(index))
-					Configuration[index].ChangeRandomImage();
+				Configuration[index].ChangeRandomImage();
 			}
 
 			//-- Intialize the screens
 			InitScreens(false);
 			
-
 			//-- Set the wallpaper
 			SetWallpaperAndSave();
 
@@ -123,7 +115,7 @@ namespace WallpaperUtils {
 			}
 
 			//-- Change all of the wallpapers that are set as random images
-			bool has_A_Random_Screen = InitScreens(0, Screen.AllScreens.Length, true);
+			bool has_A_Random_Screen = InitScreens(true);
 	
 			//-- If we don't have a random configuration, just return
 			if (!has_A_Random_Screen) {
@@ -146,9 +138,8 @@ namespace WallpaperUtils {
 		/// </summary>
 		public static void Update() {
 			Configuration = WallpaperConfigManager.Load();
-			if (CouldNotLoadConfiguration) {
-				return;
-			}
+
+			if (CouldNotLoadConfiguration) { return; }
 
 			if (Screen.AllScreens.Length > Configuration.Count) {
 				_result = QuickChangeResult.ScreenCountConfigurationCountMisMatch;
@@ -158,6 +149,8 @@ namespace WallpaperUtils {
 			InitScreens(0, Screen.AllScreens.Length, false);
 
 			SetWallpaperAndSave();
+
+			_result = QuickChangeResult.Success;
 		}
 
 		#endregion
@@ -174,6 +167,7 @@ namespace WallpaperUtils {
 
 		/// <summary>
 		/// Iterates all configurations from startIndex to endIndex.
+		/// <para>Returns true if there was a random screen, false otherwise</para>
 		/// </summary>
 		/// <param name="startIndex">Start Index in Configurations</param>
 		/// <param name="endIndex">End Index in Configurations</param>
@@ -196,7 +190,8 @@ namespace WallpaperUtils {
 		}
 
 		/// <summary>
-		/// Iterates all configurations for each screen index
+		/// Refreshes all configurations for current screen
+		/// <para>Returns true if there was a random screen, false otherwise</para>
 		/// </summary>
 		/// <param name="change">True if you want to change any random screen</param>
 		/// <returns>True if there was a random screen, false otherwise</returns>
@@ -238,6 +233,5 @@ namespace WallpaperUtils {
 		}
 		
 		#endregion
-
 	}
 }

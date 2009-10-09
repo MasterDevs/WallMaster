@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Timers;
+using SysTimers = System.Timers;
+using System.Windows.Forms;
 
 namespace WallpaperUtils {
 	/// <summary>
@@ -22,27 +23,28 @@ namespace WallpaperUtils {
 		} 
 		#endregion
 
-		private static Timer TheTimer;
+		private static SysTimers.Timer TheTimer;
 		/// <summary>
 		/// Dictionary of ScreenIndexes to Interval Counts
 		/// </summary>
-		private static Dictionary<int, double> TimeIntervals;
+		private static SortedList<double, List<int>> TimeIntervals;
 		private static double Count;
+		private static double GCD;
 		static WallpaperConfigChanger() {
 			
 		}
 
-		private static void ChangeWallpaper(object sender, ElapsedEventArgs e) {
+		private static void ChangeWallpaper(object sender, SysTimers.ElapsedEventArgs e) {
 			TheTimer.Stop(); //-- Stop Timer
 			List<int> indexesToChange = new List<int>(TimeIntervals.Count);
-			foreach (var screenIndex in TimeIntervals.Keys) {
-				if ((Count % TimeIntervals[screenIndex]) == 0)
-					indexesToChange.Add(screenIndex);
+			foreach (var time in TimeIntervals.Keys) {
+				if (((Count * GCD) % time) == 0)
+					indexesToChange.AddRange(TimeIntervals[time]);
 			}
 
 			QuickChanger.ChangeWallpaper(indexesToChange.ToArray());
 			//-- Fire event notifying that a wallpaper has been changed
-			if (WallpaperChanged != null)
+			if (WallpaperChanged != null && indexesToChange.Count > 0)
 				WallpaperChanged(new WallpaperChangeEventArgs(WallpaperConfigManager.Load()));
 			
 			//-- Incriment count
@@ -52,8 +54,7 @@ namespace WallpaperUtils {
 			TheTimer.Start();
 
 			//-- Manually Force Garbage Collection to keep things tidy
-			// This is especially usefull when the image change interval is
-			// 10 seconds. 
+			// This is especially usefull when the image change interval is 1 minute
 			GC.Collect();
 		}
 
@@ -63,34 +64,39 @@ namespace WallpaperUtils {
 			WallpaperConfigCollection configs = WallpaperConfigManager.Load();
 			if (configs == null)
 				return; //-- Simply return if failed to load a configuration
-			TimeIntervals = new Dictionary<int, double>(configs.Count);
-
-			//-- Check if we have a random
-			bool NoRandomWallpaper = true;
-
-			//-- Find Random wallpaper with shortest random change time
-			double min = double.MaxValue;
+			TimeIntervals = new SortedList<double, List<int>>(configs.Count);
+			
+			//-- Check if we have a random screen config
+			bool NoRandomScreenConfig = true;
 			foreach (var c in configs) {
-				if (c.IsRandom) {
-					min = Math.Min(c.ChangeWallpaperInterval.TotalMilliseconds, min);
-					NoRandomWallpaper = false;
+				if (c.IsRandom && c.ScreenIndex < Screen.AllScreens.Length) {
+					NoRandomScreenConfig = false;
+					break;
 				}
 			}
 
-			if (NoRandomWallpaper)
+			if (NoRandomScreenConfig)
 				return;
 
 			//-- Now we have the shortest interval so we can initialize the timer
 			if (TheTimer != null)
 				TheTimer.Dispose();
-			TheTimer = new Timer(min);
-			TheTimer.Elapsed += new ElapsedEventHandler(ChangeWallpaper);
+			TheTimer = new SysTimers.Timer(60000); //-- 1 Minute Intervals
+			TheTimer.Elapsed += new SysTimers.ElapsedEventHandler(ChangeWallpaper);
 			foreach (var c in configs) {
 				if (c.IsRandom) {
-					//-- Find out what the interval is, based on min, and add it to the list
-					TimeIntervals.Add(c.ScreenIndex, c.ChangeWallpaperInterval.TotalMilliseconds / min);
+					//-- Find out what the interval is, based on total seconds, and add it to the list
+					if (TimeIntervals.ContainsKey(c.ChangeWallpaperInterval.TotalSeconds))
+						TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds].Add(c.ScreenIndex);
+					else
+						TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds] = new List<int>() { c.ScreenIndex };
 				}
 			}
+
+			//-- Calculate the GCD which will act as our only timer
+			CalculateGCD();
+
+			TheTimer.Interval = GCD * 1000;
 
 			//-- Initialize Count
 			Count = 1;
@@ -101,10 +107,54 @@ namespace WallpaperUtils {
 
 		public static void Stop() {
 			if (TheTimer != null) {
-				TheTimer.Elapsed -= new ElapsedEventHandler(ChangeWallpaper);
+				TheTimer.Elapsed -= new SysTimers.ElapsedEventHandler(ChangeWallpaper);
 				TheTimer.Dispose();
 			}
 		} 
+		#endregion
+
+		#region Helper Methods
+		
+		/// <summary>
+		/// This method will grab the GCD for all screen indexes.
+		/// </summary>
+		private static void CalculateGCD() {
+			GCD = 1;
+			IList<double> times = TimeIntervals.Keys;
+			for (int i = 0; i < times.Count - 1; i++) {
+				double gcd_temp = GreatestCommonDenominator(times[i], times[i + 1]);
+				if (gcd_temp > GCD && GCDWorksForAllTimes(gcd_temp))
+					GCD = gcd_temp;
+			}
+		}
+
+		/// <summary>
+		/// Checks to see if the possible GCD works for all time values.
+		/// If so, returns true, false otherwise.
+		/// </summary>
+		private static bool GCDWorksForAllTimes(double gcd_temp) {
+			foreach (double time in TimeIntervals.Keys) {
+				if (time % gcd_temp != 0)
+					return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Simple recursive way to find the GCD.
+		/// </summary>
+		private static double GreatestCommonDenominator(double a, double b) {
+			if (a == 0)
+				return b;
+			else if (b == 0)
+				return a;
+
+			if (a > b)
+				return GreatestCommonDenominator(a % b, b);
+			else
+				return GreatestCommonDenominator(a, b % a);
+		}
+
 		#endregion
 	}
 }

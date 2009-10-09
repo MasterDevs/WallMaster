@@ -28,21 +28,23 @@ namespace WallpaperUtils {
 			}
 		}
 		private TimeSpanWrapper[] TimeSpans = new TimeSpanWrapper[] {
-			new TimeSpanWrapper("10 seconds", new TimeSpan(0, 0, 10)),
-			new TimeSpanWrapper("30 seconds", new TimeSpan(0, 0, 30)),
-			new TimeSpanWrapper("1 minute", new TimeSpan(0, 1, 0)),
-			new TimeSpanWrapper("5 minutes", new TimeSpan(0, 5, 0)),
-			new TimeSpanWrapper("10 minutes", new TimeSpan(0, 10, 0)),
-			new TimeSpanWrapper("20 minutes", new TimeSpan(0, 20, 0)),
-			new TimeSpanWrapper("30 minutes", new TimeSpan(0, 30, 0)),
-			new TimeSpanWrapper("1 hour", new TimeSpan(1, 0, 0)),
-			new TimeSpanWrapper("2 hours", new TimeSpan(2, 0, 0)),
-			new TimeSpanWrapper("3 hours", new TimeSpan(3, 0, 0)),
-			new TimeSpanWrapper("4 hours", new TimeSpan(4, 0, 0)),
-			new TimeSpanWrapper("6 hours", new TimeSpan(6, 0, 0)),
-			new TimeSpanWrapper("12 hours", new TimeSpan(12, 0, 0)),
-			new TimeSpanWrapper("1 day", new TimeSpan(1, 0, 0, 0)),
-			new TimeSpanWrapper("1 week", new TimeSpan(7, 0, 0, 0)) }; 
+			new TimeSpanWrapper("5 Seconds", TimeSpan.FromSeconds(5)),
+			new TimeSpanWrapper("10 Seconds", TimeSpan.FromSeconds(10)),
+			new TimeSpanWrapper("15 Seconds", TimeSpan.FromSeconds(15)),
+			new TimeSpanWrapper("30 Seconds", TimeSpan.FromSeconds(30)),
+			new TimeSpanWrapper("1 minute", TimeSpan.FromMinutes(1)),
+			new TimeSpanWrapper("5 minutes", TimeSpan.FromMinutes(5)),
+			new TimeSpanWrapper("10 minutes", TimeSpan.FromMinutes(10)),
+			new TimeSpanWrapper("20 minutes", TimeSpan.FromMinutes(20)),
+			new TimeSpanWrapper("30 minutes", TimeSpan.FromMinutes(30)),
+			new TimeSpanWrapper("1 hour", TimeSpan.FromHours(1)),
+			new TimeSpanWrapper("2 hours", TimeSpan.FromHours(2)),
+			new TimeSpanWrapper("3 hours", TimeSpan.FromHours(3)),
+			new TimeSpanWrapper("4 hours", TimeSpan.FromHours(4)),
+			new TimeSpanWrapper("6 hours", TimeSpan.FromHours(6)),
+			new TimeSpanWrapper("12 hours", TimeSpan.FromHours(12)),
+			new TimeSpanWrapper("1 day", TimeSpan.FromDays(1)),
+			new TimeSpanWrapper("1 week", TimeSpan.FromDays(7)) }; 
 		#endregion
 
 		#region WallpaperStretchStyleWrapper
@@ -169,7 +171,10 @@ namespace WallpaperUtils {
 		}
 
 		private void _randomDirTB_TextChanged(object sender, EventArgs e) {
-			_cfg.DirectoryPath = _randomDirTB.Text;
+			if (Directory.Exists(_randomDirTB.Text)) {
+				_cfg.DirectoryPath = _randomDirTB.Text;
+				raiseConfigChanged();
+			}
 		}
 
 	

@@ -15,20 +15,38 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_321AC8A65A094658838D7ACDFF5C8A75"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_C30438F961C4E2A7BA1C25F239E6A4D3"
+        "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E1E566A266113880957025DE7A9E55D1"
+        "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E1E566A266113880957025DE7A9E55D1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C30438F961C4E2A7BA1C25F239E6A4D3"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -136,10 +154,21 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_321AC8A65A094658838D7ACDFF5C8A75"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C30438F961C4E2A7BA1C25F239E6A4D3"
             {
-            "SourcePath" = "8:Spectrum.ico"
-            "TargetName" = "8:Spectrum.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Resolution, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C30438F961C4E2A7BA1C25F239E6A4D3"
+                    {
+                    "Name" = "8:Resolution.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Resolution.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
             "Condition" = "8:"
@@ -153,7 +182,38 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1E566A266113880957025DE7A9E55D1"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E1E566A266113880957025DE7A9E55D1"
+                    {
+                    "Name" = "8:WallpaperUtils.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WallpaperUtils.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -173,7 +233,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_C74E6825497F4FD98993A93D59AF924B"
                     {
-                    "Name" = "8:Wallmaster"
+                    "Name" = "8:MasterSuite"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -186,7 +246,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_509D0D79CC8143A3BBB6940E3CE0B01E"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder]\\MasterSuite\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -205,17 +265,6 @@
             "Property" = "8:AppDataFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_1343D07DD26F4FD8B5F10E7F827A2336"
-                    {
-                    "Name" = "8:Wallmaster"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_5FD9E21EDC424FA9B3989A363A4CC8BF"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
         }
@@ -234,25 +283,25 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Wallmaster"
-        "ProductCode" = "8:{B292B568-3115-418C-A2EF-53B434ED919F}"
-        "PackageCode" = "8:{D6ED9134-0253-40FB-A96F-685DB1E50068}"
+        "ProductCode" = "8:{E2CC8180-44D6-470F-8D54-D16AD78EEE78}"
+        "PackageCode" = "8:{7BDA38F4-AE3A-4358-8A8D-711DB2706373}"
         "UpgradeCode" = "8:{A6D1EF1B-15D9-42F2-BF1C-C050214C44E2}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1.2"
+        "ProductVersion" = "8:0.2.0"
         "Manufacturer" = "8:Wallmaster"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
+        "ARPHELPLINK" = "8:http://WallMaster.CodePlex.com/"
         "Title" = "8:Wallmaster"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Quintus"
+        "ARPCONTACT" = "8:MasterDevelopers"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Advanced control of wallpapers for multiple monitors."
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_321AC8A65A094658838D7ACDFF5C8A75"
-        "ARPIconIndex" = "3:0"
+        "ARPPRODUCTICON" = "8:_3D81CF728E1B4C90AA86298C34064227"
+        "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
@@ -354,18 +403,18 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FA8EEA1F30294C7FA2C2F7D005BA7A7F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9A924757E985438FAF1B097B51966747"
             {
-            "Name" = "8:Wallmaster"
+            "Name" = "8:WallMaster"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
+            "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
             "Target" = "8:_3D81CF728E1B4C90AA86298C34064227"
             "Folder" = "8:_C74E6825497F4FD98993A93D59AF924B"
-            "WorkingFolder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
-            "Icon" = "8:_321AC8A65A094658838D7ACDFF5C8A75"
+            "WorkingFolder" = "8:_C74E6825497F4FD98993A93D59AF924B"
+            "Icon" = "8:_3D81CF728E1B4C90AA86298C34064227"
             "Feature" = "8:"
             }
         }
@@ -769,7 +818,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D81CF728E1B4C90AA86298C34064227"
             {
-            "SourcePath" = "8:..\\WallpaperChanger\\obj\\Debug\\WallpaperChanger.exe"
+            "SourcePath" = "8:..\\WallpaperChanger\\obj\\Debug\\WallMaster.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"

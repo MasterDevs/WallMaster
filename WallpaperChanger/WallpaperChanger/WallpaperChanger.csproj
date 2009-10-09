@@ -88,17 +88,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Resolution\Resolution.csproj">
-      <Project>{02D91A05-FFBA-466F-A0C6-D32F51406EE3}</Project>
-      <Name>Resolution</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WallpaperUtils\WallpaperUtils.csproj">
       <Project>{840211A3-9EF9-43FA-A174-B78DE8DC9A19}</Project>
       <Name>WallpaperUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Icon_256.ico" />
+    <Content Include="Resources\Icon_256.ico">
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

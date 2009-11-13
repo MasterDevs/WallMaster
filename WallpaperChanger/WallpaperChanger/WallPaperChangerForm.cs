@@ -158,8 +158,8 @@ namespace WallpaperChanger {
 		/// takes up as much room as possible.
 		/// </summary>
 		private void WallpaperChangerForm_Resize(object sender, EventArgs e) {
-			_MainSplitContainer.SplitterDistance = 
-				_MainSplitContainer.Height - _MainSplitContainer.Panel2MinSize;
+			//_MainSplitContainer.SplitterDistance = 
+//				_MainSplitContainer.Height - _MainSplitContainer.Panel2MinSize;
 		}
 
 		/// <summary>

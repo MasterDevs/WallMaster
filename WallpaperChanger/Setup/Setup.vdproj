@@ -21,13 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C30438F961C4E2A7BA1C25F239E6A4D3"
-        "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E1E566A266113880957025DE7A9E55D1"
+        "MsmKey" = "8:_B4B2941B4257538C4A352AECE7ACE8C8"
         "OwnerKey" = "8:_3D81CF728E1B4C90AA86298C34064227"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,13 +34,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E1E566A266113880957025DE7A9E55D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C30438F961C4E2A7BA1C25F239E6A4D3"
+        "OwnerKey" = "8:_B4B2941B4257538C4A352AECE7ACE8C8"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -154,45 +142,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C30438F961C4E2A7BA1C25F239E6A4D3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B4B2941B4257538C4A352AECE7ACE8C8"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Resolution, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.22456, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C30438F961C4E2A7BA1C25F239E6A4D3"
-                    {
-                    "Name" = "8:Resolution.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Resolution.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1E566A266113880957025DE7A9E55D1"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E1E566A266113880957025DE7A9E55D1"
+                    "_B4B2941B4257538C4A352AECE7ACE8C8"
                     {
                     "Name" = "8:WallpaperUtils.dll"
                     "Attributes" = "3:512"
@@ -283,14 +240,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Wallmaster"
-        "ProductCode" = "8:{E2CC8180-44D6-470F-8D54-D16AD78EEE78}"
-        "PackageCode" = "8:{7BDA38F4-AE3A-4358-8A8D-711DB2706373}"
+        "ProductCode" = "8:{DF1AB5DD-0AFE-44F5-A41A-831F2918E264}"
+        "PackageCode" = "8:{ECCFDE2C-3E8D-468D-807D-203714AE8F95}"
         "UpgradeCode" = "8:{A6D1EF1B-15D9-42F2-BF1C-C050214C44E2}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.2.0"
+        "ProductVersion" = "8:0.2.4"
         "Manufacturer" = "8:Wallmaster"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://WallMaster.CodePlex.com/"
@@ -818,7 +775,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D81CF728E1B4C90AA86298C34064227"
             {
-            "SourcePath" = "8:..\\WallpaperChanger\\obj\\Debug\\WallMaster.exe"
+            "SourcePath" = "8:..\\WallpaperChanger\\obj\\Release\\WallMaster.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_509D0D79CC8143A3BBB6940E3CE0B01E"

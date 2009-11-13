@@ -50,7 +50,7 @@
 			this._randomDirTB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
 			this._randomDirTB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories;
 			this._randomDirTB.Enabled = false;
-			this._randomDirTB.Location = new System.Drawing.Point(13, 108);
+			this._randomDirTB.Location = new System.Drawing.Point(13, 57);
 			this._randomDirTB.Name = "_randomDirTB";
 			this._randomDirTB.Size = new System.Drawing.Size(431, 23);
 			this._randomDirTB.TabIndex = 5;
@@ -60,7 +60,7 @@
 			// 
 			this._changeImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._changeImageButton.Enabled = false;
-			this._changeImageButton.Location = new System.Drawing.Point(450, 134);
+			this._changeImageButton.Location = new System.Drawing.Point(449, 86);
 			this._changeImageButton.Name = "_changeImageButton";
 			this._changeImageButton.Size = new System.Drawing.Size(75, 23);
 			this._changeImageButton.TabIndex = 7;
@@ -72,7 +72,7 @@
 			// 
 			this._browseDirButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._browseDirButton.Enabled = false;
-			this._browseDirButton.Location = new System.Drawing.Point(450, 106);
+			this._browseDirButton.Location = new System.Drawing.Point(449, 57);
 			this._browseDirButton.Name = "_browseDirButton";
 			this._browseDirButton.Size = new System.Drawing.Size(75, 23);
 			this._browseDirButton.TabIndex = 6;
@@ -87,7 +87,7 @@
 			this._imagePathTB.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
 			this._imagePathTB.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
 			this._imagePathTB.Enabled = false;
-			this._imagePathTB.Location = new System.Drawing.Point(13, 59);
+			this._imagePathTB.Location = new System.Drawing.Point(14, 28);
 			this._imagePathTB.Name = "_imagePathTB";
 			this._imagePathTB.Size = new System.Drawing.Size(431, 23);
 			this._imagePathTB.TabIndex = 2;
@@ -97,7 +97,7 @@
 			// 
 			this._browseImageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._browseImageButton.Enabled = false;
-			this._browseImageButton.Location = new System.Drawing.Point(450, 57);
+			this._browseImageButton.Location = new System.Drawing.Point(449, 28);
 			this._browseImageButton.Name = "_browseImageButton";
 			this._browseImageButton.Size = new System.Drawing.Size(75, 23);
 			this._browseImageButton.TabIndex = 3;
@@ -107,9 +107,9 @@
 			// 
 			// _colorButton
 			// 
-			this._colorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._colorButton.BackColor = System.Drawing.Color.Black;
-			this._colorButton.Location = new System.Drawing.Point(124, 163);
+			this._colorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this._colorButton.Location = new System.Drawing.Point(14, 111);
 			this._colorButton.Name = "_colorButton";
 			this._colorButton.Size = new System.Drawing.Size(33, 23);
 			this._colorButton.TabIndex = 9;
@@ -118,9 +118,8 @@
 			// 
 			// label1
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(10, 168);
+			this.label1.Location = new System.Drawing.Point(53, 115);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(108, 15);
 			this.label1.TabIndex = 8;
@@ -134,7 +133,7 @@
 			// 
 			this._noImageRB.AutoSize = true;
 			this._noImageRB.Checked = true;
-			this._noImageRB.Location = new System.Drawing.Point(13, 13);
+			this._noImageRB.Location = new System.Drawing.Point(14, 3);
 			this._noImageRB.Name = "_noImageRB";
 			this._noImageRB.Size = new System.Drawing.Size(76, 19);
 			this._noImageRB.TabIndex = 0;
@@ -146,7 +145,7 @@
 			// _imageRB
 			// 
 			this._imageRB.AutoSize = true;
-			this._imageRB.Location = new System.Drawing.Point(13, 36);
+			this._imageRB.Location = new System.Drawing.Point(96, 3);
 			this._imageRB.Name = "_imageRB";
 			this._imageRB.Size = new System.Drawing.Size(58, 19);
 			this._imageRB.TabIndex = 1;
@@ -157,7 +156,7 @@
 			// _randomImageRB
 			// 
 			this._randomImageRB.AutoSize = true;
-			this._randomImageRB.Location = new System.Drawing.Point(13, 85);
+			this._randomImageRB.Location = new System.Drawing.Point(170, 3);
 			this._randomImageRB.Name = "_randomImageRB";
 			this._randomImageRB.Size = new System.Drawing.Size(106, 19);
 			this._randomImageRB.TabIndex = 4;
@@ -168,7 +167,7 @@
 			// _includeSubdirsCB
 			// 
 			this._includeSubdirsCB.AutoSize = true;
-			this._includeSubdirsCB.Location = new System.Drawing.Point(13, 138);
+			this._includeSubdirsCB.Location = new System.Drawing.Point(14, 86);
 			this._includeSubdirsCB.Name = "_includeSubdirsCB";
 			this._includeSubdirsCB.Size = new System.Drawing.Size(150, 19);
 			this._includeSubdirsCB.TabIndex = 10;
@@ -186,9 +185,9 @@
             "Stretch",
             "StretchRatio",
             "This shouldn\'t be here"});
-			this._stretchStyleCB.Location = new System.Drawing.Point(404, 165);
+			this._stretchStyleCB.Location = new System.Drawing.Point(333, 115);
 			this._stretchStyleCB.Name = "_stretchStyleCB";
-			this._stretchStyleCB.Size = new System.Drawing.Size(121, 23);
+			this._stretchStyleCB.Size = new System.Drawing.Size(112, 23);
 			this._stretchStyleCB.TabIndex = 11;
 			this._stretchStyleCB.SelectedIndexChanged += new System.EventHandler(this._stretchStyleCB_SelectedIndexChanged);
 			// 
@@ -196,11 +195,11 @@
 			// 
 			this._styleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._styleLabel.AutoSize = true;
-			this._styleLabel.Location = new System.Drawing.Point(368, 168);
+			this._styleLabel.Location = new System.Drawing.Point(202, 118);
 			this._styleLabel.Name = "_styleLabel";
-			this._styleLabel.Size = new System.Drawing.Size(36, 15);
+			this._styleLabel.Size = new System.Drawing.Size(92, 15);
 			this._styleLabel.TabIndex = 12;
-			this._styleLabel.Text = "Style:";
+			this._styleLabel.Text = "Image Position:";
 			// 
 			// _intervalComboBox
 			// 
@@ -209,7 +208,7 @@
 			this._intervalComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._intervalComboBox.Enabled = false;
 			this._intervalComboBox.FormattingEnabled = true;
-			this._intervalComboBox.Location = new System.Drawing.Point(332, 136);
+			this._intervalComboBox.Location = new System.Drawing.Point(332, 86);
 			this._intervalComboBox.Name = "_intervalComboBox";
 			this._intervalComboBox.Size = new System.Drawing.Size(112, 23);
 			this._intervalComboBox.TabIndex = 13;
@@ -219,7 +218,7 @@
 			// 
 			this._ChangePictureEveryLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._ChangePictureEveryLabel.AutoSize = true;
-			this._ChangePictureEveryLabel.Location = new System.Drawing.Point(203, 139);
+			this._ChangePictureEveryLabel.Location = new System.Drawing.Point(202, 90);
 			this._ChangePictureEveryLabel.Name = "_ChangePictureEveryLabel";
 			this._ChangePictureEveryLabel.Size = new System.Drawing.Size(124, 15);
 			this._ChangePictureEveryLabel.TabIndex = 14;
@@ -246,7 +245,7 @@
 			this.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Name = "WallpaperPicker";
 			this.Padding = new System.Windows.Forms.Padding(10);
-			this.Size = new System.Drawing.Size(538, 202);
+			this.Size = new System.Drawing.Size(538, 146);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -116,7 +116,7 @@
             this.toolStripSeparator1,
             this._CMI_Exit});
 			this._NI_ContextMenu.Name = "contextMenuStrip1";
-			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 142);
+			this._NI_ContextMenu.Size = new System.Drawing.Size(191, 120);
 			this._NI_ContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ChangeWallpaperMenuStrip_Opened);
 			// 
 			// _CMI_ShowWallMaster
@@ -245,6 +245,8 @@
 									| System.Windows.Forms.AnchorStyles.Left)
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this._MainSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this._MainSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+			this._MainSplitContainer.IsSplitterFixed = true;
 			this._MainSplitContainer.Location = new System.Drawing.Point(0, 27);
 			this._MainSplitContainer.MinimumSize = new System.Drawing.Size(786, 310);
 			this._MainSplitContainer.Name = "_MainSplitContainer";
@@ -257,9 +259,9 @@
 			// _MainSplitContainer.Panel2
 			// 
 			this._MainSplitContainer.Panel2.Controls.Add(this._WallpaperSettingsGB);
-			this._MainSplitContainer.Panel2MinSize = 220;
+			this._MainSplitContainer.Panel2MinSize = 165;
 			this._MainSplitContainer.Size = new System.Drawing.Size(807, 397);
-			this._MainSplitContainer.SplitterDistance = 164;
+			this._MainSplitContainer.SplitterDistance = 228;
 			this._MainSplitContainer.TabIndex = 1;
 			// 
 			// _PreviewImageBox
@@ -268,7 +270,7 @@
 			this._PreviewImageBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._PreviewImageBox.Location = new System.Drawing.Point(0, 0);
 			this._PreviewImageBox.Name = "_PreviewImageBox";
-			this._PreviewImageBox.Size = new System.Drawing.Size(803, 160);
+			this._PreviewImageBox.Size = new System.Drawing.Size(803, 224);
 			this._PreviewImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._PreviewImageBox.TabIndex = 3;
 			this._PreviewImageBox.TabStop = false;
@@ -281,7 +283,7 @@
 			this._WallpaperSettingsGB.Location = new System.Drawing.Point(0, 0);
 			this._WallpaperSettingsGB.MinimumSize = new System.Drawing.Size(0, 220);
 			this._WallpaperSettingsGB.Name = "_WallpaperSettingsGB";
-			this._WallpaperSettingsGB.Size = new System.Drawing.Size(803, 225);
+			this._WallpaperSettingsGB.Size = new System.Drawing.Size(803, 220);
 			this._WallpaperSettingsGB.TabIndex = 0;
 			this._WallpaperSettingsGB.TabStop = false;
 			this._WallpaperSettingsGB.Text = "Wallpaper Settings";
@@ -307,7 +309,7 @@
 			this._WallpaperPicker.Name = "_WallpaperPicker";
 			this._WallpaperPicker.Padding = new System.Windows.Forms.Padding(10);
 			this._WallpaperPicker.RaiseEvents = true;
-			this._WallpaperPicker.Size = new System.Drawing.Size(797, 203);
+			this._WallpaperPicker.Size = new System.Drawing.Size(797, 198);
 			this._WallpaperPicker.TabIndex = 0;
 			// 
 			// WallpaperChangerForm

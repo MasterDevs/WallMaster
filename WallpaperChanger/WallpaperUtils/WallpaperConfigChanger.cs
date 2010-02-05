@@ -119,6 +119,14 @@ namespace WallpaperUtils {
 		/// This method will grab the GCD for all screen indexes.
 		/// </summary>
 		private static void CalculateGCD() {
+
+			//-- If all random configs are to be changed on same interval,
+			// the GCD is the interval.
+			if (TimeIntervals.Count == 1) {
+				GCD = TimeIntervals.Keys[0];
+				return;
+			}
+
 			GCD = 1;
 			IList<double> times = TimeIntervals.Keys;
 			for (int i = 0; i < times.Count - 1; i++) {

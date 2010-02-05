@@ -301,5 +301,10 @@ namespace WallpaperChanger {
 
 		private int CurrentIndex { get; set; }
 		#endregion
+
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+			AboutBox ab = new AboutBox();
+			ab.ShowDialog(this);
+		}
 	}
 }

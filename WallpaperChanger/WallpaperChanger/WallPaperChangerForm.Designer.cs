@@ -25,7 +25,7 @@
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WallpaperChangerForm));
-			WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
+			WallpaperUtils.WallpaperConfig wallpaperConfig3 = new WallpaperUtils.WallpaperConfig();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this._OKButton = new System.Windows.Forms.Button();
 			this._CancelButton = new System.Windows.Forms.Button();
@@ -51,6 +51,8 @@
 			this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
 			this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
 			this._WallpaperPicker = new WallpaperUtils.WallpaperPicker();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._NI_ContextMenu.SuspendLayout();
 			this._MainMenuStrip.SuspendLayout();
 			this._MainSplitContainer.Panel1.SuspendLayout();
@@ -175,7 +177,8 @@
 			// 
 			this._MainMenuStrip.BackColor = System.Drawing.SystemColors.MenuBar;
 			this._MainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._MMS_File});
+            this._MMS_File,
+            this.helpToolStripMenuItem});
 			this._MainMenuStrip.Location = new System.Drawing.Point(0, 0);
 			this._MainMenuStrip.Name = "_MainMenuStrip";
 			this._MainMenuStrip.Size = new System.Drawing.Size(807, 24);
@@ -290,19 +293,19 @@
 			// 
 			// _WallpaperPicker
 			// 
-			wallpaperConfig1.Argb = -16777216;
-			wallpaperConfig1.BackgroundColor = System.Drawing.Color.Black;
-			wallpaperConfig1.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:00");
-			wallpaperConfig1.ChangeWallpaperIntervalTicks = ((long)(0));
-			wallpaperConfig1.DeviceName = null;
-			wallpaperConfig1.DirectoryPath = null;
-			wallpaperConfig1.ImagePath = null;
-			wallpaperConfig1.IncludeSubDirs = false;
-			wallpaperConfig1.Name = null;
-			wallpaperConfig1.ScreenIndex = 0;
-			wallpaperConfig1.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
-			wallpaperConfig1.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
-			this._WallpaperPicker.Config = wallpaperConfig1;
+			wallpaperConfig3.Argb = -16777216;
+			wallpaperConfig3.BackgroundColor = System.Drawing.Color.Black;
+			wallpaperConfig3.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:00");
+			wallpaperConfig3.ChangeWallpaperIntervalTicks = ((long)(0));
+			wallpaperConfig3.DeviceName = null;
+			wallpaperConfig3.DirectoryPath = null;
+			wallpaperConfig3.ImagePath = null;
+			wallpaperConfig3.IncludeSubDirs = false;
+			wallpaperConfig3.Name = null;
+			wallpaperConfig3.ScreenIndex = 0;
+			wallpaperConfig3.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
+			wallpaperConfig3.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
+			this._WallpaperPicker.Config = wallpaperConfig3;
 			this._WallpaperPicker.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._WallpaperPicker.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this._WallpaperPicker.Location = new System.Drawing.Point(3, 19);
@@ -311,6 +314,21 @@
 			this._WallpaperPicker.RaiseEvents = true;
 			this._WallpaperPicker.Size = new System.Drawing.Size(797, 198);
 			this._WallpaperPicker.TabIndex = 0;
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+			this.helpToolStripMenuItem.Text = "&Help";
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Text = "&About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// WallpaperChangerForm
 			// 
@@ -373,5 +391,7 @@
 		private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
 		private System.Windows.Forms.ToolStripMenuItem _CMI_UpdateWallpaper;
 		private System.Windows.Forms.ToolStripMenuItem _FMI_UpdateWallpaper;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 	}
 }

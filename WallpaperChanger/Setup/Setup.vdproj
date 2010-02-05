@@ -146,7 +146,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.22456, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:WallpaperUtils, Version=1.0.0.30057, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_B4B2941B4257538C4A352AECE7ACE8C8"
@@ -240,14 +240,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Wallmaster"
-        "ProductCode" = "8:{DF1AB5DD-0AFE-44F5-A41A-831F2918E264}"
-        "PackageCode" = "8:{ECCFDE2C-3E8D-468D-807D-203714AE8F95}"
+        "ProductCode" = "8:{3EB127A8-111A-48A2-9045-E28F04186EB8}"
+        "PackageCode" = "8:{6DC42852-23E3-4463-A14A-EF74215CF9EE}"
         "UpgradeCode" = "8:{A6D1EF1B-15D9-42F2-BF1C-C050214C44E2}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.2.4"
+        "ProductVersion" = "8:0.2.5"
         "Manufacturer" = "8:Wallmaster"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://WallMaster.CodePlex.com/"

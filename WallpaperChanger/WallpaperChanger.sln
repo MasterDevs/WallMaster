@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperChanger", "WallpaperChanger\WallpaperChanger.csproj", "{3CD05B18-F1FA-4516-8516-71D2333B8801}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperUtils", "WallpaperUtils\WallpaperUtils.csproj", "{840211A3-9EF9-43FA-A174-B78DE8DC9A19}"

@@ -28,8 +28,10 @@ namespace WallpaperChanger {
 					QuickChanger.ChangeAllWallpapers();
 				else if (CheckArg(arg, "u"))	//-- Update Wallpaper for resolution change
 					QuickChanger.Update();
-				else if (CheckArg(arg, "h")) {
+				else if (CheckArg(arg, "h")) { //-- Hidden Mode - Start Minimized to Tray
 					wcf = new WallpaperChangerForm();
+					//-- If the user has random wallpapers, we need to begin changing
+					WallpaperConfigChanger.Start(); 
 					Application.Run();
 				}
 			}

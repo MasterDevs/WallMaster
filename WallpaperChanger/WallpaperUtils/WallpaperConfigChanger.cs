@@ -1,175 +1,205 @@
 ﻿using System;
 using System.Collections.Generic;
-using SysTimers = System.Timers;
 using System.Windows.Forms;
+using SysTimers = System.Timers;
 
-namespace WallpaperUtils {
-	/// <summary>
-	/// This class is designed to have two public facing methods - Start & Stop
-	/// When started, this class will call QuickChanger, updating the appropriate screens.
-	/// If there are multiple wallpapers and events overlap, only one call will
-	/// be made to QuickChanger.
-	/// </summary>
-	public class WallpaperConfigChanger {
+namespace WallpaperUtils
+{
+    /// <summary>
+    /// This class is designed to have two public facing methods - Start & Stop
+    /// When started, this class will call QuickChanger, updating the appropriate screens.
+    /// If there are multiple wallpapers and events overlap, only one call will
+    /// be made to QuickChanger.
+    /// </summary>
+    public class WallpaperConfigChanger
+    {
+        #region WallpaperChanged Event
 
-		#region WallpaperChanged Event
-		public static event WallpaperChangerChanged WallpaperChanged;
-		public delegate void WallpaperChangerChanged(WallpaperChangeEventArgs args);
-		public class WallpaperChangeEventArgs : EventArgs {
-			public WallpaperConfigCollection Config;
-			public WallpaperChangeEventArgs(WallpaperConfigCollection config) {
-				Config = config;
-			}
-		}
-		#endregion
+        public delegate void WallpaperChangerChanged(WallpaperChangeEventArgs args);
 
-		private static SysTimers.Timer TheTimer;
-		/// <summary>
-		/// Dictionary of ScreenIndexes to Interval Counts
-		/// </summary>
-		private static SortedList<double, List<int>> TimeIntervals;
-		private static double Count;
-		private static double GCD;
-		private static object LockObj = new object();
-		static WallpaperConfigChanger() {
+        public static event WallpaperChangerChanged WallpaperChanged;
 
-		}
+        public class WallpaperChangeEventArgs : EventArgs
+        {
+            public WallpaperConfigCollection Config;
 
-		private static void ChangeWallpaper(object sender, SysTimers.ElapsedEventArgs e) {
-			lock (LockObj) {
-				TheTimer.Stop(); //-- Stop Timer
-				List<int> indexesToChange = new List<int>(TimeIntervals.Count);
-				foreach (var time in TimeIntervals.Keys) {
-					if (((Count * GCD) % time) == 0)
-						indexesToChange.AddRange(TimeIntervals[time]);
-				}
+            public WallpaperChangeEventArgs(WallpaperConfigCollection config)
+            {
+                Config = config;
+            }
+        }
 
-				QuickChanger.ChangeWallpaper(indexesToChange.ToArray());
-				//-- Fire event notifying that a wallpaper has been changed
-				if (WallpaperChanged != null && indexesToChange.Count > 0)
-					WallpaperChanged(new WallpaperChangeEventArgs(WallpaperConfigManager.Load()));
+        #endregion
 
-				//-- Increment count
-				Count++;
+        private static double Count;
+        private static double GCD;
+        private static object LockObj = new object();
+        private static SysTimers.Timer TheTimer;
 
-				//-- Restart Timer
-				TheTimer.Start();
-			}
+        /// <summary>
+        /// Dictionary of ScreenIndexes to Interval Counts
+        /// </summary>
+        private static SortedList<double, List<int>> TimeIntervals;
 
-			//-- Manually Force Garbage Collection to keep things tidy
-			// This is especially useful when the image change interval is 1 minute
-			GC.Collect();
-		}
+        static WallpaperConfigChanger()
+        {
+        }
 
-		#region Public Methods
-		public static void Start() {
-			lock (LockObj) {
-				//-- Load Current Configuration
-				WallpaperConfigCollection configs = WallpaperConfigManager.Load();
-				if (configs == null)
-					return; //-- Simply return if failed to load a configuration
-				TimeIntervals = new SortedList<double, List<int>>(configs.Count);
+        private static void ChangeWallpaper(object sender, SysTimers.ElapsedEventArgs e)
+        {
+            lock (LockObj)
+            {
+                TheTimer.Stop(); //-- Stop Timer
+                List<int> indexesToChange = new List<int>(TimeIntervals.Count);
+                foreach (var time in TimeIntervals.Keys)
+                {
+                    if (((Count * GCD) % time) == 0)
+                        indexesToChange.AddRange(TimeIntervals[time]);
+                }
 
-				//-- Check if we have a random screen config
-				bool NoRandomScreenConfig = true;
-				foreach (var c in configs) {
-					if (c.IsRandom && c.ScreenIndex < Screen.AllScreens.Length) {
-						NoRandomScreenConfig = false;
-						break;
-					}
-				}
+                QuickChanger.ChangeWallpaper(indexesToChange.ToArray());
 
-				if (NoRandomScreenConfig)
-					return;
+                //-- Fire event notifying that a wallpaper has been changed
+                if (WallpaperChanged != null && indexesToChange.Count > 0)
+                    WallpaperChanged(new WallpaperChangeEventArgs(WallpaperConfigManager.Load()));
 
-				//-- Now we have the shortest interval so we can initialize the timer
-				if (TheTimer != null)
-					TheTimer.Dispose();
-				TheTimer = new SysTimers.Timer(60000); //-- 1 Minute Intervals
-				TheTimer.Elapsed += new SysTimers.ElapsedEventHandler(ChangeWallpaper);
-				foreach (var c in configs) {
-					if (c.IsRandom) {
-						//-- Find out what the interval is, based on total seconds, and add it to the list
-						if (TimeIntervals.ContainsKey(c.ChangeWallpaperInterval.TotalSeconds))
-							TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds].Add(c.ScreenIndex);
-						else
-							TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds] = new List<int>() { c.ScreenIndex };
-					}
-				}
+                //-- Increment count
+                Count++;
 
-				//-- Calculate the GCD which will act as our only timer
-				CalculateGCD();
+                //-- Restart Timer
+                TheTimer.Start();
+            }
 
-				TheTimer.Interval = GCD * 1000;
+            //-- Manually Force Garbage Collection to keep things tidy
+            // This is especially useful when the image change interval is 1 minute
+            GC.Collect();
+        }
 
-				//-- Initialize Count
-				Count = 1;
+        #region Public Methods
 
-				//-- Start the Timer
-				TheTimer.Start();
-			}
-		}
+        public static void Start()
+        {
+            lock (LockObj)
+            {
+                //-- Load Current Configuration
+                WallpaperConfigCollection configs = WallpaperConfigManager.Load();
+                if (configs == null)
+                    return; //-- Simply return if failed to load a configuration
+                TimeIntervals = new SortedList<double, List<int>>(configs.Count);
 
-		public static void Stop() {
-			lock (LockObj) {
-				if (TheTimer != null) {
-					TheTimer.Elapsed -= new SysTimers.ElapsedEventHandler(ChangeWallpaper);
-					TheTimer.Dispose();
-				}
-			}
-		}
-		#endregion
+                //-- Check if we have a random screen config
+                bool NoRandomScreenConfig = true;
+                foreach (var c in configs)
+                {
+                    if (c.IsRandom && c.ScreenIndex < Screen.AllScreens.Length)
+                    {
+                        NoRandomScreenConfig = false;
+                        break;
+                    }
+                }
 
-		#region Helper Methods
+                if (NoRandomScreenConfig)
+                    return;
 
-		/// <summary>
-		/// This method will grab the GCD for all screen indexes.
-		/// </summary>
-		private static void CalculateGCD() {
+                //-- Now we have the shortest interval so we can initialize the timer
+                if (TheTimer != null)
+                    TheTimer.Dispose();
+                TheTimer = new SysTimers.Timer(60000); //-- 1 Minute Intervals
+                TheTimer.Elapsed += new SysTimers.ElapsedEventHandler(ChangeWallpaper);
+                foreach (var c in configs)
+                {
+                    if (c.IsRandom)
+                    {
+                        //-- Find out what the interval is, based on total seconds, and add it to the list
+                        if (TimeIntervals.ContainsKey(c.ChangeWallpaperInterval.TotalSeconds))
+                            TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds].Add(c.ScreenIndex);
+                        else
+                            TimeIntervals[c.ChangeWallpaperInterval.TotalSeconds] = new List<int>() { c.ScreenIndex };
+                    }
+                }
 
-			//-- If all random configs are to be changed on same interval,
-			// the GCD is the interval.
-			if (TimeIntervals.Count == 1) {
-				GCD = TimeIntervals.Keys[0];
-				return;
-			}
+                //-- Calculate the GCD which will act as our only timer
+                CalculateGCD();
 
-			GCD = 1;
-			IList<double> times = TimeIntervals.Keys;
-			for (int i = 0; i < times.Count - 1; i++) {
-				double gcd_temp = GreatestCommonDenominator(times[i], times[i + 1]);
-				if (gcd_temp > GCD && GCDWorksForAllTimes(gcd_temp))
-					GCD = gcd_temp;
-			}
-		}
+                TheTimer.Interval = GCD * 1000;
 
-		/// <summary>
-		/// Checks to see if the possible GCD works for all time values.
-		/// If so, returns true, false otherwise.
-		/// </summary>
-		private static bool GCDWorksForAllTimes(double gcd_temp) {
-			foreach (double time in TimeIntervals.Keys) {
-				if (time % gcd_temp != 0)
-					return false;
-			}
-			return true;
-		}
+                //-- Initialize Count
+                Count = 1;
 
-		/// <summary>
-		/// Simple recursive way to find the GCD.
-		/// </summary>
-		private static double GreatestCommonDenominator(double a, double b) {
-			if (a == 0)
-				return b;
-			else if (b == 0)
-				return a;
+                //-- Start the Timer
+                TheTimer.Start();
+            }
+        }
 
-			if (a > b)
-				return GreatestCommonDenominator(a % b, b);
-			else
-				return GreatestCommonDenominator(a, b % a);
-		}
+        public static void Stop()
+        {
+            lock (LockObj)
+            {
+                if (TheTimer != null)
+                {
+                    TheTimer.Elapsed -= new SysTimers.ElapsedEventHandler(ChangeWallpaper);
+                    TheTimer.Dispose();
+                }
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// This method will grab the GCD for all screen indexes.
+        /// </summary>
+        private static void CalculateGCD()
+        {
+            //-- If all random configs are to be changed on same interval,
+            // the GCD is the interval.
+            if (TimeIntervals.Count == 1)
+            {
+                GCD = TimeIntervals.Keys[0];
+                return;
+            }
+
+            GCD = 1;
+            IList<double> times = TimeIntervals.Keys;
+            for (int i = 0; i < times.Count - 1; i++)
+            {
+                double gcd_temp = GreatestCommonDenominator(times[i], times[i + 1]);
+                if (gcd_temp > GCD && GCDWorksForAllTimes(gcd_temp))
+                    GCD = gcd_temp;
+            }
+        }
+
+        /// <summary>
+        /// Checks to see if the possible GCD works for all time values.
+        /// If so, returns true, false otherwise.
+        /// </summary>
+        private static bool GCDWorksForAllTimes(double gcd_temp)
+        {
+            foreach (double time in TimeIntervals.Keys)
+            {
+                if (time % gcd_temp != 0)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Simple recursive way to find the GCD.
+        /// </summary>
+        private static double GreatestCommonDenominator(double a, double b)
+        {
+            if (a == 0)
+                return b;
+            else if (b == 0)
+                return a;
+
+            if (a > b)
+                return GreatestCommonDenominator(a % b, b);
+            else
+                return GreatestCommonDenominator(a, b % a);
+        }
+
+        #endregion
+    }
 }

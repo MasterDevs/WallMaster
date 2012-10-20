@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigChangedEventArgs.cs" />
     <Compile Include="ImageResizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickChanger.cs" />
@@ -72,6 +73,9 @@
       <DependentUpon>WallpaperPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="WallpaperConfigCollection.cs" />
+    <Compile Include="WallpaperSelectionStyle.cs" />
+    <Compile Include="WallpaperStretchStyle.cs" />
+    <Compile Include="WallpaperStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WallpaperPicker.resx">

@@ -1,101 +1,114 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace WallpaperUtils {
+namespace WallpaperUtils
+{
+    /// <summary>
+    /// The configuration class for a collection of screens
+    /// </summary>
+    public class WallpaperConfigCollection : List<WallpaperConfig>
+    {
+        public WallpaperConfigCollection() { }
 
-	/// <summary>
-	/// The configuration class for a collection of screens
-	/// </summary>
-	public class WallpaperConfigCollection : List<WallpaperConfig> {
-		public WallpaperConfigCollection() { }
+        public WallpaperConfigCollection(IEnumerable<WallpaperConfig> col)
+            : base(col) { }
 
-		public WallpaperConfigCollection(IEnumerable<WallpaperConfig> col)
-			: base(col) { }
+        public WallpaperConfigCollection(params WallpaperConfig[] col)
+            : base(col) { }
 
-		public WallpaperConfigCollection(params WallpaperConfig[] col)
-			: base(col) { }
+        public bool ContainsRandom
+        {
+            get
+            {
+                foreach (WallpaperConfig wc in this)
+                {
+                    if (wc.IsRandom) return true;
+                }
 
+                return false;
+            }
+        }
 
-		public bool ContainsRandom {
-			get {
-				foreach (WallpaperConfig wc in this) {
-					if (wc.IsRandom) return true;
-				}
+        public static WallpaperConfigCollection GetDefault(int screenCount)
+        {
+            WallpaperConfigCollection configs = new WallpaperConfigCollection();
+            for (int i = 0; i < screenCount; i++)
+            {
+                configs.Add(WallpaperConfig.GetDefault(i));
+            }
+            return configs;
+        }
 
-				return false;
-			}
-		}
+        public void ChangeRandomImage()
+        {
+            foreach (WallpaperConfig wc in this)
+            {
+                wc.ChangeRandomImage();
+            }
+        }
 
-		/// <summary>
-		/// Returns an array of Image objects corresponding with this configuration
-		/// </summary>
-		/// <remarks>An item in the array can be null</remarks>
-		/// <returns>
-		/// An array of Image objects corresponding with this configuration
-		/// </returns>
-		public Image[] GetImages() {
-			Image[] images = new Image[this.Count];
+        /// <summary>
+        /// Returns an array of colors corresponding with this configuration
+        /// </summary>
+        /// <returns>
+        /// An array of colors objects corresponding with this configuration
+        /// </returns>
+        public Color[] GetColors()
+        {
+            Color[] colors = new Color[this.Count];
 
-			int x = 0;
-			foreach (WallpaperConfig wc in this) {
-				images[x++] = wc.GetImage();
-			}
+            int x = 0;
+            foreach (WallpaperConfig wc in this)
+            {
+                colors[x++] = wc.BackgroundColor;
+            }
 
-			return images;
-		}
+            return colors;
+        }
 
-		/// <summary>
-		/// Returns an array of colors corresponding with this configuration
-		/// </summary>
-		/// <returns>
-		/// An array of colors objects corresponding with this configuration
-		/// </returns>
-		public Color[] GetColors() {
-			Color[] colors = new Color[this.Count];
+        /// <summary>
+        /// Returns an array of Image objects corresponding with this configuration
+        /// </summary>
+        /// <remarks>An item in the array can be null</remarks>
+        /// <returns>
+        /// An array of Image objects corresponding with this configuration
+        /// </returns>
+        public Image[] GetImages()
+        {
+            Image[] images = new Image[this.Count];
 
-			int x = 0;
-			foreach (WallpaperConfig wc in this) {
-				colors[x++] = wc.BackgroundColor;
-			}
+            int x = 0;
+            foreach (WallpaperConfig wc in this)
+            {
+                images[x++] = wc.GetImage();
+            }
 
-			return colors;
+            return images;
+        }
 
-		}
+        /// <summary>
+        /// Returns an array of all screen indexes contained in this collection
+        /// </summary>
+        public int[] GetScreenIndexes()
+        {
+            int[] indexes = new int[this.Count];
+            for (int i = 0; i < this.Count; i++)
+            {
+                indexes[i] = this[i].ScreenIndex;
+            }
+            return indexes;
+        }
 
-		/// <summary>
-		/// Returns an array of all screen indexes contained in this collection
-		/// </summary>
-		public int[] GetScreenIndexes() {
-			int[] indexes = new int[this.Count];
-			for (int i = 0; i < this.Count; i++) {
-				indexes[i] = this[i].ScreenIndex;
-			}
-			return indexes;
-		}
+        public WallpaperStretchStyle[] GetStretchStyles()
+        {
+            WallpaperStretchStyle[] ss = new WallpaperStretchStyle[this.Count];
 
-		public void ChangeRandomImage() {
-			foreach(WallpaperConfig wc in this){
-				wc.ChangeRandomImage();
-			}
-		}
-
-
-		public static WallpaperConfigCollection GetDefault(int screenCount) {
-			WallpaperConfigCollection configs = new WallpaperConfigCollection();
-			for (int i = 0; i < screenCount; i++) {
-				configs.Add(WallpaperConfig.GetDefault(i));
-			}
-			return configs;
-		}
-
-		public WallpaperStretchStyle[] GetStretchStyles() {
-			WallpaperStretchStyle[] ss = new WallpaperStretchStyle[this.Count];
-
-			int x = 0;
-			foreach (WallpaperConfig wc in this) {
-				ss[x++] = wc.StretchStyle;
-			}
-			return ss;
-		}
-	}
+            int x = 0;
+            foreach (WallpaperConfig wc in this)
+            {
+                ss[x++] = wc.StretchStyle;
+            }
+            return ss;
+        }
+    }
 }

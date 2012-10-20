@@ -4,185 +4,212 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace WallpaperUtils {
-	public class RandomFileFinder :IEnumerator<string> {
+namespace WallpaperUtils
+{
+    public class RandomFileFinder : IEnumerator<string>
+    {
+        private static Random _rand = new Random(DateTime.Now.Millisecond);
 
-		private static Random _rand = new Random(DateTime.Now.Millisecond);
+        #region Fields
 
-		#region Fields
-		private bool _needsReset;
+        private string _current;
+        private string _dir;
+        private Regex _filterRegex;
+        private string[] _filters;
+        private bool _includeSubDirectories;
+        private bool _needsReset;
 
-		private string _dir;
-		private bool _includeSubDirectories;
+        #endregion
 
-		private string[] _filters;
-		private Regex _filterRegex;
-		private string _current;
-		#endregion
+        #region Properties
 
+        public string DirectoryPath
+        {
+            get { return _dir; }
+            set
+            {
+                if (!Directory.Exists(value))
+                {
+                    throw new System.IO.FileNotFoundException("The path specified does not exist", value);
+                }
+                _dir = value;
+                _needsReset = true;
+            }
+        }
 
-		#region Properties
+        public string[] Filter
+        {
+            get { return _filters; }
+            set
+            {
+                _filters = value;
+                createFilterRegex();
+                _needsReset = true;
+            }
+        }
 
-		public string[] Filter {
-			get { return _filters; }
-			set {
-				_filters = value;
-				createFilterRegex();
-				_needsReset = true;
-			}
-		}
+        public bool IncludeSubDirectories
+        {
+            get { return _includeSubDirectories; }
+            set
+            {
+                _includeSubDirectories = value;
+                _needsReset = true;
+            }
+        }
 
-		public bool IncludeSubDirectories {
-			get { return _includeSubDirectories; }
-			set {
-				_includeSubDirectories = value;
-				_needsReset = true;
-			}
-		}
+        #endregion
 
+        #region CTOR
 
-		public string DirectoryPath {
-			get { return _dir; }
-			set {
-				if (!Directory.Exists(value)) {
-					throw new System.IO.FileNotFoundException("The path specified does not exist", value);
-				}
-				_dir = value;
-				_needsReset = true;
-			}
-		}
+        public RandomFileFinder(string dir, string[] filters, bool includeSubDirectories)
+        {
+            DirectoryPath = dir;
+            Filter = filters;
+            IncludeSubDirectories = includeSubDirectories;
+            _needsReset = false;
 
-		#endregion
+            MoveNext();
+        }
 
+        public RandomFileFinder(string dir) : this(dir, null, false) { }
 
-		#region CTOR
+        #endregion
 
-		public RandomFileFinder(string dir, string[] filters, bool includeSubDirectories) {
-			DirectoryPath = dir;
-			Filter = filters;
-			IncludeSubDirectories = includeSubDirectories;
-			_needsReset = false;
+        #region Public Methods
 
-			MoveNext();
-		}
+        // IEnumerator Members
+        object System.Collections.IEnumerator.Current
+        {
+            get { return Current; }
+        }
 
-		public RandomFileFinder(string dir) : this(dir, null, false) { }
+        // IEnumerator<string> Members
+        public string Current
+        {
+            get { return _current; }
+        }
 
-		#endregion
+        // IDisposable Members
+        public void Dispose() { }
 
-		#region Public Methods
+        public bool MoveNext()
+        {
+            if (_needsReset)
+            {
+                throw new Exception("Enumerator is no longer valid.  Need to call reset.");
+            }
 
-		// IEnumerator<string> Members
-		public string Current {
-			get { return _current; }
-		}
+            DirectoryInfo di = new DirectoryInfo(_dir);
+            if (di.Exists)
+            {
+                FileInfo[] files = getFileList(di, _includeSubDirectories);
 
-		// IDisposable Members
-		public void Dispose() { }
+                _current = getRandomFile(files, _filterRegex);
+            }
+            else
+            {
+                _current = null;
+            }
+            return true;
+        }
 
-		// IEnumerator Members
-		object System.Collections.IEnumerator.Current {
-			get { return Current; }
-		}
+        public void Reset()
+        {
+            _needsReset = false;
+        }
 
-		public bool MoveNext() {
-			if (_needsReset) {
-				throw new Exception("Enumerator is no longer valid.  Need to call reset.");
-			}
+        private static FileInfo[] getFileList(DirectoryInfo di, bool includeSubDirs)
+        {
+            FileInfo[] files;
 
-			DirectoryInfo di = new DirectoryInfo(_dir);
-			if (di.Exists) {
-				FileInfo[] files = getFileList(di, _includeSubDirectories);
+            if (includeSubDirs)
+            {
+                files = di.GetFiles("*", SearchOption.AllDirectories);
+            }
+            else
+            {
+                files = di.GetFiles();
+            }
 
-				_current = getRandomFile(files, _filterRegex);
-			} else {
-				_current = null;
-			}
-			return true;
-		}
+            return files;
+        }
 
-		private static FileInfo[] getFileList(DirectoryInfo di, bool includeSubDirs) {
-			FileInfo[] files;
+        private static IEnumerable<string> getFiltered(FileInfo[] files, string filterList)
+        {
+            string[] filterArr = filterList.Split(';', ',', ' ', '|');
 
-			if (includeSubDirs) {
-				files = di.GetFiles("*", SearchOption.AllDirectories);
-			} else {
-				files = di.GetFiles();
-			}
+            foreach (FileInfo fi in files)
+            {
+                foreach (string filter in filterArr)
+                {
+                    if (fi.Extension.Equals(filter, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        yield return fi.FullName;
+                    }
+                }
+            }
+        }
 
-			return files;
-		}
+        #endregion
 
-		private static IEnumerable<string> getFiltered(FileInfo[] files, string filterList) {
+        #region Helpers
 
-			string[] filterArr = filterList.Split(';', ',', ' ', '|');
+        /// <summary>
+        /// Creates a regular expression from the filter array
+        /// <example>
+        /// Input:  (".jpg", ".jpeg", ".bmp")
+        /// Output:  (.jpg|.jpeg|.bmp)$
+        /// </example>
+        /// <param name="filter">An array of file extensions</param>
+        /// <returns>The appropriate regular expression</returns>
+        private static Regex createFilterRegex(string[] filter)
+        {
+            Regex r;
 
-			foreach (FileInfo fi in files) {
-				foreach (string filter in filterArr) {
-					if (fi.Extension.Equals(filter, StringComparison.CurrentCultureIgnoreCase)) {
-						yield return fi.FullName;
-					}
-				}
-			}
-		}
+            if (filter == null)
+            {
+                r = new Regex(".");
+                return r;
+            }
+            else
+            {
+                string f = string.Join("|", filter);
+                f = string.Format("({0})$", f);
+                r = new Regex(f, RegexOptions.IgnoreCase);
+            }
+            return r;
+        }
 
-		public void Reset() {
-			_needsReset = false;
-		}
+        private static string getRandomFile(FileInfo[] files, Regex filter)
+        {
+            IEnumerable<FileInfo> filtered = files.Where(x => filter.IsMatch(x.Extension));
 
+            List<FileInfo> filteredList = new List<FileInfo>(filtered);
 
-		#endregion
+            if (filteredList.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                int idx = _rand.Next(0, filteredList.Count);
+                return filteredList[idx].FullName;
+            }
+        }
 
+        /// <summary>
+        /// Creates a regular expression from the filter array
+        /// <example>
+        /// Input:  (".jpg", ".jpeg", ".bmp")
+        /// Output:  (.jpg|.jpeg|.bmp)$
+        /// </example>
+        /// </summary>
+        private void createFilterRegex()
+        {
+            _filterRegex = createFilterRegex(_filters);
+        }
 
-		#region Helpers
-		private static string getRandomFile(FileInfo[] files, Regex filter) {
-			IEnumerable<FileInfo> filtered = files.Where(x => filter.IsMatch(x.Extension));
-
-			List<FileInfo> filteredList = new List<FileInfo>(filtered);
-
-			if (filteredList.Count == 0) {
-				return null;
-			} else {
-				int idx = _rand.Next(0, filteredList.Count);
-				return filteredList[idx].FullName;
-			}
-		}
-
-
-		/// <summary>
-		/// Creates a regular expression from the filter array
-		/// <example>
-		/// Input:  (".jpg", ".jpeg", ".bmp")
-		/// Output:  (.jpg|.jpeg|.bmp)$
-		/// </example>
-		/// </summary>
-		private void createFilterRegex() {
-			_filterRegex = createFilterRegex(_filters);
-		}
-
-		/// <summary>
-		/// Creates a regular expression from the filter array
-		/// <example>
-		/// Input:  (".jpg", ".jpeg", ".bmp")
-		/// Output:  (.jpg|.jpeg|.bmp)$
-		/// </example>
-		/// <param name="filter">An array of file extensions</param>
-		/// <returns>The appropriate regular expression</returns>
-		private static Regex createFilterRegex(string[] filter) {
-			Regex r;
-
-			if (filter == null) {
-				r = new Regex(".");
-				return r;
-			} else {
-
-				string f = string.Join("|", filter);
-				f = string.Format("({0})$", f);
-				r = new Regex(f, RegexOptions.IgnoreCase);
-			}
-			return r;
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

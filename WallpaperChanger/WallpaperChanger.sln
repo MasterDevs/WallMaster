@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperChanger", "WallpaperChanger\WallpaperChanger.csproj", "{3CD05B18-F1FA-4516-8516-71D2333B8801}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperUtils", "WallpaperUtils\WallpaperUtils.csproj", "{840211A3-9EF9-43FA-A174-B78DE8DC9A19}"
@@ -10,6 +10,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolution", "Resolution\Resolution.csproj", "{02D91A05-FFBA-466F-A0C6-D32F51406EE3}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WallpaperChanger\\WallpaperChanger.csproj
+		SccProjectName1 = WallpaperChanger
+		SccLocalPath1 = WallpaperChanger
+		SccProjectUniqueName2 = WallpaperUtils\\WallpaperUtils.csproj
+		SccProjectName2 = WallpaperUtils
+		SccLocalPath2 = WallpaperUtils
+		SccProjectUniqueName3 = Resolution\\Resolution.csproj
+		SccProjectName3 = Resolution
+		SccLocalPath3 = Resolution
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

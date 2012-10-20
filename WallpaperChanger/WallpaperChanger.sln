@@ -5,11 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperChanger", "Wallpap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WallpaperUtils", "WallpaperUtils\WallpaperUtils.csproj", "{840211A3-9EF9-43FA-A174-B78DE8DC9A19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolution", "Resolution\Resolution.csproj", "{02D91A05-FFBA-466F-A0C6-D32F51406EE3}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -19,9 +17,6 @@ Global
 		SccProjectUniqueName2 = WallpaperUtils\\WallpaperUtils.csproj
 		SccProjectName2 = WallpaperUtils
 		SccLocalPath2 = WallpaperUtils
-		SccProjectUniqueName3 = Resolution\\Resolution.csproj
-		SccProjectName3 = Resolution
-		SccLocalPath3 = Resolution
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +31,6 @@ Global
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840211A3-9EF9-43FA-A174-B78DE8DC9A19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02D91A05-FFBA-466F-A0C6-D32F51406EE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -43,7 +43,7 @@ namespace WallpaperUtils {
 		/// <summary>
 		/// Image is centered unless it is larger then the desktop.
 		/// If it's larger then the desktop, it will be fit,
-		/// perserving it's aspect ratio.
+		/// preserving it's aspect ratio.
 		/// </summary>
 		CenterFit = 1,
 
@@ -56,7 +56,7 @@ namespace WallpaperUtils {
 
 		/// <summary>
 		/// If the image is larger than the size of the screen
-		/// then resize it to fit; aspect ratio is maintaned, 
+		/// then resize it to fit; aspect ratio is maintained, 
 		/// </summary>
 		Fit = 3,
 
@@ -184,7 +184,7 @@ namespace WallpaperUtils {
 		}
 
 		/// <summary>
-		/// Gets a defult configuration.
+		/// Gets a default configuration.
 		/// </summary>
 		/// <param name="screenIndex">Index of the screen that the config will be created for</param>
 		/// <exception cref="ArgumentException">ArgumentException will be fired if an invalid

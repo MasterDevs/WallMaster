@@ -45,7 +45,7 @@ namespace WallpaperUtils {
 			get { return _dir; }
 			set {
 				if (!Directory.Exists(value)) {
-					throw new System.IO.FileNotFoundException("The path specefied does not exist", value);
+					throw new System.IO.FileNotFoundException("The path specified does not exist", value);
 				}
 				_dir = value;
 				_needsReset = true;
@@ -150,7 +150,7 @@ namespace WallpaperUtils {
 
 
 		/// <summary>
-		/// Creates a regular expresion from the filter array
+		/// Creates a regular expression from the filter array
 		/// <example>
 		/// Input:  (".jpg", ".jpeg", ".bmp")
 		/// Output:  (.jpg|.jpeg|.bmp)$
@@ -161,7 +161,7 @@ namespace WallpaperUtils {
 		}
 
 		/// <summary>
-		/// Creates a regular expresion from the filter array
+		/// Creates a regular expression from the filter array
 		/// <example>
 		/// Input:  (".jpg", ".jpeg", ".bmp")
 		/// Output:  (.jpg|.jpeg|.bmp)$

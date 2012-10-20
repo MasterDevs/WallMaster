@@ -2,8 +2,8 @@
 using System.Drawing.Imaging;
 namespace WallpaperUtils {
 	/// <summary>
-	/// This class exists to provide quick access to some ruitine tasks such as:
-	/// <para>Change Wallpaper [Scree 1, 2 or Both]</para>
+	/// This class exists to provide quick access to some routine tasks such as:
+	/// <para>Change Wallpaper [Screen 1, 2 or Both]</para>
 	/// <para>Adjust for resolution change</para>
 	/// </summary>
 	public class QuickChanger {
@@ -93,7 +93,7 @@ namespace WallpaperUtils {
 				Configuration[index].ChangeRandomImage();
 			}
 
-			//-- Intialize the screens
+			//-- Initialize the screens
 			InitScreens(false);
 			
 			//-- Set the wallpaper

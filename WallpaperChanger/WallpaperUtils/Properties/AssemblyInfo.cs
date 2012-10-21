@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WallpaperUtils")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Master Developers")]
+[assembly: AssemblyCompany("MasterDevs")]
 [assembly: AssemblyProduct("WallpaperUtils")]
 [assembly: AssemblyCopyright("Copyright © Master Developers 2009")]
 [assembly: AssemblyTrademark("")]

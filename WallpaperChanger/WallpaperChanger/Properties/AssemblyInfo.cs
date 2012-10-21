@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WallMaster")]
 [assembly: AssemblyDescription("WallMaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Master Developers")]
+[assembly: AssemblyCompany("MasterDevs")]
 [assembly: AssemblyProduct("WallMaster")]
 [assembly: AssemblyCopyright("Copyright © Master Developers 2009")]
 [assembly: AssemblyTrademark("")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.*")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.*")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

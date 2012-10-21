@@ -103,5 +103,10 @@ namespace WallpaperChanger
         {
             Process.Start("http://wallmaster.codeplex.com/");
         }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://MasterDevs.com/");
+        }
     }
 }

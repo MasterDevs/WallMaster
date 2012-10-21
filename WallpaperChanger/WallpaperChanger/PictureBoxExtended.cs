@@ -50,7 +50,7 @@ namespace WallpaperChanger
         /// Determines if the given client coordinates are located
         /// over the image
         /// </summary>
-        /// <param name="p">Client Coordinates of the PictureBoxExtended</param>
+        /// <param name="clientPoint">Client Coordinates of the PictureBoxExtended</param>
         /// <returns>True if the client coordinates are over the image, false otherwise</returns>
         public bool LocationOverImage(Point clientPoint)
         {
@@ -65,7 +65,7 @@ namespace WallpaperChanger
 
         /// <summary>
         /// Translates a point to coordinates relative to the <see cref="PictureBox.Image">Image</see>.
-        /// The supplied point is taken relativce to the control's upper left corner
+        /// The supplied point is taken relative to the control's upper left corner
         /// </summary>
         /// <param name="controlCoordinates">The point to translate, relative to the control's upper left corner.</param>
         /// <returns>A new point representing where over the <see cref="PictureBox.Image">Image</see> the supplied point is.</returns>
@@ -154,11 +154,11 @@ namespace WallpaperChanger
             int diffWidth = Width - Image.Width;
             int diffHeight = Height - Image.Height;
 
-            //	We now divide in half to accomadate each side of the image
+            //	We now divide in half to accommodate each side of the image
             diffWidth /= 2;
             diffHeight /= 2;
 
-            //	Finally, we subtract this numer from the original coordinates
+            //	Finally, we subtract this number from the original coordinates
             // In the case that the image is larger than the picture box, this still works
             coordinates.X -= diffWidth;
             coordinates.Y -= diffHeight;

@@ -91,7 +91,7 @@ namespace WallpaperUtils
                 bool NoRandomScreenConfig = true;
                 foreach (var c in configs)
                 {
-                    if (c.IsRandom && c.ScreenIndex < Screen.AllScreens.Length)
+                    if (c.IsRandom && c.ScreenIndex < Screen.AllScreenCount)
                     {
                         NoRandomScreenConfig = false;
                         break;

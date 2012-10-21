@@ -350,7 +350,6 @@
             this.Text = "WallMaster";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WallpaperChangerForm_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.WallpaperChangerForm_VisibleChanged);
-            this.Resize += new System.EventHandler(this.WallpaperChangerForm_Resize);
             this._NI_ContextMenu.ResumeLayout(false);
             this._MainMenuStrip.ResumeLayout(false);
             this._MainMenuStrip.PerformLayout();

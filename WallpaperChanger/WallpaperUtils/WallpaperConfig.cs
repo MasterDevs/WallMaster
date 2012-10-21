@@ -94,7 +94,7 @@ namespace WallpaperUtils
         /// <returns></returns>
         public static WallpaperConfig GetDefault(int screenIndex)
         {
-            if (screenIndex > -1 && screenIndex < Screen.AllScreens.Length)
+            if (screenIndex > -1 && screenIndex < Screen.AllScreenCount)
             {
                 WallpaperConfig config = new WallpaperConfig();
                 config.BackgroundColor = Color.Black;

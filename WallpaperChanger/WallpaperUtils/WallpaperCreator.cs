@@ -30,7 +30,6 @@ namespace WallpaperUtils
 
         /// <summary>
         /// This is the 0,0 location on the composite desktop image.
-        /// It's used to tra
         /// </summary>
         private Point refPoint;
 
@@ -355,10 +354,10 @@ namespace WallpaperUtils
 
         /// <summary>
         /// Retrieves a cached Bitmap or reads from disk.
-        /// If filename is not valid, null is retured
+        /// If filename is not valid, null is returned
         /// </summary>
         /// <param name="idx">Which screen this is for (used for caching)</param>
-        /// <returns>A Bitmap if found or on disk, null if an error occured</returns>
+        /// <returns>A Bitmap if found or on disk, null if an error occurred</returns>
         private Bitmap GetBitmap(int idx)
         {
             string filename = wallpaperFilenames[idx];
@@ -422,7 +421,7 @@ namespace WallpaperUtils
             desktopBitmap = new Bitmap(correctedBounds.Width, correctedBounds.Height);
 
             //-- Set PreviewBounds so we can correctly map a point on the image to a particular screen index
-            for (int i = 0; i < Screen.AllScreens.Length; i++)
+            for (int i = 0; i < Screen.AllScreenCount; i++)
             {
                 previewBounds[i] = GetPreviewBounds(Screen.AllScreens[i].Bounds);
             }
@@ -450,7 +449,7 @@ namespace WallpaperUtils
         /// images (IE 2 desktops) then this will return the zero-based index of the
         /// corresponding image.
         /// </summary>
-        /// <param name="p">Locaiton in Image Coordinates</param>
+        /// <param name="p">Location in Image Coordinates</param>
         /// <returns>The index of the image that p resides in, otherwise -1 if p is outside the bounds of the image</returns>
         public int GetIndexFromPointOnPreviewImage(Point p)
         {

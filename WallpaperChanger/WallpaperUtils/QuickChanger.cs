@@ -166,13 +166,13 @@ namespace WallpaperUtils
 
             if (CouldNotLoadConfiguration) { return; }
 
-            if (Screen.AllScreens.Length > Configuration.Count)
+            if (Screen.AllScreenCount > Configuration.Count)
             {
                 _result = QuickChangeResult.ScreenCountConfigurationCountMisMatch;
                 return;
             }
 
-            InitScreens(0, Screen.AllScreens.Length, false);
+            InitScreens(0, Screen.AllScreenCount, false);
 
             SetWallpaperAndSave();
 
@@ -226,7 +226,10 @@ namespace WallpaperUtils
         /// </summary>
         /// <param name="change">True if you want to change any random screen</param>
         /// <returns>True if there was a random screen, false otherwise</returns>
-        private static bool InitScreens(bool change) { return InitScreens(0, Screen.AllScreens.Length, change); }
+        private static bool InitScreens(bool change)
+        {
+            return InitScreens(0, Screen.AllScreenCount, change);
+        }
 
         /// <summary>
         /// Checks if the screen index is between 0 and Screen Count - 1
@@ -234,7 +237,9 @@ namespace WallpaperUtils
         /// <returns>True if screenIndex is valid, false otherwise</returns>
         private static bool InValidScreenIndex(int screenIndex)
         {
-            if (screenIndex < 0 || screenIndex > (Configuration.Count - 1) || screenIndex > (Screen.AllScreens.Length - 1))
+            if (screenIndex < 0 || 
+                screenIndex > (Configuration.Count - 1) || 
+                screenIndex > (Screen.AllScreenCount - 1))
             {
                 _result = QuickChangeResult.InvalidScreenIndex;
                 return true; //-- Invalid Screen Index

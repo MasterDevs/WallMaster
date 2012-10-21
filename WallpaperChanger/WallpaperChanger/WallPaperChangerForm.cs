@@ -71,7 +71,7 @@ namespace WallpaperChanger
             Configurations = WallpaperConfigManager.Load();
             if (Configurations == null)
             {
-                Configurations = WallpaperConfigCollection.GetDefault(Screen.AllScreens.Length);
+                Configurations = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
             }
 
             InitScreens();
@@ -105,7 +105,7 @@ namespace WallpaperChanger
 
         /// <summary>
         /// We need to detach the DisplaySettingsChangedEventHandler because it's
-        /// attached to a static event. Withought this, our application can
+        /// attached to a static event. Without this, our application can
         /// generate memory leaks.
         /// </summary>
         private void Application_ApplicationExit(object sender, EventArgs e)
@@ -125,13 +125,13 @@ namespace WallpaperChanger
             int index = Creator.GetIndexFromPointOnPreviewImage(_PreviewImageBox.MousePositionOnImage);
             if (index != -1)
             {
-                //-- Save Current config to Configurations
+                //-- Save current config to configurations
                 Configurations[Creator.SelectedIndex] = _WallpaperPicker.Config;
 
-                //-- Set New Selected Index for Creator
+                //-- Set new selected index for creator
                 Creator.SelectedIndex = index;
 
-                //-- Pause Raising Config Changed Event
+                //-- Pause raising config changed event
                 _WallpaperPicker.RaiseEvents = false;
 
                 //-- Initialize WallpaperConfig to be the new configuration
@@ -142,10 +142,10 @@ namespace WallpaperChanger
                 //-- Get the preview image to display the border around the newly selected image
                 ResetPreviewImage();
 
-                //-- Resume Raising Config Changed Event
+                //-- Resume raising config changed event
                 _WallpaperPicker.RaiseEvents = true;
 
-                //-- Change Current Index
+                //-- Change current index
                 CurrentIndex = index;
             }
         }
@@ -161,13 +161,8 @@ namespace WallpaperChanger
             int idx = Creator.SelectedIndex;
             if (idx != -1)
             {
-                //-- Set screen index
                 e.Config.ScreenIndex = idx;
-
-                //-- Intialize this screen
                 Creator.InitScreen(e.Config);
-
-                //-- Reset Preview Image
                 ResetPreviewImage();
             }
 
@@ -197,16 +192,6 @@ namespace WallpaperChanger
         }
 
         /// <summary>
-        /// This method will resize the splitter so that the picture
-        /// takes up as much room as possible.
-        /// </summary>
-        private void WallpaperChangerForm_Resize(object sender, EventArgs e)
-        {
-            //_MainSplitContainer.SplitterDistance =
-            //				_MainSplitContainer.Height - _MainSplitContainer.Panel2MinSize;
-        }
-
-        /// <summary>
         /// This method will Start / Stop the Changer whether the form
         /// is not visible / visible respectively.
         /// </summary>
@@ -218,7 +203,9 @@ namespace WallpaperChanger
                 RefreshConfiguration();
             }
             else
+            {
                 WallpaperConfigChanger.Start();
+            }
         }
 
         #endregion
@@ -262,6 +249,12 @@ namespace WallpaperChanger
             PopulateMenuItems(_FMI_ChangeWallpaper, _FMI_CW_ChangeAllWallpapers);
         }
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox ab = new AboutBox();
+            ab.ShowDialog(this);
+        }
+
         /// <summary>
         /// Changes one or all wallpapers, depending on
         /// the tag of the ToolStripMenu item sender
@@ -300,18 +293,18 @@ namespace WallpaperChanger
             changeWallpaper.Click -= ChangeWallpaperEventHandler;
 
             //-- If we only have 1 monitor, we don't need to have any drop downs
-            if (Screen.AllScreens.Length == 1)
+            if (WallpaperUtils.Screen.AllScreenCount == 1)
             {
                 changeWallpaper.Click += ChangeWallpaperEventHandler;
                 changeWallpaper.Tag = 0;
             }
             else
-            { //-- More then 1 monitor
+            { //-- More than 1 monitor
                 changeAll.Tag = -1;
                 changeWallpaper.DropDownItems.Add(changeAll);
 
                 changeWallpaper.DropDownItems.Add(new ToolStripSeparator());
-                for (int i = 0; i < Screen.AllScreens.Length; i++)
+                for (int i = 0; i < WallpaperUtils.Screen.AllScreenCount; i++)
                 {
                     ToolStripMenuItem tsmi = new ToolStripMenuItem(string.Format("Change Screen {0}", (i + 1)));
                     tsmi.Click += ChangeWallpaperEventHandler;
@@ -341,7 +334,7 @@ namespace WallpaperChanger
         private int CurrentIndex { get; set; }
 
         /// <summary>
-        /// This property will be used to denote wheter or not a user has made a change.
+        /// This property will be used to denote whether or not a user has made a change.
         /// </summary>
         private bool UserHasMadeAChange
         {
@@ -354,16 +347,11 @@ namespace WallpaperChanger
             WallpaperConfigManager.Save(Configurations);
             string path = WallpaperConfigManager.WallpaperPath;
             Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
+
             WallpaperManager.SetWallpaper(path);
             GC.Collect(); //-- Force another collection
         }
 
         #endregion
-
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutBox ab = new AboutBox();
-            ab.ShowDialog(this);
-        }
     }
 }

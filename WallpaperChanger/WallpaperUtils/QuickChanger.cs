@@ -175,7 +175,7 @@ namespace WallpaperUtils
             InitScreens(0, Screen.AllScreenCount, false);
 
             SetWallpaperAndSave();
-
+            Creator.Update(false, true);
             _result = QuickChangeResult.Success;
         }
 
@@ -237,8 +237,8 @@ namespace WallpaperUtils
         /// <returns>True if screenIndex is valid, false otherwise</returns>
         private static bool InValidScreenIndex(int screenIndex)
         {
-            if (screenIndex < 0 || 
-                screenIndex > (Configuration.Count - 1) || 
+            if (screenIndex < 0 ||
+                screenIndex > (Configuration.Count - 1) ||
                 screenIndex > (Screen.AllScreenCount - 1))
             {
                 _result = QuickChangeResult.InvalidScreenIndex;
@@ -266,12 +266,17 @@ namespace WallpaperUtils
         private static void SetWallpaperAndSave()
         {
             string path = WallpaperConfigManager.WallpaperPath;
-            Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
+            lock (lockObj)
+            {
+                Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
+            }
             WallpaperManager.SetWallpaper(path);
 
             //-- Save the configuration so we know what the current images are
             WallpaperConfigManager.Save(Configuration);
         }
+
+        private static readonly object lockObj = new object();
 
         #endregion
     }

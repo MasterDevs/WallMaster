@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
 namespace WallpaperUtils
 {
+    [DebuggerDisplay("Screen {Index}:  ({Bounds.X}, {Bounds.Y}) {Bounds.Width}x{Bounds.Height}")]
     public class Screen
     {
         public Screen(bool isPrimary, Rectangle bounds)

@@ -121,7 +121,7 @@ namespace WallpaperUtils
         /// <param name="image">Image that we'll be drawing to the graphic</param>
         /// <param name="bounds">The bounds for this screen</param>
         /// <param name="idx">Index to the background color we'll be using</param>
-        private void AddImageToDesktop(Graphics g, Bitmap image, Rectangle bounds, int idx)
+        private void AddImageToDesktop(Graphics g, Bitmap image, Rectangle bounds, int idx, Point minimumBounds)
         {
             // Draw the background color
             g.FillRectangle(BackgroundColors[idx], bounds);
@@ -130,44 +130,46 @@ namespace WallpaperUtils
             if (image == null)
                 return;
 
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
             Rectangle sourceBounds = new Rectangle(0, 0, image.Width, image.Height);
             bounds = ImageResizer.ResizeImage(image.Size, bounds, Styles[idx]);
+            bounds.X = bounds.X + Math.Abs(minimumBounds.X);
+            bounds.Y = bounds.Y + Math.Abs(minimumBounds.Y);
 
-            // If image is drawn outside of viewable area, it must be "wrapped" around
-            if (bounds.X < 0 || bounds.Y < 0 ||
-                    (bounds.X + bounds.Width > desktopBitmap.Width) || (bounds.Y + bounds.Height > desktopBitmap.Height))
-            {
-                // Draw the first half
-                int x = bounds.X, y = bounds.Y;
+            //// If image is drawn outside of viewable area, it must be "wrapped" around
+            //if (bounds.X < 0 || bounds.Y < 0 ||
+            //        (bounds.X + bounds.Width > desktopBitmap.Width) || (bounds.Y + bounds.Height > desktopBitmap.Height))
+            //{
+            //    // Draw the first half
+            //    int x = bounds.X, y = bounds.Y;
 
-                if (bounds.Y < 0)
-                    y = desktopBitmap.Height + bounds.Y;
-                else if (bounds.Y + bounds.Height > desktopBitmap.Height)
-                    y = 0 - (desktopBitmap.Height - bounds.Height + bounds.Y);
+            //    if (bounds.Y < 0)
+            //        y = desktopBitmap.Height + bounds.Y;
+            //    else if (bounds.Y + bounds.Height > desktopBitmap.Height)
+            //        y = 0 - (desktopBitmap.Height - bounds.Height + bounds.Y);
 
-                if (bounds.X < 0)
-                    x = desktopBitmap.Width + bounds.X;
-                else if (bounds.X + bounds.Width > desktopBitmap.Width)
-                    x = 0 - (desktopBitmap.Width - bounds.Width - bounds.X);
+            //    if (bounds.X < 0)
+            //        x = desktopBitmap.Width + bounds.X;
+            //    else if (bounds.X + bounds.Width > desktopBitmap.Width)
+            //        x = 0 - (desktopBitmap.Width - bounds.Width - bounds.X);
 
-                // Draw original coordinates
-                g.DrawImage(image, new Rectangle(x, y, bounds.Width, bounds.Height),
-                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+            //    // Draw original coordinates
+            //    var dest = new Rectangle(x, y, bounds.Width, bounds.Height);
+            //    var source = new Rectangle(0, 0, image.Width, image.Height);
+            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
 
-                // Draw with corrected Y coordinate
-                g.DrawImage(image, new Rectangle(x, bounds.Y, bounds.Width, bounds.Height),
-                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+            //    // Draw with corrected Y coordinate
+            //    dest = new Rectangle(x, bounds.Y, bounds.Width, bounds.Height);
+            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
 
-                // Draw with corrected X coordinate
-                g.DrawImage(image, new Rectangle(bounds.X, y, bounds.Width, bounds.Height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
-            }
-            else
-            {
-                // Draw the image once, fully in the viewable area
-                g.DrawImage(image, bounds, sourceBounds, GraphicsUnit.Pixel);
-            }
+            //    // Draw with corrected X coordinate
+            //    dest = new Rectangle(bounds.X, y, bounds.Width, bounds.Height);
+            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
+            //}
+            //else
+            //{
+            // Draw the image once, fully in the viewable area
+            g.DrawImage(image, bounds, sourceBounds, GraphicsUnit.Pixel);
+            //}
         }
 
         private Bitmap GetResizedBitmap(int idx)
@@ -199,11 +201,22 @@ namespace WallpaperUtils
         /// </summary>
         private void UpdateDesktopImage()
         {
+            Point minimumBounds = new Point(0, 0);
+            foreach (var screen in Screens)
+            {
+                if (screen.Bounds.X < minimumBounds.X) minimumBounds.X = screen.Bounds.X;
+                if (screen.Bounds.Y < minimumBounds.Y) minimumBounds.Y = screen.Bounds.Y;
+            }
+
             using (Graphics g = Graphics.FromImage(desktopBitmap))
             {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 for (int idx = 0; idx < Screens.Length; idx++)
                 {
-                    AddImageToDesktop(g, GetResizedBitmap(idx), Screens[idx].Bounds, idx);
+                    using (var image = GetResizedBitmap(idx))
+                    {
+                        AddImageToDesktop(g, image, Screens[idx].Bounds, idx, minimumBounds);
+                    }
                 }
             }
         }

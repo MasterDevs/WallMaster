@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoundsBuilder.cs" />
     <Compile Include="ConfigChangedEventArgs.cs" />
     <Compile Include="ImageResizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

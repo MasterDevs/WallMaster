@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -27,7 +28,7 @@ namespace WallpaperUtils
         private Bitmap previewBitmap = null, desktopBitmap = null;
         private string PreviewBitmapChecksum;
         private int PreviewBoundsDivider = 4;
-
+        private readonly BoundsBuilder _boundsBuilder;
         /// <summary>
         /// This is the 0,0 location on the composite desktop image.
         /// </summary>
@@ -40,8 +41,9 @@ namespace WallpaperUtils
         public WallpaperCreator()
         {
             UpdateMonitorBounds();
+            _boundsBuilder = new BoundsBuilder();
 
-            // Initialize collections (should really be re-init'd when screens change...)
+            // Initialize collections (should really be re-initialized when screens change...)
             wallpaperFilenames = new string[Screens.Length];
             previewBounds = new Rectangle[Screens.Length];
             BackgroundColors = new Brush[Screens.Length];
@@ -135,41 +137,7 @@ namespace WallpaperUtils
             bounds.X = bounds.X + Math.Abs(minimumBounds.X);
             bounds.Y = bounds.Y + Math.Abs(minimumBounds.Y);
 
-            //// If image is drawn outside of viewable area, it must be "wrapped" around
-            //if (bounds.X < 0 || bounds.Y < 0 ||
-            //        (bounds.X + bounds.Width > desktopBitmap.Width) || (bounds.Y + bounds.Height > desktopBitmap.Height))
-            //{
-            //    // Draw the first half
-            //    int x = bounds.X, y = bounds.Y;
-
-            //    if (bounds.Y < 0)
-            //        y = desktopBitmap.Height + bounds.Y;
-            //    else if (bounds.Y + bounds.Height > desktopBitmap.Height)
-            //        y = 0 - (desktopBitmap.Height - bounds.Height + bounds.Y);
-
-            //    if (bounds.X < 0)
-            //        x = desktopBitmap.Width + bounds.X;
-            //    else if (bounds.X + bounds.Width > desktopBitmap.Width)
-            //        x = 0 - (desktopBitmap.Width - bounds.Width - bounds.X);
-
-            //    // Draw original coordinates
-            //    var dest = new Rectangle(x, y, bounds.Width, bounds.Height);
-            //    var source = new Rectangle(0, 0, image.Width, image.Height);
-            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
-
-            //    // Draw with corrected Y coordinate
-            //    dest = new Rectangle(x, bounds.Y, bounds.Width, bounds.Height);
-            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
-
-            //    // Draw with corrected X coordinate
-            //    dest = new Rectangle(bounds.X, y, bounds.Width, bounds.Height);
-            //    g.DrawImage(image, dest, source, GraphicsUnit.Pixel);
-            //}
-            //else
-            //{
-            // Draw the image once, fully in the viewable area
             g.DrawImage(image, bounds, sourceBounds, GraphicsUnit.Pixel);
-            //}
         }
 
         private Bitmap GetResizedBitmap(int idx)
@@ -201,12 +169,8 @@ namespace WallpaperUtils
         /// </summary>
         private void UpdateDesktopImage()
         {
-            Point minimumBounds = new Point(0, 0);
-            foreach (var screen in Screens)
-            {
-                if (screen.Bounds.X < minimumBounds.X) minimumBounds.X = screen.Bounds.X;
-                if (screen.Bounds.Y < minimumBounds.Y) minimumBounds.Y = screen.Bounds.Y;
-            }
+            var minimumBounds = this._boundsBuilder.GetMinimumBounds(Screens);
+            var bounds = this._boundsBuilder.GetWallpaperBoundsForScreens(Screens).ToList();
 
             using (Graphics g = Graphics.FromImage(desktopBitmap))
             {
@@ -215,7 +179,7 @@ namespace WallpaperUtils
                 {
                     using (var image = GetResizedBitmap(idx))
                     {
-                        AddImageToDesktop(g, image, Screens[idx].Bounds, idx, minimumBounds);
+                        AddImageToDesktop(g, image, bounds[idx], idx, minimumBounds);
                     }
                 }
             }

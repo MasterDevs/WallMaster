@@ -2,26 +2,39 @@
 using System.Windows.Forms;
 using WallpaperUtils;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace WallpaperChanger
 {
     internal static class Program
     {
+        private const string HELP_TEXT =
+@"Invalid Arguments. Please enter a valid argument:
+
+-c -- Change all wallpapers
+-c index -- Change wallpaper for specific screen where index is either 0 or 1
+-u -- Update wallpaper for resolution change";
+
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         public static void Main(string[] args)
         {
+            logger.Info("Application started");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ParseArgs(args);
+            logger.Info("Application closed");
         }
 
         /// <summary>
-        /// This method will check for all argument variations of a desired arg
+        /// This method will check for all argument variations of a desired argument
         /// </summary>
         /// <param name="desiredArg">Just the character, no flags like '/' or '-' or '--'</param>
-        /// <returns>True if inputted arg is the desired argument</returns>
+        /// <returns>True if inputted argument is the desired argument</returns>
         private static bool CheckArg(string inputedArg, string desiredArg)
         {
             return
@@ -32,54 +45,76 @@ namespace WallpaperChanger
                 inputedArg == string.Format(@"\{0}", desiredArg);
         }
 
-        private static void ParseArgs(string[] args)
+        private static void HandleComplexArgumens(string[] args)
         {
-            WallpaperChangerForm wcf;
+            string arg = args[0].ToLower();
+            string screenIndex = args[1];
 
-            //-- Just run application if there are no arguments
-            if (args.Length < 1)
-                Application.Run(new WallpaperChangerForm());
+            logger.InfoFormat("Started with the following arguments:  [{0}], [{1}]", arg, screenIndex);
 
-            //-- Simple Arguments
-            else if (args.Length < 2)
+            int index;
+            if (CheckArg(arg, "c") && int.TryParse(screenIndex, out index))
             {
-                string arg = args[0].ToLower();
-                if (CheckArg(arg, "c"))				//-- Change All Wallpapers
-                    QuickChanger.ChangeAllWallpapers();
-                else if (CheckArg(arg, "u"))	//-- Update Wallpaper for resolution change
-                    QuickChanger.Update();
-                else if (CheckArg(arg, "h"))
-                { //-- Hidden Mode - Start Minimized to Tray
-                    wcf = new WallpaperChangerForm();
-
-                    //-- If the user has random wallpapers, we need to begin changing
-                    WallpaperConfigChanger.Start();
-                    Application.Run();
-                }
+                QuickChanger.ChangeWallpaper(index);
             }
-
-            //-- Complex Arguments
-            else if (args.Length < 3)
-            {
-                string arg = args[0].ToLower();
-                int index;
-                if (CheckArg(arg, "c") && int.TryParse(args[1], out index))
-                {
-                    QuickChanger.ChangeWallpaper(index);
-                }
-            }
-
-            //-- Invalid Arguments -- [Exit]
             else
             {
-                MessageBox.Show(
-@"Invalid Arguments. Please enter a valid argument:
+                logger.Fatal("Failed to handle arguments");
+            }
+        }
 
--c -- Change all wallpapers
--c index -- Change wallpaper for specific screen where index is either 0 or 1
--u -- Update wallpaper for resolution change",
-    "Invalid Arguments", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                Application.Exit();
+        private static void HandleInvalidArguments()
+        {
+            MessageBox.Show(HELP_TEXT,
+                "Invalid Arguments",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
+
+            logger.Fatal(HELP_TEXT);
+            logger.Fatal("Application closing because of invalid arguments");
+
+            Application.Exit();
+        }
+
+        private static void HandleNoArguments()
+        {
+            logger.Info("No arguments provided, opening wallpaper configuration form");
+            Application.Run(new WallpaperChangerForm());
+        }
+
+        private static void HandleSimpleArguments(string[] args)
+        {
+            string arg = args[0].ToLower();
+            logger.Info("Started with the following arguments:  " + arg);
+
+            if (CheckArg(arg, "c"))
+            {
+                QuickChanger.ChangeAllWallpapers();
+            }
+            else if (CheckArg(arg, "u"))
+            {
+                // Update Wallpaper for resolution change
+                QuickChanger.Update();
+            }
+            else if (CheckArg(arg, "h"))
+            {
+                //-- Hidden Mode - Start Minimized to Tray
+                new WallpaperChangerForm();
+
+                WallpaperConfigChanger.Start(); // If the user has random wallpapers, we need to begin changing
+                Application.Run();
+            }
+        }
+
+        private static void ParseArgs(string[] args)
+        {
+            switch (args.Length)
+            {
+                case 0: HandleNoArguments(); return;
+                case 1: HandleSimpleArguments(args); return;
+                case 2: HandleComplexArgumens(args); return;
+                default: HandleInvalidArguments(); return;
             }
         }
     }

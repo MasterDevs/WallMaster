@@ -10,50 +10,6 @@ namespace WallpaperUtils
     /// </summary>
     public static class QuickChanger
     {
-        #region private enum QuickChangeResult
-
-        private enum QuickChangeResult
-        {
-            /// <summary>
-            /// There was an error loading the configuration.
-            /// </summary>
-            CouldNotLoadConfiguration,
-
-            /// <summary>
-            /// Submitted screen index is either:
-            /// <para>Less than 0</para>
-            /// <para>Outside bounds of Screen Configurations</para>
-            /// <para>Outside bounds of current screen count</para>
-            /// </summary>
-            InvalidScreenIndex,
-
-            /// <summary>
-            /// Default value.
-            /// </summary>
-            None,
-
-            /// <summary>
-            /// The configuration for the desired screen index
-            /// is not set to random and therefore we don't have a
-            /// random file directory and can't change the wallpaper.
-            /// <para>This will also be set when changing all wallpapers
-            /// and no screen has a random path</para>
-            /// </summary>
-            NoRandomPathAssociatedWithScreenIndex,
-
-            /// <summary>
-            /// We have more active screens then the number of configurations.
-            /// </summary>
-            ScreenCountConfigurationCountMisMatch,
-
-            /// <summary>
-            /// Wallpaper quick change event executed successfully.
-            /// </summary>
-            Success
-        }
-
-        #endregion
-
         private static readonly object lockObj;
         private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static WallpaperConfigCollection Configuration;
@@ -62,22 +18,9 @@ namespace WallpaperUtils
         static QuickChanger()
         {
             lockObj = new object();
-            Result = QuickChangeResult.None;
         }
 
-        private static bool CouldNotLoadConfiguration
-        {
-            get
-            {
-                if (Configuration == null)
-                {
-                    Result = QuickChangeResult.CouldNotLoadConfiguration;
-                    return true;
-                }
-                else return false;
-            }
-        }
-        private static QuickChangeResult Result { get; set; }
+        private static bool CouldNotLoadConfiguration { get { return Configuration == null; } }
 
         /// <summary>
         /// Changes all background images for screens that's configuration is set to
@@ -100,14 +43,12 @@ namespace WallpaperUtils
             {
                 logger.Error("Could not change any wallpapers:  No random wallpapers in configuration");
 
-                Result = QuickChangeResult.NoRandomPathAssociatedWithScreenIndex;
                 return;
             }
 
             SetWallpaperAndSave();
 
-            Result = QuickChangeResult.Success;
-            logger.Debug("All random wallpapers changed");
+            logger.Debug("All random wallpapers successfully changed.");
         }
 
         /// <summary>
@@ -115,16 +56,16 @@ namespace WallpaperUtils
         /// </summary>
         /// <param name="screenIndex">Screen Index that you would like to change</param>
         /// <returns>True if the image was changed, false otherwise</returns>
-        public static bool ChangeWallpaper(int screenIndex)
+        public static void ChangeWallpaper(int screenIndex)
         {
-            return ChangeWallpaper(new int[1] { screenIndex });
+            ChangeWallpaper(new int[1] { screenIndex });
         }
 
         /// <summary>
         /// Changes the wallpaper for an array of screen indexes.
         /// <para>Note: If there is any config that is not random, the wallpaper will not be changed.</para>
         /// </summary>
-        public static bool ChangeWallpaper(int[] screenIndexes)
+        public static void ChangeWallpaper(int[] screenIndexes)
         {
             if (screenIndexes == null || screenIndexes.Length == 0)
             {
@@ -139,7 +80,7 @@ namespace WallpaperUtils
             if (CouldNotLoadConfiguration)
             {
                 logger.Warn("Could not change wallpapers:  could not load configuration");
-                return false;
+                return;
             }
 
             foreach (int index in screenIndexes)
@@ -147,7 +88,7 @@ namespace WallpaperUtils
                 if (InValidScreenIndex(index) || NotARandomConfig(index))
                 {
                     logger.Warn("Could not change wallpapers:  index {0} is either invalid or does not support changing");
-                    return false;
+                    return;
                 }
             }
 
@@ -161,10 +102,7 @@ namespace WallpaperUtils
 
             SetWallpaperAndSave();
 
-            Result = QuickChangeResult.Success;
-
-            logger.Debug("Wallpapers changed.");
-            return true;
+            logger.Debug("Wallpapers successfully changed.");
         }
 
         /// <summary>
@@ -188,7 +126,6 @@ namespace WallpaperUtils
             if (Screen.AllScreenCount > Configuration.Count)
             {
                 logger.Warn("Could not update screens:  There are more screens than we have configurations");
-                Result = QuickChangeResult.ScreenCountConfigurationCountMisMatch;
                 return;
             }
 
@@ -196,9 +133,8 @@ namespace WallpaperUtils
 
             SetWallpaperAndSave();
             Creator.Update(false, true);
-            Result = QuickChangeResult.Success;
 
-            logger.Debug("Updated all screen images to reflect a change in resolution.");
+            logger.Debug("Updated all screen images to reflect a change in resolution successfully.");
         }
 
         /// <summary>
@@ -220,7 +156,6 @@ namespace WallpaperUtils
         /// <returns>True if there was a random screen, false otherwise</returns>
         private static bool InitScreens(int startIndex, int endIndex, bool change)
         {
-            //-- Initialize the creator
             InitCreator();
 
             bool has_A_Random_Screen = false;
@@ -259,10 +194,10 @@ namespace WallpaperUtils
                 screenIndex > (Configuration.Count - 1) ||
                 screenIndex > (Screen.AllScreenCount - 1))
             {
-                Result = QuickChangeResult.InvalidScreenIndex;
-                return true; //-- Invalid Screen Index
+                logger.Warn("Invalid screen index:  " + screenIndex);
+                return true;
             }
-            return false; //-- Valid Index
+            return false;
         }
 
         /// <summary>
@@ -272,7 +207,6 @@ namespace WallpaperUtils
         {
             if (!Configuration[screenIndex].IsRandom)
             {
-                Result = QuickChangeResult.NoRandomPathAssociatedWithScreenIndex;
                 return true;
             }
             return false;

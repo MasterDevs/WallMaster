@@ -1,5 +1,4 @@
 ﻿using System.Drawing.Imaging;
-using System.Windows.Forms;
 
 namespace WallpaperUtils
 {
@@ -10,8 +9,14 @@ namespace WallpaperUtils
     /// </summary>
     public static class QuickChanger
     {
+        private static readonly object lockObj = new object();
         private static QuickChangeResult _result = QuickChangeResult.None;
 
+        private static WallpaperConfigCollection Configuration;
+
+        private static WallpaperCreator Creator;
+
+        #region private enum QuickChangeResult
         private enum QuickChangeResult
         {
             /// <summary>
@@ -51,17 +56,7 @@ namespace WallpaperUtils
             /// </summary>
             Success
         }
-
-        private static QuickChangeResult Result { get { return _result; } }
-
-        #region Private Fields
-
-        private static WallpaperConfigCollection Configuration;
-        private static WallpaperCreator Creator;
-
         #endregion
-
-        #region Private Properties
 
         private static bool CouldNotLoadConfiguration
         {
@@ -75,10 +70,7 @@ namespace WallpaperUtils
                 else return false;
             }
         }
-
-        #endregion
-
-        #region Public Methods
+        private static QuickChangeResult Result { get { return _result; } }
 
         /// <summary>
         /// Changes all background images for screens that's configuration is set to
@@ -179,10 +171,6 @@ namespace WallpaperUtils
             _result = QuickChangeResult.Success;
         }
 
-        #endregion
-
-        #region Helper Methods
-
         /// <summary>
         /// Helper method ensures that we dispose the Creator object
         /// before we instantiate a new one.
@@ -275,9 +263,5 @@ namespace WallpaperUtils
             //-- Save the configuration so we know what the current images are
             WallpaperConfigManager.Save(Configuration);
         }
-
-        private static readonly object lockObj = new object();
-
-        #endregion
     }
 }

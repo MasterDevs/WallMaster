@@ -1,28 +1,28 @@
 ﻿namespace WallpaperChanger {
-	partial class WallpaperChangerForm {
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class WallpaperChangerForm {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing) {
-			if (disposing && (components != null)) {
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent() {
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WallpaperChangerForm));
             WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
@@ -361,36 +361,36 @@
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private System.Windows.Forms.OpenFileDialog openFileDialog1;
-		private PictureBoxExtended _PreviewImageBox;
-		private BetterSplitContainer _MainSplitContainer;
-		private WallpaperUtils.WallpaperPicker _WallpaperPicker;
-		private System.Windows.Forms.Button _OKButton;
-		private System.Windows.Forms.GroupBox _WallpaperSettingsGB;
-		private System.Windows.Forms.Button _CancelButton;
-		private System.Windows.Forms.Button _ApplyButton;
-		private System.Windows.Forms.NotifyIcon _NotifyIcon;
-		private System.Windows.Forms.ContextMenuStrip _NI_ContextMenu;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_OpenDisplaySettings;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_ShowWallMaster;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_ChangeWallpaper;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_CW_ChangeAllWallpapers;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_Exit;
-		private System.Windows.Forms.MenuStrip _MainMenuStrip;
-		private System.Windows.Forms.ToolStripMenuItem _MMS_File;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_Exit;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_OpenDisplayProperties;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_ChangeWallpaper;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
-		private System.Windows.Forms.ToolStripMenuItem _CMI_UpdateWallpaper;
-		private System.Windows.Forms.ToolStripMenuItem _FMI_UpdateWallpaper;
-		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-	}
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private PictureBoxExtended _PreviewImageBox;
+        private BetterSplitContainer _MainSplitContainer;
+        private WallpaperUtils.WallpaperPicker _WallpaperPicker;
+        private System.Windows.Forms.Button _OKButton;
+        private System.Windows.Forms.GroupBox _WallpaperSettingsGB;
+        private System.Windows.Forms.Button _CancelButton;
+        private System.Windows.Forms.Button _ApplyButton;
+        private System.Windows.Forms.NotifyIcon _NotifyIcon;
+        private System.Windows.Forms.ContextMenuStrip _NI_ContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_OpenDisplaySettings;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_ShowWallMaster;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_ChangeWallpaper;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_CW_ChangeAllWallpapers;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_Exit;
+        private System.Windows.Forms.MenuStrip _MainMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem _MMS_File;
+        private System.Windows.Forms.ToolStripMenuItem _FMI_Exit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem _FMI_OpenDisplayProperties;
+        private System.Windows.Forms.ToolStripMenuItem _FMI_ChangeWallpaper;
+        private System.Windows.Forms.ToolStripMenuItem _FMI_CW_ChangeAllWallpapers;
+        private System.Windows.Forms.ToolStripMenuItem _CMI_UpdateWallpaper;
+        private System.Windows.Forms.ToolStripMenuItem _FMI_UpdateWallpaper;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+    }
 }

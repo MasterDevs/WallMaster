@@ -10,6 +10,8 @@ namespace WallpaperChanger
 {
     public partial class WallpaperChangerForm : Form
     {
+        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private EventHandler ChangeWallpaperEventHandler;
 
         private WallpaperConfigCollection Configurations;
@@ -186,9 +188,12 @@ namespace WallpaperChanger
             if (e.CloseReason != CloseReason.ApplicationExitCall &&
                 e.CloseReason != CloseReason.WindowsShutDown)
             {
+                logger.Debug("Hiding wallpaper changer form");
                 Hide();
                 e.Cancel = true;
             }
+
+            logger.Info("Closing wallpaper changer form");
         }
 
         /// <summary>
@@ -214,12 +219,14 @@ namespace WallpaperChanger
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
+            logger.Info("Apply button clicked");
             SaveAndSetWallpaper();
             UserHasMadeAChange = false;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
+            logger.Info("Cancel button clicked");
             LoadConfiguration();
             UserHasMadeAChange = false;
             Hide();
@@ -227,8 +234,10 @@ namespace WallpaperChanger
 
         private void OKButton_Click(object sender, EventArgs e)
         {
+            logger.Info("OK button clicked");
             if (UserHasMadeAChange)
             {
+                logger.Info("Saving and applying user changes");
                 SaveAndSetWallpaper();
                 UserHasMadeAChange = false;
             }
@@ -237,6 +246,7 @@ namespace WallpaperChanger
 
         private void OpenDisplayProperties_Click(object sender, EventArgs e)
         {
+            logger.Info("Open display properties menu item clicked");
             Process.Start(DisplayProperties);
         }
 
@@ -284,6 +294,7 @@ namespace WallpaperChanger
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            logger.Info("Exit menu item selected.  Closing the application.");
             Application.Exit();
         }
 
@@ -316,12 +327,14 @@ namespace WallpaperChanger
 
         private void ShowWallMaster(object sender, EventArgs e)
         {
+            logger.Info("Showing form after it was hidden.");
             Show();
             Activate();
         }
 
         private void UpdateWallpaper_Click(object sender, EventArgs e)
         {
+            logger.Info("Update menu item selected.");
             QuickChanger.UpdateWallpaperForResolutionChange();
         }
 

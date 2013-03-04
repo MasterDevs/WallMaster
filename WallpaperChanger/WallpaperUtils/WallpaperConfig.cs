@@ -134,7 +134,7 @@ namespace WallpaperUtils
         {
             if (string.IsNullOrEmpty(Name))
             {
-                return "<Unamed WallpaperConfig>";
+                return "<Unnamed WallpaperConfig>";
             }
             return Name;
         }

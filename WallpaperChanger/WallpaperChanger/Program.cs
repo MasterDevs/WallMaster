@@ -94,8 +94,7 @@ namespace WallpaperChanger
             }
             else if (CheckArg(arg, "u"))
             {
-                // Update Wallpaper for resolution change
-                QuickChanger.Update();
+                QuickChanger.UpdateWallpaperForResolutionChange();
             }
             else if (CheckArg(arg, "h"))
             {

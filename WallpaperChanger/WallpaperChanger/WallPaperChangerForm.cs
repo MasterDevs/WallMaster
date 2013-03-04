@@ -322,7 +322,7 @@ namespace WallpaperChanger
 
         private void UpdateWallpaper_Click(object sender, EventArgs e)
         {
-            QuickChanger.Update();
+            QuickChanger.UpdateWallpaperForResolutionChange();
         }
 
         #endregion

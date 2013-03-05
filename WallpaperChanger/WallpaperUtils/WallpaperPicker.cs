@@ -19,23 +19,23 @@ namespace WallpaperUtils
         #region TimeSpanWrapper
 
         private TimeSpanWrapper[] TimeSpans = new TimeSpanWrapper[] {
-			new TimeSpanWrapper("5 Seconds", TimeSpan.FromSeconds(5)),
-			new TimeSpanWrapper("10 Seconds", TimeSpan.FromSeconds(10)),
-			new TimeSpanWrapper("15 Seconds", TimeSpan.FromSeconds(15)),
-			new TimeSpanWrapper("30 Seconds", TimeSpan.FromSeconds(30)),
-			new TimeSpanWrapper("1 minute", TimeSpan.FromMinutes(1)),
-			new TimeSpanWrapper("5 minutes", TimeSpan.FromMinutes(5)),
-			new TimeSpanWrapper("10 minutes", TimeSpan.FromMinutes(10)),
-			new TimeSpanWrapper("20 minutes", TimeSpan.FromMinutes(20)),
-			new TimeSpanWrapper("30 minutes", TimeSpan.FromMinutes(30)),
-			new TimeSpanWrapper("1 hour", TimeSpan.FromHours(1)),
-			new TimeSpanWrapper("2 hours", TimeSpan.FromHours(2)),
-			new TimeSpanWrapper("3 hours", TimeSpan.FromHours(3)),
-			new TimeSpanWrapper("4 hours", TimeSpan.FromHours(4)),
-			new TimeSpanWrapper("6 hours", TimeSpan.FromHours(6)),
-			new TimeSpanWrapper("12 hours", TimeSpan.FromHours(12)),
-			new TimeSpanWrapper("1 day", TimeSpan.FromDays(1)),
-			new TimeSpanWrapper("1 week", TimeSpan.FromDays(7)) };
+            new TimeSpanWrapper("5 Seconds", TimeSpan.FromSeconds(5)),
+            new TimeSpanWrapper("10 Seconds", TimeSpan.FromSeconds(10)),
+            new TimeSpanWrapper("15 Seconds", TimeSpan.FromSeconds(15)),
+            new TimeSpanWrapper("30 Seconds", TimeSpan.FromSeconds(30)),
+            new TimeSpanWrapper("1 minute", TimeSpan.FromMinutes(1)),
+            new TimeSpanWrapper("5 minutes", TimeSpan.FromMinutes(5)),
+            new TimeSpanWrapper("10 minutes", TimeSpan.FromMinutes(10)),
+            new TimeSpanWrapper("20 minutes", TimeSpan.FromMinutes(20)),
+            new TimeSpanWrapper("30 minutes", TimeSpan.FromMinutes(30)),
+            new TimeSpanWrapper("1 hour", TimeSpan.FromHours(1)),
+            new TimeSpanWrapper("2 hours", TimeSpan.FromHours(2)),
+            new TimeSpanWrapper("3 hours", TimeSpan.FromHours(3)),
+            new TimeSpanWrapper("4 hours", TimeSpan.FromHours(4)),
+            new TimeSpanWrapper("6 hours", TimeSpan.FromHours(6)),
+            new TimeSpanWrapper("12 hours", TimeSpan.FromHours(12)),
+            new TimeSpanWrapper("1 day", TimeSpan.FromDays(1)),
+            new TimeSpanWrapper("1 week", TimeSpan.FromDays(7)) };
 
         public struct TimeSpanWrapper
         {
@@ -60,11 +60,11 @@ namespace WallpaperUtils
 
         private WallpaperStretchStyleWrapper[] WallpaperStretchStyles =
             new WallpaperStretchStyleWrapper[] {
-				new WallpaperStretchStyleWrapper("Center", WallpaperStretchStyle.Center),
-				new WallpaperStretchStyleWrapper("Center Fit", WallpaperStretchStyle.CenterFit),
-				new WallpaperStretchStyleWrapper("Fit", WallpaperStretchStyle.Fit),
-				new WallpaperStretchStyleWrapper("Fill", WallpaperStretchStyle.Fill),
-				new WallpaperStretchStyleWrapper("Stretch", WallpaperStretchStyle.Stretch) };
+                new WallpaperStretchStyleWrapper("Center", WallpaperStretchStyle.Center),
+                new WallpaperStretchStyleWrapper("Center Fit", WallpaperStretchStyle.CenterFit),
+                new WallpaperStretchStyleWrapper("Fit", WallpaperStretchStyle.Fit),
+                new WallpaperStretchStyleWrapper("Fill", WallpaperStretchStyle.Fill),
+                new WallpaperStretchStyleWrapper("Stretch", WallpaperStretchStyle.Stretch) };
 
         public struct WallpaperStretchStyleWrapper
         {
@@ -125,7 +125,14 @@ namespace WallpaperUtils
             {
                 _intervalComboBox.Items.Add(pts);
             }
-            _intervalComboBox.SelectedIndex = 0;
+
+            int defaultSelectedIndex = 0;
+            if (_intervalComboBox.Items.Count > 9)
+            {
+                // prefer half an hour over 5 seconds as the default.
+                defaultSelectedIndex = 8;
+            }
+            _intervalComboBox.SelectedIndex = defaultSelectedIndex;
         }
 
         #endregion

@@ -73,7 +73,7 @@ namespace WallpaperUtils
             }
 
             logger.InfoFormat("Changing wallpapers for screens:  {0}",
-                string.Join(", ", screenIndexes.Cast<string>().ToArray()));
+                string.Join(", ", screenIndexes.Select(i => i.ToString()).ToArray()));
 
             Configuration = WallpaperConfigManager.Load();
 

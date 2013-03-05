@@ -1,8 +1,8 @@
-﻿using System;
+﻿using log4net;
+using System;
+using System.IO;
 using System.Windows.Forms;
 using WallpaperUtils;
-
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace WallpaperChanger
 {
@@ -15,7 +15,16 @@ namespace WallpaperChanger
 -c index -- Change wallpaper for specific screen where index is either 0 or 1
 -u -- Update wallpaper for resolution change";
 
-        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static log4net.ILog _logger;
+
+        private static string LogFilePath
+        {
+            get
+            {
+                string path = Path.Combine(WallpaperConfigManager.AppDir, @"WallMaster.log");
+                return path;
+            }
+        }
 
         /// <summary>
         /// The main entry point for the application.
@@ -23,11 +32,13 @@ namespace WallpaperChanger
         [STAThread]
         public static void Main(string[] args)
         {
-            logger.Info("Application started");
+            SetUpLogger();
+
+            _logger.Info("Application started");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ParseArgs(args);
-            logger.Info("Application closed");
+            _logger.Info("Application closed");
         }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace WallpaperChanger
             string arg = args[0].ToLower();
             string screenIndex = args[1];
 
-            logger.InfoFormat("Started with the following arguments:  [{0}], [{1}]", arg, screenIndex);
+            _logger.InfoFormat("Started with the following arguments:  [{0}], [{1}]", arg, screenIndex);
 
             int index;
             if (CheckArg(arg, "c") && int.TryParse(screenIndex, out index))
@@ -59,7 +70,7 @@ namespace WallpaperChanger
             }
             else
             {
-                logger.Fatal("Failed to handle arguments");
+                _logger.Fatal("Failed to handle arguments");
             }
         }
 
@@ -71,22 +82,22 @@ namespace WallpaperChanger
                 MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1);
 
-            logger.Fatal(HELP_TEXT);
-            logger.Fatal("Application closing because of invalid arguments");
+            _logger.Fatal(HELP_TEXT);
+            _logger.Fatal("Application closing because of invalid arguments");
 
             Application.Exit();
         }
 
         private static void HandleNoArguments()
         {
-            logger.Info("No arguments provided, opening wallpaper configuration form");
+            _logger.Info("No arguments provided, opening wallpaper configuration form");
             Application.Run(new WallpaperChangerForm());
         }
 
         private static void HandleSimpleArguments(string[] args)
         {
             string arg = args[0].ToLower();
-            logger.Info("Started with the following arguments:  " + arg);
+            _logger.Info("Started with the following arguments:  " + arg);
 
             if (CheckArg(arg, "c"))
             {
@@ -114,6 +125,21 @@ namespace WallpaperChanger
                 case 1: HandleSimpleArguments(args); return;
                 case 2: HandleComplexArgumens(args); return;
                 default: HandleInvalidArguments(); return;
+            }
+        }
+
+        private static void SetUpLogger()
+        {
+            try
+            {
+                GlobalContext.Properties["LogName"] = LogFilePath;
+                log4net.Config.XmlConfigurator.Configure();
+
+                _logger = LogManager.GetLogger(typeof(Program));
+            }
+            catch
+            {
+                // if we can't create the logger then there's nothing we can really do here...
             }
         }
     }

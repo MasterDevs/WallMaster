@@ -21,7 +21,7 @@ namespace WallpaperUtils
         /// </summary>
         public static string WallpaperPath { get { return GetFilePath(WP_FILE); } }
 
-        private static string AppDir
+        public static string AppDir
         {
             get
             {

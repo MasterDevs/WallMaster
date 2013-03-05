@@ -53,6 +53,7 @@
             this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
             this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
             this._WallpaperPicker = new WallpaperUtils.WallpaperPicker();
+            this.openWallMasterDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._NI_ContextMenu.SuspendLayout();
             this._MainMenuStrip.SuspendLayout();
             this._MainSplitContainer.Panel1.SuspendLayout();
@@ -245,7 +246,8 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.openWallMasterDirectoryToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -253,7 +255,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -310,8 +312,8 @@
             // 
             wallpaperConfig1.Argb = -16777216;
             wallpaperConfig1.BackgroundColor = System.Drawing.Color.Black;
-            wallpaperConfig1.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:00");
-            wallpaperConfig1.ChangeWallpaperIntervalTicks = ((long)(0));
+            wallpaperConfig1.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:05");
+            wallpaperConfig1.ChangeWallpaperIntervalTicks = ((long)(50000000));
             wallpaperConfig1.DeviceName = null;
             wallpaperConfig1.DirectoryPath = null;
             wallpaperConfig1.ImagePath = null;
@@ -329,6 +331,13 @@
             this._WallpaperPicker.RaiseEvents = true;
             this._WallpaperPicker.Size = new System.Drawing.Size(797, 198);
             this._WallpaperPicker.TabIndex = 0;
+            // 
+            // openWallMasterDirectoryToolStripMenuItem
+            // 
+            this.openWallMasterDirectoryToolStripMenuItem.Name = "openWallMasterDirectoryToolStripMenuItem";
+            this.openWallMasterDirectoryToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.openWallMasterDirectoryToolStripMenuItem.Text = "Open WallMaster Directory";
+            this.openWallMasterDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openWallMasterDirectoryToolStripMenuItem_Click);
             // 
             // WallpaperChangerForm
             // 
@@ -392,5 +401,6 @@
         private System.Windows.Forms.ToolStripMenuItem _FMI_UpdateWallpaper;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openWallMasterDirectoryToolStripMenuItem;
     }
 }

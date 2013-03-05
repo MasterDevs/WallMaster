@@ -366,5 +366,22 @@ namespace WallpaperChanger
         }
 
         #endregion
+
+        private void openWallMasterDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string dir = WallpaperConfigManager.AppDir;
+            try
+            {
+                Process.Start(dir);
+            }
+            catch (Exception ex)
+            {
+                dir = string.IsNullOrEmpty(dir) ? "<no directory specified>" : dir;
+                string msg = "Could not open WallMaster directory:  {0}" + dir;
+
+                MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(msg, ex);
+            }
+        }
     }
 }

@@ -29,9 +29,9 @@
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelCompanyName = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
-            this.okButton = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.okButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -139,16 +139,6 @@
             this.textBoxDescription.TabStop = false;
             this.textBoxDescription.Text = "Description";
             // 
-            // okButton
-            // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(339, 243);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 19);
-            this.okButton.TabIndex = 24;
-            this.okButton.Text = "&OK";
-            // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
@@ -170,6 +160,16 @@
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "http://MasterDevs.com";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // okButton
+            // 
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.okButton.Location = new System.Drawing.Point(339, 243);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 19);
+            this.okButton.TabIndex = 24;
+            this.okButton.Text = "&OK";
             // 
             // AboutBox
             // 

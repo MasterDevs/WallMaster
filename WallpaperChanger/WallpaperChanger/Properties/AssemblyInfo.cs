@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WallMaster")]
-[assembly: AssemblyDescription("WallMaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.")]
+[assembly: AssemblyDescription("Beta version.  Saves wallpaper as .png not .bmp to try and minimize distortions.  WallMaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MasterDevs")]
 [assembly: AssemblyProduct("WallMaster")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.5.*")]
-[assembly: AssemblyFileVersion("1.2.5.0")]
+[assembly: AssemblyVersion("1.2.6.*")]
+[assembly: AssemblyFileVersion("1.2.6.0")]

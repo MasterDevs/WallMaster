@@ -221,7 +221,7 @@ namespace WallpaperUtils
             string path = WallpaperConfigManager.WallpaperPath;
             lock (lockObj)
             {
-                Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
+                Creator.DesktopBitmap.Save(path, ImageFormat.Png);
             }
             WallpaperManager.SetWallpaper(path);
             logger.Debug("Wallpaper set.");

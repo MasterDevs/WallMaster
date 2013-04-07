@@ -12,7 +12,7 @@ namespace WallpaperUtils
         private const string APP_FOLDER = @"Wallmaster";
         private const string CONFIG_FILE = @"WallmasterConfig.xml";
         private const string PATH_FRMT = @"{0}\{1}";
-        private const string WP_FILE = @"wallpaper.bmp";
+        private const string WP_FILE = @"wallpaper.png";
 
         public static string ConfigPath { get { return GetFilePath(CONFIG_FILE); } }
 

@@ -359,7 +359,7 @@ namespace WallpaperChanger
         {
             WallpaperConfigManager.Save(Configurations);
             string path = WallpaperConfigManager.WallpaperPath;
-            Creator.DesktopBitmap.Save(path, ImageFormat.Bmp);
+            Creator.DesktopBitmap.Save(path, ImageFormat.Png);
 
             WallpaperManager.SetWallpaper(path);
             GC.Collect(); //-- Force another collection

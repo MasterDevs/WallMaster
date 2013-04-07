@@ -32,7 +32,7 @@
     <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://WallMaster.codeplex.com/releases/clickonce/</InstallUrl>
+    <InstallUrl>https://WallMaster.codeplex.com/releases/clickonce/</InstallUrl>
     <SupportUrl>http://wallmaster.codeplex.com/</SupportUrl>
     <ErrorReportUrl>http://wallmaster.codeplex.com/</ErrorReportUrl>
     <ProductName>WallMaster</ProductName>

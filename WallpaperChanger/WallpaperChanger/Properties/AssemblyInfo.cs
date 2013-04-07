@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("WallMaster")]
-[assembly: AssemblyDescription("Beta version.  Saves wallpaper as .png not .bmp to try and minimize distortions.  WallMaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.")]
+[assembly: AssemblyDescription("WallMaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MasterDevs")]
 [assembly: AssemblyProduct("WallMaster")]

@@ -1,5 +1,4 @@
-﻿using log4net;
-using System.IO;
+﻿using Ninject.Extensions.Logging;
 using System.Windows.Forms;
 using WallpaperUtils;
 
@@ -7,23 +6,6 @@ namespace WallpaperChanger
 {
     public class ProgramRunner
     {
-        public ProgramRunner(WallpaperChangerForm form, WallpaperConfigChanger wallpaperConfigChanger, QuickChanger quickChanger, WallpaperConfigManager configManager)
-        {
-            _form = form;
-            _wallpaperConfigChanger = wallpaperConfigChanger;
-            _quickChanger = quickChanger;
-            _configManager = configManager;
-        }
-
-        public void Run(string[] args)
-        {
-            SetUpLogger();
-
-            _logger.Info("Application started");
-            ParseArgs(args);
-            _logger.Info("Application closed");
-        }
-
         private const string HELP_TEXT =
 @"Invalid Arguments. Please enter a valid argument:
 
@@ -31,19 +13,30 @@ namespace WallpaperChanger
 -c index -- Change wallpaper for specific screen where index is either 0 or 1
 -u -- Update wallpaper for resolution change";
 
-        private log4net.ILog _logger;
-        private readonly WallpaperConfigChanger _wallpaperConfigChanger;
-        private readonly WallpaperChangerForm _form;
-        private readonly QuickChanger _quickChanger;
         private readonly WallpaperConfigManager _configManager;
 
-        private string LogFilePath
+        private readonly WallpaperChangerForm _form;
+
+        private readonly ILogger _logger;
+
+        private readonly QuickChanger _quickChanger;
+
+        private readonly WallpaperConfigChanger _wallpaperConfigChanger;
+
+        public ProgramRunner(WallpaperChangerForm form, WallpaperConfigChanger wallpaperConfigChanger, QuickChanger quickChanger, WallpaperConfigManager configManager, ILogger logger)
         {
-            get
-            {
-                string path = Path.Combine(_configManager.AppDir, @"WallMaster.log");
-                return path;
-            }
+            _form = form;
+            _wallpaperConfigChanger = wallpaperConfigChanger;
+            _quickChanger = quickChanger;
+            _configManager = configManager;
+            _logger = logger;
+        }
+
+        public void Run(string[] args)
+        {
+            _logger.Info("Application started");
+            ParseArgs(args);
+            _logger.Info("Application closed");
         }
 
         /// <summary>
@@ -66,7 +59,7 @@ namespace WallpaperChanger
             string arg = args[0].ToLower();
             string screenIndex = args[1];
 
-            _logger.InfoFormat("Started with the following arguments:  [{0}], [{1}]", arg, screenIndex);
+            _logger.Info("Started with the following arguments:  [{0}], [{1}]", arg, screenIndex);
 
             int index;
             if (CheckArg(arg, "c") && int.TryParse(screenIndex, out index))
@@ -127,21 +120,6 @@ namespace WallpaperChanger
                 case 1: HandleSimpleArguments(args); return;
                 case 2: HandleComplexArgumens(args); return;
                 default: HandleInvalidArguments(); return;
-            }
-        }
-
-        private void SetUpLogger()
-        {
-            try
-            {
-                GlobalContext.Properties["LogName"] = LogFilePath;
-                log4net.Config.XmlConfigurator.Configure();
-
-                _logger = LogManager.GetLogger(typeof(Program));
-            }
-            catch
-            {
-                // if we can't create the logger then there's nothing we can really do here...
             }
         }
     }

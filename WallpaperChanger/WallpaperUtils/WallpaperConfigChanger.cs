@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SysTimers = System.Timers;
@@ -29,7 +30,7 @@ namespace WallpaperUtils
 
         #endregion WallpaperChanged Event
 
-        private readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ILogger _logger;
         private double Count;
         private double GCD;
         private object LockObj = new object();
@@ -47,12 +48,12 @@ namespace WallpaperUtils
         {
             lock (LockObj)
             {
-                logger.Debug("Starting wallpaper changer");
+                _logger.Debug("Starting wallpaper changer");
 
                 WallpaperConfigCollection configs = _configManager.Load();
                 if (configs == null)
                 {
-                    logger.Warn("Can't start wallpaper changer:  could not load configuration");
+                    _logger.Warn("Can't start wallpaper changer:  could not load configuration");
                     return;
                 }
 
@@ -61,7 +62,7 @@ namespace WallpaperUtils
 
                 if (noRandomScreenConfig)
                 {
-                    logger.Warn("Can't start wallpaper changer:  No random screen configurations found");
+                    _logger.Warn("Can't start wallpaper changer:  No random screen configurations found");
                     return;
                 }
 
@@ -75,7 +76,7 @@ namespace WallpaperUtils
 
                 StartTimer();
 
-                logger.Debug("Wallpaper changer started");
+                _logger.Debug("Wallpaper changer started");
             }
         }
 
@@ -115,10 +116,11 @@ namespace WallpaperUtils
             }
         }
 
-        public WallpaperConfigChanger(QuickChanger quickChanger, WallpaperConfigManager configManager)
+        public WallpaperConfigChanger(QuickChanger quickChanger, WallpaperConfigManager configManager, ILogger logger)
         {
             _quickChanger = quickChanger;
             _configManager = configManager;
+            _logger = logger;
         }
 
         private void ChangeWallpaper()
@@ -127,7 +129,7 @@ namespace WallpaperUtils
             {
                 try
                 {
-                    logger.Debug("Changing wallpaper");
+                    _logger.Debug("Changing wallpaper");
                     StopTimer();
                     List<int> indexesToChange = new List<int>(TimeIntervals.Count);
 
@@ -143,11 +145,11 @@ namespace WallpaperUtils
 
                     Count++;
 
-                    logger.Debug("Wallpaper changed");
+                    _logger.Debug("Wallpaper changed");
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("There was an error attempting to change the wallpaper", ex);
+                    _logger.Error("There was an error attempting to change the wallpaper", ex);
                 }
                 finally
                 {
@@ -226,7 +228,7 @@ namespace WallpaperUtils
 
         private void InitializeTimerCount()
         {
-            logger.Debug("Initializing the timer counter to 1");
+            _logger.Debug("Initializing the timer counter to 1");
             Count = 1;
         }
 
@@ -258,19 +260,19 @@ namespace WallpaperUtils
 
         private void StartTimer()
         {
-            logger.Debug("Starting the timer");
+            _logger.Debug("Starting the timer");
             TheTimer.Start();
         }
 
         private void StopTimer()
         {
-            logger.Debug("Stopping the timer");
+            _logger.Debug("Stopping the timer");
             TheTimer.Stop();
         }
 
         private void TimerTick(object sender, SysTimers.ElapsedEventArgs e)
         {
-            logger.Info("Timer tick");
+            _logger.Info("Timer tick");
             ChangeWallpaper();
         }
     }

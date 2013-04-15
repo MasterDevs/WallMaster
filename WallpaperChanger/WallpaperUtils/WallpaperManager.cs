@@ -1,27 +1,40 @@
 ﻿using Microsoft.Win32;
+using Ninject.Extensions.Logging;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace WallpaperUtils
 {
     public class WallpaperManager
     {
+        public WallpaperManager(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         private const int SPI_SET_DESKWALLPAPER = 20;
         private const int SPIF_SEND_WININICHANGE = 0x02;
         private const int SPIF_UPDATE_INIFILE = 0x01;
+        private readonly ILogger _logger;
 
-        public int SetWallpaper(string path)
+        public void SetWallpaper(string path)
         {
-            return SetWallpaper(path, WallpaperStyle.MultiMon);
+            SetWallpaper(path, WallpaperStyle.MultiMon);
         }
 
-        public int SetWallpaper(string path, WallpaperStyle style)
+        public void SetWallpaper(string path, WallpaperStyle style)
         {
             setStyle(style);
 
-            int r = SystemParametersInfo(SPI_SET_DESKWALLPAPER, 2, path,
+            int success = SystemParametersInfo(SPI_SET_DESKWALLPAPER, 2, path,
                                 SPIF_UPDATE_INIFILE | SPIF_SEND_WININICHANGE);
 
-            return r;
+            if (success == 0)
+            {
+                int errorNumber = Marshal.GetLastWin32Error();
+                var ex = new Win32Exception(errorNumber);
+                if (ex.ErrorCode > 0) throw ex;
+            }
         }
 
         private static void setStyle(WallpaperStyle style)

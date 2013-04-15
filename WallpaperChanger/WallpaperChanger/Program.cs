@@ -11,18 +11,19 @@ namespace WallpaperChanger
         {
             try
             {
-
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+                log4net.Config.XmlConfigurator.Configure();
+
                 IKernel kernel = new StandardKernel(new WallMasterModule());
                 ProgramRunner pr = kernel.Get<ProgramRunner>();
+
                 pr.Run(args);
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show("Error:  " + ex.Message);
+                MessageBox.Show("Error:  " + ex.Message + "\r\n" + ex.StackTrace);
             }
         }
     }

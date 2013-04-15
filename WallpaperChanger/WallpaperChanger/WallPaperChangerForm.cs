@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
+using Ninject.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
 using WallpaperUtils;
 
@@ -10,22 +10,30 @@ namespace WallpaperChanger
 {
     public partial class WallpaperChangerForm : Form
     {
-        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private readonly WallpaperConfigManager _configManager;
+        private readonly ImageSaver _imageSaver;
+        private readonly ILogger _logger;
+        private readonly WallpaperManager _manager;
+        private readonly QuickChanger _quickChanger;
+        private readonly WallpaperConfigChanger _wallpaperConfigChanger;
+        private WallpaperCreator _creator;
         private EventHandler ChangeWallpaperEventHandler;
 
         private WallpaperConfigCollection Configurations;
-
-        private WallpaperCreator _creator;
-
         private EventHandler DisplaySettingsChangedEventHandler;
 
         public WallpaperChangerForm()
-            : this(null, null, null, null, null)
-        {
-        }
+            : this(null, null, null, null, null, null, null) { }
 
-        public WallpaperChangerForm(WallpaperConfigChanger wallpaperConfigChanger, QuickChanger quickChanger, WallpaperConfigManager configManager, WallpaperCreator creator, WallpaperManager manager)
+        public WallpaperChangerForm(
+            WallpaperConfigChanger wallpaperConfigChanger,
+            QuickChanger quickChanger,
+            WallpaperConfigManager configManager,
+            WallpaperCreator creator,
+            WallpaperManager manager,
+            ImageSaver imageSaver,
+            ILogger logger
+            )
         {
             InitializeComponent();
 
@@ -34,6 +42,8 @@ namespace WallpaperChanger
             _configManager = configManager;
             _creator = creator;
             _manager = manager;
+            _imageSaver = imageSaver;
+            _logger = logger;
 
             LoadConfiguration();
             IntializeEventHandlers();
@@ -57,11 +67,6 @@ namespace WallpaperChanger
                 };
             }
         }
-
-        private readonly WallpaperConfigChanger _wallpaperConfigChanger;
-        private readonly QuickChanger _quickChanger;
-        private readonly WallpaperConfigManager _configManager;
-        private readonly WallpaperManager _manager;
 
         #region Initialization
 
@@ -204,12 +209,12 @@ namespace WallpaperChanger
             if (e.CloseReason != CloseReason.ApplicationExitCall &&
                 e.CloseReason != CloseReason.WindowsShutDown)
             {
-                logger.Debug("Hiding wallpaper changer form");
+                _logger.Debug("Hiding wallpaper changer form");
                 Hide();
                 e.Cancel = true;
             }
 
-            logger.Info("Closing wallpaper changer form");
+            _logger.Info("Closing wallpaper changer form");
         }
 
         /// <summary>
@@ -235,14 +240,14 @@ namespace WallpaperChanger
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            logger.Info("Apply button clicked");
+            _logger.Info("Apply button clicked");
             SaveAndSetWallpaper();
             UserHasMadeAChange = false;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            logger.Info("Cancel button clicked");
+            _logger.Info("Cancel button clicked");
             LoadConfiguration();
             UserHasMadeAChange = false;
             Hide();
@@ -250,10 +255,10 @@ namespace WallpaperChanger
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            logger.Info("OK button clicked");
+            _logger.Info("OK button clicked");
             if (UserHasMadeAChange)
             {
-                logger.Info("Saving and applying user changes");
+                _logger.Info("Saving and applying user changes");
                 SaveAndSetWallpaper();
                 UserHasMadeAChange = false;
             }
@@ -262,7 +267,7 @@ namespace WallpaperChanger
 
         private void OpenDisplayProperties_Click(object sender, EventArgs e)
         {
-            logger.Info("Open display properties menu item clicked");
+            _logger.Info("Open display properties menu item clicked");
             Process.Start(DisplayProperties);
         }
 
@@ -310,7 +315,7 @@ namespace WallpaperChanger
 
         private void Exit_Click(object sender, EventArgs e)
         {
-            logger.Info("Exit menu item selected.  Closing the application.");
+            _logger.Info("Exit menu item selected.  Closing the application.");
             Application.Exit();
         }
 
@@ -343,14 +348,14 @@ namespace WallpaperChanger
 
         private void ShowWallMaster(object sender, EventArgs e)
         {
-            logger.Info("Showing form after it was hidden.");
+            _logger.Info("Showing form after it was hidden.");
             Show();
             Activate();
         }
 
         private void UpdateWallpaper_Click(object sender, EventArgs e)
         {
-            logger.Info("Update menu item selected.");
+            _logger.Info("Update menu item selected.");
             _quickChanger.UpdateWallpaperForResolutionChange();
         }
 
@@ -373,12 +378,17 @@ namespace WallpaperChanger
 
         private void SaveAndSetWallpaper()
         {
-            _configManager.Save(Configurations);
-            string path = _configManager.WallpaperPath;
-            _creator.DesktopBitmap.Save(path, ImageFormat.Png);
-
-            _manager.SetWallpaper(path);
-            GC.Collect(); //-- Force another collection
+            try
+            {
+                _configManager.Save(Configurations);
+                string path = _imageSaver.Save(_creator.DesktopBitmap);
+                _manager.SetWallpaper(path);
+                GC.Collect(); //-- Force another collection
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error setting wallpaper");
+            }
         }
 
         #endregion Helper Methods
@@ -396,7 +406,7 @@ namespace WallpaperChanger
                 string msg = "Could not open WallMaster directory:  {0}" + dir;
 
                 MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Error(msg, ex);
+                _logger.Error(msg, ex);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using Ninject.Extensions.Logging;
+using System;
 using System.Linq;
 
 namespace WallpaperUtils
@@ -10,19 +11,22 @@ namespace WallpaperUtils
     /// </summary>
     public class QuickChanger
     {
-        private readonly object lockObj;
-        private readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private WallpaperConfigCollection Configuration;
-        private readonly WallpaperCreator _creator;
         private readonly WallpaperConfigManager _configManager;
+        private readonly WallpaperCreator _creator;
+        private readonly ImageSaver _imageSaver;
+        private readonly ILogger _logger;
         private readonly WallpaperManager _manager;
+        private readonly object lockObj;
+        private WallpaperConfigCollection Configuration;
 
-        public QuickChanger(WallpaperConfigManager configManager, WallpaperCreator creator, WallpaperManager manager)
+        public QuickChanger(WallpaperConfigManager configManager, WallpaperCreator creator, WallpaperManager manager, ImageSaver imageSaver, ILogger logger)
         {
             lockObj = new object();
             _configManager = configManager;
             _creator = creator;
             _manager = manager;
+            _imageSaver = imageSaver;
+            _logger = logger;
         }
 
         private bool CouldNotLoadConfiguration { get { return Configuration == null; } }
@@ -33,12 +37,12 @@ namespace WallpaperUtils
         /// </summary>
         public void ChangeAllWallpapers()
         {
-            logger.Debug("Changing all random wallpapers...");
+            _logger.Debug("Changing all random wallpapers...");
 
             Configuration = _configManager.Load();
             if (CouldNotLoadConfiguration)
             {
-                logger.Error("Could not change any wallpapers:  Could not load configuration");
+                _logger.Error("Could not change any wallpapers:  Could not load configuration");
                 return;
             }
 
@@ -46,14 +50,14 @@ namespace WallpaperUtils
 
             if (!has_A_Random_Screen)
             {
-                logger.Error("Could not change any wallpapers:  No random wallpapers in configuration");
+                _logger.Error("Could not change any wallpapers:  No random wallpapers in configuration");
 
                 return;
             }
 
             SetWallpaperAndSave();
 
-            logger.Debug("All random wallpapers successfully changed.");
+            _logger.Debug("All random wallpapers successfully changed.");
         }
 
         /// <summary>
@@ -74,17 +78,17 @@ namespace WallpaperUtils
         {
             if (screenIndexes == null || screenIndexes.Length == 0)
             {
-                logger.Warn("Cannot change wallpapers:  no screens specified");
+                _logger.Warn("Cannot change wallpapers:  no screens specified");
             }
 
-            logger.InfoFormat("Changing wallpapers for screens:  {0}",
+            _logger.Info("Changing wallpapers for screens:  {0}",
                 string.Join(", ", screenIndexes.Select(i => i.ToString()).ToArray()));
 
             Configuration = _configManager.Load();
 
             if (CouldNotLoadConfiguration)
             {
-                logger.Warn("Could not change wallpapers:  could not load configuration");
+                _logger.Warn("Could not change wallpapers:  could not load configuration");
                 return;
             }
 
@@ -92,7 +96,7 @@ namespace WallpaperUtils
             {
                 if (InValidScreenIndex(index) || NotARandomConfig(index))
                 {
-                    logger.Warn("Could not change wallpapers:  index {0} is either invalid or does not support changing");
+                    _logger.Warn("Could not change wallpapers:  index {0} is either invalid or does not support changing");
                     return;
                 }
             }
@@ -107,7 +111,7 @@ namespace WallpaperUtils
 
             SetWallpaperAndSave();
 
-            logger.Debug("Wallpapers successfully changed.");
+            _logger.Debug("Wallpapers successfully changed.");
         }
 
         /// <summary>
@@ -118,19 +122,19 @@ namespace WallpaperUtils
         /// </summary>
         public void UpdateWallpaperForResolutionChange()
         {
-            logger.Debug("Updating all screen images to reflect a change in resolution...");
+            _logger.Debug("Updating all screen images to reflect a change in resolution...");
 
             Configuration = _configManager.Load();
 
             if (CouldNotLoadConfiguration)
             {
-                logger.Warn("Could not update screens:  could not load configuration");
+                _logger.Warn("Could not update screens:  could not load configuration");
                 return;
             }
 
             if (Screen.AllScreenCount > Configuration.Count)
             {
-                logger.Warn("Could not update screens:  There are more screens than we have configurations");
+                _logger.Warn("Could not update screens:  There are more screens than we have configurations");
                 return;
             }
 
@@ -139,7 +143,7 @@ namespace WallpaperUtils
             SetWallpaperAndSave();
             _creator.Update(false, true);
 
-            logger.Debug("Updated all screen images to reflect a change in resolution successfully.");
+            _logger.Debug("Updated all screen images to reflect a change in resolution successfully.");
         }
 
         /// <summary>
@@ -188,7 +192,7 @@ namespace WallpaperUtils
                 screenIndex > (Configuration.Count - 1) ||
                 screenIndex > (Screen.AllScreenCount - 1))
             {
-                logger.Warn("Invalid screen index:  " + screenIndex);
+                _logger.Warn("Invalid screen index:  " + screenIndex);
                 return true;
             }
             return false;
@@ -209,20 +213,29 @@ namespace WallpaperUtils
         /// <summary>
         /// Sets the wallpaper and saves the current configuration
         /// </summary>
-        private void SetWallpaperAndSave()
+        public void SetWallpaperAndSave()
         {
-            logger.Debug("Setting wallpaper and saving configuration...");
-            string path = _configManager.WallpaperPath;
-            lock (lockObj)
+            try
             {
-                _creator.DesktopBitmap.Save(path, ImageFormat.Png);
-            }
-            _manager.SetWallpaper(path);
-            logger.Debug("Wallpaper set.");
+                //-- Save the configuration so we know what the current images are
+                _configManager.Save(Configuration);
 
-            //-- Save the configuration so we know what the current images are
-            _configManager.Save(Configuration);
-            logger.Debug("Configuration saved...");
+                _logger.Debug("Setting wallpaper and saving configuration...");
+                string path = null;
+                lock (lockObj)
+                {
+                    path = _imageSaver.Save(_creator.DesktopBitmap);
+                }
+                _manager.SetWallpaper(path);
+                _logger.Debug("Wallpaper set.");
+
+                _logger.Debug("Configuration saved...");
+                GC.Collect(); //-- Force another collection
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "There was an error setting the wallpaper");
+            }
         }
     }
 }

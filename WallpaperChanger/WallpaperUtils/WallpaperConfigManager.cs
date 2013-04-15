@@ -9,47 +9,22 @@ namespace WallpaperUtils
     /// </summary>
     public class WallpaperConfigManager
     {
-        private const string APP_FOLDER = @"Wallmaster";
         private const string CONFIG_FILE = @"WallmasterConfig.xml";
-        private const string PATH_FRMT = @"{0}\{1}";
-        private const string WP_FILE = @"wallpaper.png";
 
-        public string ConfigPath { get { return GetFilePath(CONFIG_FILE); } }
+        private readonly string _configPath;
 
-        /// <summary>
-        /// Gets the path where the wallpaper should be saved.
-        /// </summary>
-        public string WallpaperPath { get { return GetFilePath(WP_FILE); } }
-
-        public string AppDir
+        public WallpaperConfigManager(string appDir)
         {
-            get
-            {
-                string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-                string path = string.Format(PATH_FRMT, appData, APP_FOLDER);
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                return path;
-            }
+            AppDir = appDir;
+            _configPath = Path.Combine(appDir, CONFIG_FILE);
         }
+
+        public string AppDir { get; private set; }
 
         public WallpaperConfigCollection CreateEmptyConfig(int screenCount)
         {
             WallpaperConfigCollection cfg = WallpaperConfigCollection.GetDefault(screenCount);
             return cfg;
-        }
-
-        private string GetConfigPath()
-        {
-            return GetFilePath(CONFIG_FILE);
-        }
-
-        private string GetFilePath(string fileName)
-        {
-            return string.Format(PATH_FRMT, AppDir, fileName);
         }
 
         #region Load
@@ -62,8 +37,7 @@ namespace WallpaperUtils
         /// NULL is returned</returns>
         public WallpaperConfigCollection Load()
         {
-            string p = GetConfigPath();
-            return Load(p);
+            return Load(_configPath);
         }
 
         /// <summary>
@@ -92,14 +66,13 @@ namespace WallpaperUtils
             return null;
         }
 
-        #endregion
+        #endregion Load
 
         #region Save
 
         public void Save(WallpaperConfigCollection config)
         {
-            string p = GetConfigPath();
-            SerializeAndSave(config, p);
+            SerializeAndSave(config, _configPath);
         }
 
         protected void SerializeAndSave(WallpaperConfigCollection config, string path)
@@ -111,6 +84,6 @@ namespace WallpaperUtils
             }
         }
 
-        #endregion
+        #endregion Save
     }
 }

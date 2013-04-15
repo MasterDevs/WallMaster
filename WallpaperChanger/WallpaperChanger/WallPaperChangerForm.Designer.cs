@@ -49,11 +49,11 @@
             this._FMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openWallMasterDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
             this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
             this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
             this._WallpaperPicker = new WallpaperUtils.WallpaperPicker();
-            this.openWallMasterDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._NI_ContextMenu.SuspendLayout();
             this._MainMenuStrip.SuspendLayout();
             this._MainSplitContainer.Panel1.SuspendLayout();
@@ -259,6 +259,13 @@
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // openWallMasterDirectoryToolStripMenuItem
+            // 
+            this.openWallMasterDirectoryToolStripMenuItem.Name = "openWallMasterDirectoryToolStripMenuItem";
+            this.openWallMasterDirectoryToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.openWallMasterDirectoryToolStripMenuItem.Text = "Open WallMaster Directory";
+            this.openWallMasterDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openWallMasterDirectoryToolStripMenuItem_Click);
+            // 
             // _MainSplitContainer
             // 
             this._MainSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -331,13 +338,6 @@
             this._WallpaperPicker.RaiseEvents = true;
             this._WallpaperPicker.Size = new System.Drawing.Size(797, 198);
             this._WallpaperPicker.TabIndex = 0;
-            // 
-            // openWallMasterDirectoryToolStripMenuItem
-            // 
-            this.openWallMasterDirectoryToolStripMenuItem.Name = "openWallMasterDirectoryToolStripMenuItem";
-            this.openWallMasterDirectoryToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-            this.openWallMasterDirectoryToolStripMenuItem.Text = "Open WallMaster Directory";
-            this.openWallMasterDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openWallMasterDirectoryToolStripMenuItem_Click);
             // 
             // WallpaperChangerForm
             // 

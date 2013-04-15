@@ -44,7 +44,7 @@ namespace WallpaperUtils
         /// <summary>
         /// Image is centered unless it is larger then the desktop.
         /// If it's larger then the desktop, it will be fit,
-        /// perserving it's aspect ratio.
+        /// preserving it's aspect ratio.
         /// </summary>
         /// <param name="image">Size of the image</param>
         /// <param name="bounds">Destination Location and Size</param>
@@ -91,7 +91,7 @@ namespace WallpaperUtils
 
         /// <summary>
         /// Returns a rectangle that represents the image stretched while
-        /// maintaing aspect ratio
+        /// maintaining aspect ratio
         /// </summary>
         private static Rectangle Fit(Size image, Rectangle bounds)
         {
@@ -100,7 +100,7 @@ namespace WallpaperUtils
             float hRatio = (float)bounds.Height / image.Height;
 
             //-- Grab the smaller of the to ratios. This will ensure
-            // that the image will be scaled, perserving the ratio, as
+            // that the image will be scaled, preserving the ratio, as
             // large as it can with out exceeding the bounds size.
             float ratio = Math.Min(wRatio, hRatio);
 

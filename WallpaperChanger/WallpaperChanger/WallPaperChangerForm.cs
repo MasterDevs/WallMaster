@@ -16,13 +16,25 @@ namespace WallpaperChanger
 
         private WallpaperConfigCollection Configurations;
 
-        private WallpaperCreator Creator;
+        private WallpaperCreator _creator;
 
         private EventHandler DisplaySettingsChangedEventHandler;
 
         public WallpaperChangerForm()
+            : this(null, null, null, null, null)
+        {
+        }
+
+        public WallpaperChangerForm(WallpaperConfigChanger wallpaperConfigChanger, QuickChanger quickChanger, WallpaperConfigManager configManager, WallpaperCreator creator, WallpaperManager manager)
         {
             InitializeComponent();
+
+            _wallpaperConfigChanger = wallpaperConfigChanger;
+            _quickChanger = quickChanger;
+            _configManager = configManager;
+            _creator = creator;
+            _manager = manager;
+
             LoadConfiguration();
             IntializeEventHandlers();
             _NotifyIcon.Icon = Icon;
@@ -46,14 +58,18 @@ namespace WallpaperChanger
             }
         }
 
+        private readonly WallpaperConfigChanger _wallpaperConfigChanger;
+        private readonly QuickChanger _quickChanger;
+        private readonly WallpaperConfigManager _configManager;
+        private readonly WallpaperManager _manager;
+
         #region Initialization
 
         private void InitScreens()
         {
-            Creator = new WallpaperCreator();
             for (int i = 0; i < Configurations.Count; i++)
             {
-                Creator.InitScreen(Configurations[i]);
+                _creator.InitScreen(Configurations[i]);
             }
         }
 
@@ -70,7 +86,7 @@ namespace WallpaperChanger
         private void LoadConfiguration()
         {
             _WallpaperPicker.RaiseEvents = false;
-            Configurations = WallpaperConfigManager.Load();
+            Configurations = _configManager.Load();
             if (Configurations == null)
             {
                 Configurations = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
@@ -87,13 +103,13 @@ namespace WallpaperChanger
             LoadConfiguration();
 
             //-- Make sure we highlight the same box
-            Creator.SelectedIndex = CurrentIndex;
+            _creator.SelectedIndex = CurrentIndex;
 
             //-- Manually refresh the picture box
             ResetPreviewImage();
         }
 
-        #endregion
+        #endregion Initialization
 
         #region Events
 
@@ -124,14 +140,14 @@ namespace WallpaperChanger
 
         private void PreviewBox_MouseClick(object sender, MouseEventArgs e)
         {
-            int index = Creator.GetIndexFromPointOnPreviewImage(_PreviewImageBox.MousePositionOnImage);
+            int index = _creator.GetIndexFromPointOnPreviewImage(_PreviewImageBox.MousePositionOnImage);
             if (index != -1)
             {
                 //-- Save current config to configurations
-                Configurations[Creator.SelectedIndex] = _WallpaperPicker.Config;
+                Configurations[_creator.SelectedIndex] = _WallpaperPicker.Config;
 
                 //-- Set new selected index for creator
-                Creator.SelectedIndex = index;
+                _creator.SelectedIndex = index;
 
                 //-- Pause raising config changed event
                 _WallpaperPicker.RaiseEvents = false;
@@ -154,17 +170,17 @@ namespace WallpaperChanger
 
         private void ResetPreviewImage()
         {
-            _PreviewImageBox.Image = Creator.PreviewBitmap;
+            _PreviewImageBox.Image = _creator.PreviewBitmap;
             GC.Collect(); //-- No need to have images in memory if they're not being used
         }
 
         private void WallpaperPicker_ConfigChanged(object sender, ConfigChangedEventArgs e)
         {
-            int idx = Creator.SelectedIndex;
+            int idx = _creator.SelectedIndex;
             if (idx != -1)
             {
                 e.Config.ScreenIndex = idx;
-                Creator.InitScreen(e.Config);
+                _creator.InitScreen(e.Config);
                 ResetPreviewImage();
             }
 
@@ -204,16 +220,16 @@ namespace WallpaperChanger
         {
             if (Visible)
             {
-                WallpaperConfigChanger.Stop();
+                _wallpaperConfigChanger.Stop();
                 RefreshConfiguration();
             }
             else
             {
-                WallpaperConfigChanger.Start();
+                _wallpaperConfigChanger.Start();
             }
         }
 
-        #endregion
+        #endregion Form Events
 
         #region Button Events
 
@@ -250,7 +266,7 @@ namespace WallpaperChanger
             Process.Start(DisplayProperties);
         }
 
-        #endregion
+        #endregion Button Events
 
         #region Notify Icon & Context Menu Events
 
@@ -274,9 +290,9 @@ namespace WallpaperChanger
             ToolStripMenuItem tsmi = (ToolStripMenuItem)sender;
             int index = (int)tsmi.Tag;
             if (index == -1)
-                QuickChanger.ChangeAllWallpapers();
+                _quickChanger.ChangeAllWallpapers();
             else
-                QuickChanger.ChangeWallpaper(index);
+                _quickChanger.ChangeWallpaper(index);
 
             RefreshConfiguration();
         }
@@ -335,12 +351,12 @@ namespace WallpaperChanger
         private void UpdateWallpaper_Click(object sender, EventArgs e)
         {
             logger.Info("Update menu item selected.");
-            QuickChanger.UpdateWallpaperForResolutionChange();
+            _quickChanger.UpdateWallpaperForResolutionChange();
         }
 
-        #endregion
+        #endregion Notify Icon & Context Menu Events
 
-        #endregion
+        #endregion Events
 
         #region Helper Methods
 
@@ -357,19 +373,19 @@ namespace WallpaperChanger
 
         private void SaveAndSetWallpaper()
         {
-            WallpaperConfigManager.Save(Configurations);
-            string path = WallpaperConfigManager.WallpaperPath;
-            Creator.DesktopBitmap.Save(path, ImageFormat.Png);
+            _configManager.Save(Configurations);
+            string path = _configManager.WallpaperPath;
+            _creator.DesktopBitmap.Save(path, ImageFormat.Png);
 
-            WallpaperManager.SetWallpaper(path);
+            _manager.SetWallpaper(path);
             GC.Collect(); //-- Force another collection
         }
 
-        #endregion
+        #endregion Helper Methods
 
         private void openWallMasterDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string dir = WallpaperConfigManager.AppDir;
+            string dir = _configManager.AppDir;
             try
             {
                 Process.Start(dir);

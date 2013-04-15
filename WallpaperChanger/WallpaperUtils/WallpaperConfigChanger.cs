@@ -15,7 +15,7 @@ namespace WallpaperUtils
     {
         #region WallpaperChanged Event
 
-        public static event EventHandler<WallpaperChangeEventArgs> WallpaperChanged = delegate { };
+        public event EventHandler<WallpaperChangeEventArgs> WallpaperChanged = delegate { };
 
         public class WallpaperChangeEventArgs : EventArgs
         {
@@ -27,26 +27,29 @@ namespace WallpaperUtils
             }
         }
 
-        #endregion
+        #endregion WallpaperChanged Event
 
-        private static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static double Count;
-        private static double GCD;
-        private static object LockObj = new object();
-        private static SysTimers.Timer TheTimer;
+        private readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private double Count;
+        private double GCD;
+        private object LockObj = new object();
+        private SysTimers.Timer TheTimer;
 
         /// <summary>
         /// Dictionary of ScreenIndexes to Interval Counts
         /// </summary>
-        private static SortedList<double, List<int>> TimeIntervals;
+        private SortedList<double, List<int>> TimeIntervals;
 
-        public static void Start()
+        private readonly QuickChanger _quickChanger;
+        private readonly WallpaperConfigManager _configManager;
+
+        public void Start()
         {
             lock (LockObj)
             {
                 logger.Debug("Starting wallpaper changer");
 
-                WallpaperConfigCollection configs = WallpaperConfigManager.Load();
+                WallpaperConfigCollection configs = _configManager.Load();
                 if (configs == null)
                 {
                     logger.Warn("Can't start wallpaper changer:  could not load configuration");
@@ -76,7 +79,7 @@ namespace WallpaperUtils
             }
         }
 
-        public static void Stop()
+        public void Stop()
         {
             lock (LockObj)
             {
@@ -92,7 +95,7 @@ namespace WallpaperUtils
         /// <summary>
         /// This method will grab the GCD for all screen indexes.
         /// </summary>
-        private static void CalculateGCD()
+        private void CalculateGCD()
         {
             //-- If all random configurations are to be changed on same interval,
             // the GCD is the interval.
@@ -112,7 +115,13 @@ namespace WallpaperUtils
             }
         }
 
-        private static void ChangeWallpaper()
+        public WallpaperConfigChanger(QuickChanger quickChanger, WallpaperConfigManager configManager)
+        {
+            _quickChanger = quickChanger;
+            _configManager = configManager;
+        }
+
+        private void ChangeWallpaper()
         {
             lock (LockObj)
             {
@@ -128,7 +137,7 @@ namespace WallpaperUtils
                             indexesToChange.AddRange(TimeIntervals[time]);
                     }
 
-                    QuickChanger.ChangeWallpaper(indexesToChange.ToArray());
+                    _quickChanger.ChangeWallpaper(indexesToChange.ToArray());
 
                     RaiseWallpaperChanged(indexesToChange);
 
@@ -151,7 +160,7 @@ namespace WallpaperUtils
             GC.Collect();
         }
 
-        private static void ComputeTimeIntervals(WallpaperConfigCollection configs)
+        private void ComputeTimeIntervals(WallpaperConfigCollection configs)
         {
             TimeIntervals = new SortedList<double, List<int>>(configs.Count);
 
@@ -173,7 +182,7 @@ namespace WallpaperUtils
             }
         }
 
-        private static void CreateNewTimer(double timerIntervalSeconds)
+        private void CreateNewTimer(double timerIntervalSeconds)
         {
             lock (LockObj)
             {
@@ -189,7 +198,7 @@ namespace WallpaperUtils
         /// Checks to see if the possible GCD works for all time values.
         /// If so, returns true, false otherwise.
         /// </summary>
-        private static bool GCDWorksForAllTimes(double gcd_temp)
+        private bool GCDWorksForAllTimes(double gcd_temp)
         {
             foreach (double time in TimeIntervals.Keys)
             {
@@ -202,7 +211,7 @@ namespace WallpaperUtils
         /// <summary>
         /// Simple recursive way to find the GCD.
         /// </summary>
-        private static double GreatestCommonDenominator(double a, double b)
+        private double GreatestCommonDenominator(double a, double b)
         {
             if (a == 0)
                 return b;
@@ -215,7 +224,7 @@ namespace WallpaperUtils
                 return GreatestCommonDenominator(a, b % a);
         }
 
-        private static void InitializeTimerCount()
+        private void InitializeTimerCount()
         {
             logger.Debug("Initializing the timer counter to 1");
             Count = 1;
@@ -226,7 +235,7 @@ namespace WallpaperUtils
         /// </summary>
         /// <param name="configs"></param>
         /// <returns></returns>
-        private static bool IsThereNoRandomConfig(WallpaperConfigCollection configs)
+        private bool IsThereNoRandomConfig(WallpaperConfigCollection configs)
         {
             foreach (var c in configs)
             {
@@ -238,28 +247,28 @@ namespace WallpaperUtils
             return true;
         }
 
-        private static void RaiseWallpaperChanged(List<int> indexesToChange)
+        private void RaiseWallpaperChanged(List<int> indexesToChange)
         {
             if (indexesToChange.Count > 0)
             {
                 //-- Fire event notifying that a wallpaper has been changed
-                WallpaperChanged(null, new WallpaperChangeEventArgs(WallpaperConfigManager.Load()));
+                WallpaperChanged(null, new WallpaperChangeEventArgs(_configManager.Load()));
             }
         }
 
-        private static void StartTimer()
+        private void StartTimer()
         {
             logger.Debug("Starting the timer");
             TheTimer.Start();
         }
 
-        private static void StopTimer()
+        private void StopTimer()
         {
             logger.Debug("Stopping the timer");
             TheTimer.Stop();
         }
 
-        private static void TimerTick(object sender, SysTimers.ElapsedEventArgs e)
+        private void TimerTick(object sender, SysTimers.ElapsedEventArgs e)
         {
             logger.Info("Timer tick");
             ChangeWallpaper();

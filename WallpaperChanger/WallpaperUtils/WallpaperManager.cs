@@ -3,18 +3,18 @@ using System.Runtime.InteropServices;
 
 namespace WallpaperUtils
 {
-    public static class WallpaperManager
+    public class WallpaperManager
     {
         private const int SPI_SET_DESKWALLPAPER = 20;
         private const int SPIF_SEND_WININICHANGE = 0x02;
         private const int SPIF_UPDATE_INIFILE = 0x01;
 
-        public static int SetWallpaper(string path)
+        public int SetWallpaper(string path)
         {
             return SetWallpaper(path, WallpaperStyle.MultiMon);
         }
 
-        public static int SetWallpaper(string path, WallpaperStyle style)
+        public int SetWallpaper(string path, WallpaperStyle style)
         {
             setStyle(style);
 

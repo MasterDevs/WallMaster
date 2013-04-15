@@ -14,14 +14,14 @@ namespace WallpaperUtils
         private const string PATH_FRMT = @"{0}\{1}";
         private const string WP_FILE = @"wallpaper.png";
 
-        public static string ConfigPath { get { return GetFilePath(CONFIG_FILE); } }
+        public string ConfigPath { get { return GetFilePath(CONFIG_FILE); } }
 
         /// <summary>
         /// Gets the path where the wallpaper should be saved.
         /// </summary>
-        public static string WallpaperPath { get { return GetFilePath(WP_FILE); } }
+        public string WallpaperPath { get { return GetFilePath(WP_FILE); } }
 
-        public static string AppDir
+        public string AppDir
         {
             get
             {
@@ -36,18 +36,18 @@ namespace WallpaperUtils
             }
         }
 
-        public static WallpaperConfigCollection CreateEmptyConfig(int screenCount)
+        public WallpaperConfigCollection CreateEmptyConfig(int screenCount)
         {
             WallpaperConfigCollection cfg = WallpaperConfigCollection.GetDefault(screenCount);
             return cfg;
         }
 
-        private static string GetConfigPath()
+        private string GetConfigPath()
         {
             return GetFilePath(CONFIG_FILE);
         }
 
-        private static string GetFilePath(string fileName)
+        private string GetFilePath(string fileName)
         {
             return string.Format(PATH_FRMT, AppDir, fileName);
         }
@@ -60,7 +60,7 @@ namespace WallpaperUtils
         /// </summary>
         /// <returns>Returns WallpaperConfigCollection if config file found. Otherwise
         /// NULL is returned</returns>
-        public static WallpaperConfigCollection Load()
+        public WallpaperConfigCollection Load()
         {
             string p = GetConfigPath();
             return Load(p);
@@ -72,7 +72,7 @@ namespace WallpaperUtils
         /// </summary>
         /// <returns>Returns WallpaperConfigCollection if config file found. Otherwise
         /// it'll return a default configuration based on the current number of screens.</returns>
-        public static WallpaperConfigCollection Load(string path)
+        public WallpaperConfigCollection Load(string path)
         {
             try
             {
@@ -96,13 +96,13 @@ namespace WallpaperUtils
 
         #region Save
 
-        public static void Save(WallpaperConfigCollection config)
+        public void Save(WallpaperConfigCollection config)
         {
             string p = GetConfigPath();
             SerializeAndSave(config, p);
         }
 
-        protected static void SerializeAndSave(WallpaperConfigCollection config, string path)
+        protected void SerializeAndSave(WallpaperConfigCollection config, string path)
         {
             XmlSerializer xs = new XmlSerializer(typeof(WallpaperConfigCollection));
             using (StreamWriter sw = new StreamWriter(path))

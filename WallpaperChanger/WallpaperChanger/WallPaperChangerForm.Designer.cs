@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WallpaperChangerForm));
-            WallpaperUtils.WallpaperConfig wallpaperConfig1 = new WallpaperUtils.WallpaperConfig();
+            WallpaperUtils.WallpaperConfig wallpaperConfig2 = new WallpaperUtils.WallpaperConfig();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this._OKButton = new System.Windows.Forms.Button();
             this._CancelButton = new System.Windows.Forms.Button();
@@ -52,6 +52,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openWallMasterDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startWithWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._MainSplitContainer = new WallpaperChanger.BetterSplitContainer();
             this._PreviewImageBox = new WallpaperChanger.PictureBoxExtended();
             this._WallpaperSettingsGB = new System.Windows.Forms.GroupBox();
@@ -196,6 +197,7 @@
             this._FMI_UpdateWallpaper,
             this.toolStripSeparator2,
             this._startMinimizedButton,
+            this.startWithWindowsToolStripMenuItem,
             this.toolStripSeparator3,
             this._FMI_Exit});
             this._MMS_File.Name = "_MMS_File";
@@ -206,7 +208,7 @@
             // _FMI_OpenDisplayProperties
             // 
             this._FMI_OpenDisplayProperties.Name = "_FMI_OpenDisplayProperties";
-            this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(171, 22);
+            this._FMI_OpenDisplayProperties.Size = new System.Drawing.Size(178, 22);
             this._FMI_OpenDisplayProperties.Text = "&Display Properties";
             this._FMI_OpenDisplayProperties.Click += new System.EventHandler(this.OpenDisplayProperties_Click);
             // 
@@ -215,7 +217,7 @@
             this._FMI_ChangeWallpaper.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._FMI_CW_ChangeAllWallpapers});
             this._FMI_ChangeWallpaper.Name = "_FMI_ChangeWallpaper";
-            this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(171, 22);
+            this._FMI_ChangeWallpaper.Size = new System.Drawing.Size(178, 22);
             this._FMI_ChangeWallpaper.Text = "Change Wallpaper";
             // 
             // _FMI_CW_ChangeAllWallpapers
@@ -229,7 +231,7 @@
             // 
             this._FMI_UpdateWallpaper.AutoToolTip = true;
             this._FMI_UpdateWallpaper.Name = "_FMI_UpdateWallpaper";
-            this._FMI_UpdateWallpaper.Size = new System.Drawing.Size(171, 22);
+            this._FMI_UpdateWallpaper.Size = new System.Drawing.Size(178, 22);
             this._FMI_UpdateWallpaper.Text = "Update Wallpaper";
             this._FMI_UpdateWallpaper.ToolTipText = "Refreshes monitor. Helpful if starting up after the display settings have changed" +
     ".";
@@ -238,25 +240,25 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(175, 6);
             // 
             // _startMinimizedButton
             // 
             this._startMinimizedButton.CheckOnClick = true;
             this._startMinimizedButton.Name = "_startMinimizedButton";
-            this._startMinimizedButton.Size = new System.Drawing.Size(171, 22);
+            this._startMinimizedButton.Size = new System.Drawing.Size(178, 22);
             this._startMinimizedButton.Text = "Start Minimized";
             this._startMinimizedButton.Click += new System.EventHandler(this.startMinimizedButton_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(175, 6);
             // 
             // _FMI_Exit
             // 
             this._FMI_Exit.Name = "_FMI_Exit";
-            this._FMI_Exit.Size = new System.Drawing.Size(171, 22);
+            this._FMI_Exit.Size = new System.Drawing.Size(178, 22);
             this._FMI_Exit.Text = "E&xit";
             this._FMI_Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
@@ -282,6 +284,14 @@
             this.openWallMasterDirectoryToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.openWallMasterDirectoryToolStripMenuItem.Text = "Open WallMaster Directory";
             this.openWallMasterDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openWallMasterDirectoryToolStripMenuItem_Click);
+            // 
+            // startWithWindowsToolStripMenuItem
+            // 
+            this.startWithWindowsToolStripMenuItem.CheckOnClick = true;
+            this.startWithWindowsToolStripMenuItem.Name = "startWithWindowsToolStripMenuItem";
+            this.startWithWindowsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.startWithWindowsToolStripMenuItem.Text = "Start With Windows";
+            this.startWithWindowsToolStripMenuItem.Click += new System.EventHandler(this.startWithWindowsToolStripMenuItem_Click);
             // 
             // _MainSplitContainer
             // 
@@ -334,19 +344,19 @@
             // 
             // _WallpaperPicker
             // 
-            wallpaperConfig1.Argb = -16777216;
-            wallpaperConfig1.BackgroundColor = System.Drawing.Color.Black;
-            wallpaperConfig1.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:05");
-            wallpaperConfig1.ChangeWallpaperIntervalTicks = ((long)(50000000));
-            wallpaperConfig1.DeviceName = null;
-            wallpaperConfig1.DirectoryPath = null;
-            wallpaperConfig1.ImagePath = null;
-            wallpaperConfig1.IncludeSubDirs = false;
-            wallpaperConfig1.Name = null;
-            wallpaperConfig1.ScreenIndex = 0;
-            wallpaperConfig1.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
-            wallpaperConfig1.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
-            this._WallpaperPicker.Config = wallpaperConfig1;
+            wallpaperConfig2.Argb = -16777216;
+            wallpaperConfig2.BackgroundColor = System.Drawing.Color.Black;
+            wallpaperConfig2.ChangeWallpaperInterval = System.TimeSpan.Parse("00:00:05");
+            wallpaperConfig2.ChangeWallpaperIntervalTicks = ((long)(50000000));
+            wallpaperConfig2.DeviceName = null;
+            wallpaperConfig2.DirectoryPath = null;
+            wallpaperConfig2.ImagePath = null;
+            wallpaperConfig2.IncludeSubDirs = false;
+            wallpaperConfig2.Name = null;
+            wallpaperConfig2.ScreenIndex = 0;
+            wallpaperConfig2.SelectionStyle = WallpaperUtils.WallpaperSelectionStyle.None;
+            wallpaperConfig2.StretchStyle = WallpaperUtils.WallpaperStretchStyle.Center;
+            this._WallpaperPicker.Config = wallpaperConfig2;
             this._WallpaperPicker.Dock = System.Windows.Forms.DockStyle.Fill;
             this._WallpaperPicker.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._WallpaperPicker.Location = new System.Drawing.Point(3, 19);
@@ -421,5 +431,6 @@
         private System.Windows.Forms.ToolStripMenuItem openWallMasterDirectoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _startMinimizedButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem startWithWindowsToolStripMenuItem;
     }
 }

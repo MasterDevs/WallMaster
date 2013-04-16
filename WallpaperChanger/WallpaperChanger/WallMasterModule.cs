@@ -19,6 +19,7 @@ namespace WallpaperChanger
             Bind<WallpaperCreator>().ToSelf().InSingletonScope();
             Bind<WallpaperManager>().ToSelf().InSingletonScope();
             Bind<ImageSaver>().ToSelf().InSingletonScope();
+            Bind<StartWithWindowsHelper>().ToSelf().InSingletonScope();
 
             string appDir = GetAppDir();
             Bind<string>().ToConstant(appDir);

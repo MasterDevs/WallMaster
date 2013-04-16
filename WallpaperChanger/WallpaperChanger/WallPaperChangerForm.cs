@@ -15,16 +15,15 @@ namespace WallpaperChanger
         private readonly ILogger _logger;
         private readonly WallpaperManager _manager;
         private readonly QuickChanger _quickChanger;
+        private readonly StartWithWindowsHelper _startupHelper;
         private readonly WallpaperConfigChanger _wallpaperConfigChanger;
         private WallpaperCreator _creator;
         private EventHandler ChangeWallpaperEventHandler;
-
         private EventHandler DisplaySettingsChangedEventHandler;
-
         private WallpaperSettings Settings;
 
         public WallpaperChangerForm()
-            : this(null, null, null, null, null, null, null) { }
+            : this(null, null, null, null, null, null, null, null) { }
 
         public WallpaperChangerForm(
             WallpaperConfigChanger wallpaperConfigChanger,
@@ -33,6 +32,7 @@ namespace WallpaperChanger
             WallpaperCreator creator,
             WallpaperManager manager,
             ImageSaver imageSaver,
+            StartWithWindowsHelper startupHelper,
             ILogger logger
             )
         {
@@ -44,6 +44,7 @@ namespace WallpaperChanger
             _creator = creator;
             _manager = manager;
             _imageSaver = imageSaver;
+            _startupHelper = startupHelper;
             _logger = logger;
 
             LoadConfiguration();
@@ -414,6 +415,11 @@ namespace WallpaperChanger
                 MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _logger.Error(msg, ex);
             }
+        }
+
+        private void startWithWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _startupHelper.StartWithWindowsEnabled = startWithWindowsToolStripMenuItem.Checked;
         }
     }
 }

@@ -75,6 +75,7 @@
     <Compile Include="QuickChanger.cs" />
     <Compile Include="RandomFileFinder.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="StartWithWindowsHelper.cs" />
     <Compile Include="WallpaperConfig.cs" />
     <Compile Include="WallpaperConfigChanger.cs" />
     <Compile Include="WallpaperConfigManager.cs" />

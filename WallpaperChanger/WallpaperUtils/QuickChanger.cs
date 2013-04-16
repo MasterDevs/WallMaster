@@ -17,7 +17,7 @@ namespace WallpaperUtils
         private readonly ILogger _logger;
         private readonly WallpaperManager _manager;
         private readonly object lockObj;
-        private WallpaperConfigCollection Configuration;
+        private WallpaperSettings Settings;
 
         public QuickChanger(WallpaperConfigManager configManager, WallpaperCreator creator, WallpaperManager manager, ImageSaver imageSaver, ILogger logger)
         {
@@ -29,6 +29,8 @@ namespace WallpaperUtils
             _logger = logger;
         }
 
+        private WallpaperConfigCollection Configuration { get { return Settings.ScreenConfigs; } }
+
         private bool CouldNotLoadConfiguration { get { return Configuration == null; } }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace WallpaperUtils
         {
             _logger.Debug("Changing all random wallpapers...");
 
-            Configuration = _configManager.Load();
+            Settings = _configManager.Load();
             if (CouldNotLoadConfiguration)
             {
                 _logger.Error("Could not change any wallpapers:  Could not load configuration");
@@ -84,7 +86,7 @@ namespace WallpaperUtils
             _logger.Info("Changing wallpapers for screens:  {0}",
                 string.Join(", ", screenIndexes.Select(i => i.ToString()).ToArray()));
 
-            Configuration = _configManager.Load();
+            Settings = _configManager.Load();
 
             if (CouldNotLoadConfiguration)
             {
@@ -115,6 +117,34 @@ namespace WallpaperUtils
         }
 
         /// <summary>
+        /// Sets the wallpaper and saves the current configuration
+        /// </summary>
+        public void SetWallpaperAndSave()
+        {
+            try
+            {
+                //-- Save the configuration so we know what the current images are
+                _configManager.Save(Settings);
+
+                _logger.Debug("Setting wallpaper and saving configuration...");
+                string path = null;
+                lock (lockObj)
+                {
+                    path = _imageSaver.Save(_creator.DesktopBitmap);
+                }
+                _manager.SetWallpaper(path);
+                _logger.Debug("Wallpaper set.");
+
+                _logger.Debug("Configuration saved...");
+                GC.Collect(); //-- Force another collection
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "There was an error setting the wallpaper");
+            }
+        }
+
+        /// <summary>
         /// This method will update all screen images to reflect
         /// a change in resolution.
         /// <para>If any screens are set to random, this will NOT change
@@ -124,7 +154,7 @@ namespace WallpaperUtils
         {
             _logger.Debug("Updating all screen images to reflect a change in resolution...");
 
-            Configuration = _configManager.Load();
+            Settings = _configManager.Load();
 
             if (CouldNotLoadConfiguration)
             {
@@ -208,34 +238,6 @@ namespace WallpaperUtils
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Sets the wallpaper and saves the current configuration
-        /// </summary>
-        public void SetWallpaperAndSave()
-        {
-            try
-            {
-                //-- Save the configuration so we know what the current images are
-                _configManager.Save(Configuration);
-
-                _logger.Debug("Setting wallpaper and saving configuration...");
-                string path = null;
-                lock (lockObj)
-                {
-                    path = _imageSaver.Save(_creator.DesktopBitmap);
-                }
-                _manager.SetWallpaper(path);
-                _logger.Debug("Wallpaper set.");
-
-                _logger.Debug("Configuration saved...");
-                GC.Collect(); //-- Force another collection
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "There was an error setting the wallpaper");
-            }
         }
     }
 }

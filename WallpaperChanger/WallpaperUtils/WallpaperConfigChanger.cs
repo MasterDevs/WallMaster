@@ -20,11 +20,11 @@ namespace WallpaperUtils
 
         public class WallpaperChangeEventArgs : EventArgs
         {
-            public WallpaperConfigCollection Config;
+            public readonly WallpaperSettings Settings;
 
-            public WallpaperChangeEventArgs(WallpaperConfigCollection config)
+            public WallpaperChangeEventArgs(WallpaperSettings settings)
             {
-                Config = config;
+                Settings = settings;
             }
         }
 
@@ -50,15 +50,15 @@ namespace WallpaperUtils
             {
                 _logger.Debug("Starting wallpaper changer");
 
-                WallpaperConfigCollection configs = _configManager.Load();
-                if (configs == null)
+                var settings = _configManager.Load();
+                if (settings == null)
                 {
                     _logger.Warn("Can't start wallpaper changer:  could not load configuration");
                     return;
                 }
 
                 //-- Check if we have a random screen config
-                bool noRandomScreenConfig = IsThereNoRandomConfig(configs);
+                bool noRandomScreenConfig = IsThereNoRandomConfig(settings.ScreenConfigs);
 
                 if (noRandomScreenConfig)
                 {
@@ -66,7 +66,7 @@ namespace WallpaperUtils
                     return;
                 }
 
-                ComputeTimeIntervals(configs);
+                ComputeTimeIntervals(settings.ScreenConfigs);
 
                 CalculateGCD();
 

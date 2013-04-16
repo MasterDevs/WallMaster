@@ -19,8 +19,9 @@ namespace WallpaperChanger
         private WallpaperCreator _creator;
         private EventHandler ChangeWallpaperEventHandler;
 
-        private WallpaperConfigCollection Configurations;
         private EventHandler DisplaySettingsChangedEventHandler;
+
+        private WallpaperSettings Settings;
 
         public WallpaperChangerForm()
             : this(null, null, null, null, null, null, null) { }
@@ -51,7 +52,7 @@ namespace WallpaperChanger
             CurrentIndex = 0;
 
             //-- Load Primary Monitor
-            WallpaperPicker_ConfigChanged(null, new ConfigChangedEventArgs(Configurations[CurrentIndex]));
+            WallpaperPicker_ConfigChanged(null, new ConfigChangedEventArgs(Configuration[CurrentIndex]));
             UserHasMadeAChange = false;
         }
 
@@ -68,13 +69,15 @@ namespace WallpaperChanger
             }
         }
 
+        private WallpaperConfigCollection Configuration { get { return Settings.ScreenConfigs; } }
+
         #region Initialization
 
         private void InitScreens()
         {
-            for (int i = 0; i < Configurations.Count; i++)
+            for (int i = 0; i < Configuration.Count; i++)
             {
-                _creator.InitScreen(Configurations[i]);
+                _creator.InitScreen(Configuration[i]);
             }
         }
 
@@ -91,14 +94,11 @@ namespace WallpaperChanger
         private void LoadConfiguration()
         {
             _WallpaperPicker.RaiseEvents = false;
-            Configurations = _configManager.Load();
-            if (Configurations == null)
-            {
-                Configurations = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
-            }
+            Settings = _configManager.Load() ?? _configManager.LoadDefault();
 
+            _startMinimizedButton.Checked = Settings.LoadFormMinimized;
             InitScreens();
-            _WallpaperPicker.Config = Configurations[CurrentIndex];
+            _WallpaperPicker.Config = Configuration[CurrentIndex];
             _WallpaperPicker.RaiseEvents = true;
         }
 
@@ -120,9 +120,9 @@ namespace WallpaperChanger
 
         private void AddIndexes(int index)
         {
-            for (int i = Configurations.Count; i <= index; i++)
+            for (int i = Configuration.Count; i <= index; i++)
             {
-                Configurations.Add(WallpaperConfig.GetDefault(i));
+                Configuration.Add(WallpaperConfig.GetDefault(i));
             }
         }
 
@@ -149,7 +149,7 @@ namespace WallpaperChanger
             if (index != -1)
             {
                 //-- Save current config to configurations
-                Configurations[_creator.SelectedIndex] = _WallpaperPicker.Config;
+                Configuration[_creator.SelectedIndex] = _WallpaperPicker.Config;
 
                 //-- Set new selected index for creator
                 _creator.SelectedIndex = index;
@@ -158,9 +158,9 @@ namespace WallpaperChanger
                 _WallpaperPicker.RaiseEvents = false;
 
                 //-- Initialize WallpaperConfig to be the new configuration
-                if (Configurations.Count - 1 < index) //-- If we don't have a config large enough, add them
+                if (Configuration.Count - 1 < index) //-- If we don't have a config large enough, add them
                     AddIndexes(index);
-                _WallpaperPicker.Config = Configurations[index];
+                _WallpaperPicker.Config = Configuration[index];
 
                 //-- Get the preview image to display the border around the newly selected image
                 ResetPreviewImage();
@@ -177,6 +177,12 @@ namespace WallpaperChanger
         {
             _PreviewImageBox.Image = _creator.PreviewBitmap;
             GC.Collect(); //-- No need to have images in memory if they're not being used
+        }
+
+        private void startMinimizedButton_Click(object sender, EventArgs e)
+        {
+            Settings.LoadFormMinimized = _startMinimizedButton.Checked;
+            _configManager.Save(Settings);
         }
 
         private void WallpaperPicker_ConfigChanged(object sender, ConfigChangedEventArgs e)
@@ -380,7 +386,7 @@ namespace WallpaperChanger
         {
             try
             {
-                _configManager.Save(Configurations);
+                _configManager.Save(Settings);
                 string path = _imageSaver.Save(_creator.DesktopBitmap);
                 _manager.SetWallpaper(path);
                 GC.Collect(); //-- Force another collection

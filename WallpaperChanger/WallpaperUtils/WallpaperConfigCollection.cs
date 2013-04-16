@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Xml.Serialization;
 
 namespace WallpaperUtils
 {
@@ -11,9 +12,6 @@ namespace WallpaperUtils
         public WallpaperConfigCollection() { }
 
         public WallpaperConfigCollection(IEnumerable<WallpaperConfig> col)
-            : base(col) { }
-
-        public WallpaperConfigCollection(params WallpaperConfig[] col)
             : base(col) { }
 
         public bool ContainsRandom

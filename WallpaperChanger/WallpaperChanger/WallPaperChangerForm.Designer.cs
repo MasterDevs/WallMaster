@@ -46,6 +46,8 @@
             this._FMI_CW_ChangeAllWallpapers = new System.Windows.Forms.ToolStripMenuItem();
             this._FMI_UpdateWallpaper = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this._startMinimizedButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this._FMI_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -193,6 +195,8 @@
             this._FMI_ChangeWallpaper,
             this._FMI_UpdateWallpaper,
             this.toolStripSeparator2,
+            this._startMinimizedButton,
+            this.toolStripSeparator3,
             this._FMI_Exit});
             this._MMS_File.Name = "_MMS_File";
             this._MMS_File.Size = new System.Drawing.Size(37, 20);
@@ -235,6 +239,19 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(168, 6);
+            // 
+            // _startMinimizedButton
+            // 
+            this._startMinimizedButton.CheckOnClick = true;
+            this._startMinimizedButton.Name = "_startMinimizedButton";
+            this._startMinimizedButton.Size = new System.Drawing.Size(171, 22);
+            this._startMinimizedButton.Text = "Start Minimized";
+            this._startMinimizedButton.Click += new System.EventHandler(this.startMinimizedButton_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(168, 6);
             // 
             // _FMI_Exit
             // 
@@ -402,5 +419,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openWallMasterDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _startMinimizedButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

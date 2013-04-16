@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="WallpaperConfigCollection.cs" />
     <Compile Include="WallpaperSelectionStyle.cs" />
+    <Compile Include="WallpaperSettings.cs" />
     <Compile Include="WallpaperStretchStyle.cs" />
     <Compile Include="WallpaperStyle.cs" />
   </ItemGroup>

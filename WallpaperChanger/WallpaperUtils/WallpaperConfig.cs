@@ -96,14 +96,16 @@ namespace WallpaperUtils
         {
             if (screenIndex > -1 && screenIndex < Screen.AllScreenCount)
             {
-                WallpaperConfig config = new WallpaperConfig();
-                config.BackgroundColor = Color.Black;
-                config.SelectionStyle = WallpaperSelectionStyle.None;
-                config.StretchStyle = WallpaperStretchStyle.Fill;
-                config.Name = string.Format("Screen {0}", screenIndex);
+                WallpaperConfig config = new WallpaperConfig
+                {
+                    BackgroundColor = Color.Black,
+                    SelectionStyle = WallpaperSelectionStyle.None,
+                    StretchStyle = WallpaperStretchStyle.Fill,
+                    Name = string.Format("Screen {0}", screenIndex),
+                    ScreenIndex = screenIndex,
+                    ChangeWallpaperInterval = TimeSpan.FromMinutes(30),
+                };
 
-                //config.Name = Screen.AllScreens[screenIndex].DeviceName;
-                config.ScreenIndex = screenIndex;
                 return config;
             }
             else

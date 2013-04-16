@@ -23,12 +23,6 @@ namespace WallpaperUtils
 
         public string AppDir { get; private set; }
 
-        public WallpaperConfigCollection CreateEmptyConfig(int screenCount)
-        {
-            WallpaperConfigCollection cfg = WallpaperConfigCollection.GetDefault(screenCount);
-            return cfg;
-        }
-
         #region Load
 
         /// <summary>
@@ -40,30 +34,40 @@ namespace WallpaperUtils
         /// If the format is incorrect then we try again with the legacy format <see cref="WallpaperConfigCollection"/></remarks>
         public WallpaperSettings Load()
         {
-            if (!File.Exists(_configPath)) return null;
-            var settings = Load<WallpaperSettings>(_configPath);
-            if (settings == null)
+            WallpaperSettings settings;
+            if (!File.Exists(_configPath))
             {
-                var screenConfigs = Load<WallpaperConfigCollection>(_configPath);
-                if (screenConfigs != null)
+                _logger.Warn("Configuration file does not exist.  Creating default configuration");
+                var screenConfigs = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
+                settings = new WallpaperSettings
                 {
-                    settings = new WallpaperSettings
+                    ScreenConfigs = screenConfigs,
+                };
+            }
+            else
+            {
+                settings = Load<WallpaperSettings>(_configPath);
+                if (settings == null)
+                {
+                    _logger.Warn("Could not load config file.  Attempting to load a legacy file format");
+                    var screenConfigs = Load<WallpaperConfigCollection>(_configPath);
+
+                    if (screenConfigs == null)
                     {
-                        ScreenConfigs = screenConfigs
-                    };
+                        _logger.Warn("Could not load the config file as legacy.  Creating default configuration");
+                        screenConfigs = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
+                    }
+                    if (screenConfigs != null)
+                    {
+                        settings = new WallpaperSettings
+                        {
+                            ScreenConfigs = screenConfigs
+                        };
+                    }
                 }
             }
 
             return settings;
-        }
-
-        public WallpaperSettings LoadDefault()
-        {
-            var configs = WallpaperConfigCollection.GetDefault(WallpaperUtils.Screen.AllScreenCount);
-            return new WallpaperSettings
-            {
-                ScreenConfigs = configs,
-            };
         }
 
         private T Load<T>(string path) where T : class

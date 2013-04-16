@@ -95,7 +95,7 @@ namespace WallpaperChanger
         private void LoadConfiguration()
         {
             _WallpaperPicker.RaiseEvents = false;
-            Settings = _configManager.Load() ?? _configManager.LoadDefault();
+            Settings = _configManager.Load();
 
             _startMinimizedButton.Checked = Settings.LoadFormMinimized;
             InitScreens();
@@ -121,6 +121,10 @@ namespace WallpaperChanger
 
         private void AddIndexes(int index)
         {
+            _logger.Warn("Configuration list does not contain enough screen configurations.  We have {0} but are trying to access screen #{1}",
+                Configuration.Count,
+                index);
+
             for (int i = Configuration.Count; i <= index; i++)
             {
                 Configuration.Add(WallpaperConfig.GetDefault(i));

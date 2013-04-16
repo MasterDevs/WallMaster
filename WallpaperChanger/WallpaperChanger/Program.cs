@@ -19,7 +19,7 @@ namespace WallpaperChanger
                 IKernel kernel = new StandardKernel(new WallMasterModule());
                 ProgramRunner pr = kernel.Get<ProgramRunner>();
 
-                pr.Run();
+                pr.Run(args);
             }
             catch (Exception ex)
             {

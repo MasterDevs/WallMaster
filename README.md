@@ -1,3 +1,5 @@
+# WallMaster
+
 Wallmaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.
 It is written in .Net 3.5
 

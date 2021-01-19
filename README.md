@@ -3,7 +3,7 @@
 Wallmaster allows a user to set different wallpapers for each monitor in a multi-monitor setup.
 It is written in .Net 3.5
 
-![Screen Shot](http://download-codeplex.sec.s-msft.com/Download?ProjectName=wallmaster&DownloadId=145662)
+![Screen Shot](https://raw.githubusercontent.com/MasterDevs/WallMaster/master/ScreenShot.png)
 
 It provides the following features:
 * Completely independent selection of wallpapers for each screen
